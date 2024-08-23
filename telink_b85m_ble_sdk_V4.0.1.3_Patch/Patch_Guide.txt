@@ -1,4 +1,4 @@
-**************************************************************************
+*************************************************************************
                                                                         
                        Telink SDK Patch Guide                              
                                                                             
@@ -18,3 +18,23 @@
 	replace files in "b85m_ble_sdk/proj_lib" with files with same name in "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0002_20240402/proj_lib";
 	replace files in "b85m_ble_sdk/drivers" with files with same name in "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0002_20240402/drivers";
 	replace file "b85m_ble_sdk/sdk_version.txt" with "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0002_20240402/sdk_version.txt";
+	
+3. 0003_20240823
+	replace files in "b85m_ble_sdk/drivers/8258/driver_ext/ext_misc.c" with files with same name in "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8258/driver_ext/ext_misc.c";
+	replace files in "b85m_ble_sdk/drivers/8258/driver_ext/ext_misc.h" with files with same name in 	
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8258/driver_ext/ext_misc.h";
+	replace files in "b85m_ble_sdk/drivers/8258/adc.c" with files with same name in
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8258/adc.c";
+	replace files in "b85m_ble_sdk/drivers/8258/adc.h" with files with same name in 
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8258/adc.h";
+	replace files in "b85m_ble_sdk/drivers/8278/driver_ext/ext_misc.c" with files with same name in "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8278/driver_ext/ext_misc.c";
+	replace files in "b85m_ble_sdk/drivers/8278/driver_ext/ext_misc.h" with files with same name in 	
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8278/driver_ext/ext_misc.h";
+	replace files in "b85m_ble_sdk/drivers/8278/adc.c" with files with same name in
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8278/adc.c";
+	replace files in "b85m_ble_sdk/drivers/8278/adc.h" with files with same name in 
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/drivers/8278/adc.h";
+	replace files in "b85m_ble_sdk/vendor/common/blt_common.h" with files with same name in 
+    "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/vendor/common/blt_common.h";
+	replace file "b85m_ble_sdk/sdk_version.txt" with "telink_b85m_ble_sdk_V4.0.1.3_Patch/patch_0003_20240823/sdk_version.txt";	
+	
