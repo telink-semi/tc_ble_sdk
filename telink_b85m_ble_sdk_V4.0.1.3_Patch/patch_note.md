@@ -1,21 +1,21 @@
 ## V4.0.1.3_Patch_0003
 
 ### Bug Fixes
-  - N/A
+* **drvier/adc**
+  * (B87): Fix issue of large ADC error on some chips.
 
 ### BREAKING CHANGES
 * **drvier/adc**
-  * (B85/B87):Update ADC driver module to V2.0.0 and add two-point calibration.
-
+  * (B85/B87):Update ADC driver to V2.0.0 and add two-point calibration.
 
 
 ### Bug Fixes
-  - N/A
-
+* **drvier/adc**
+  * (B87):修复部分芯片ADC误差偏大。
 
 ### BREAKING CHANGES
 * **drvier/adc**
-  * (B85/B87):更新 ADC 驱动模块至 V2.0.0 并添加两点校准功能.
+  * (B85/B87):更新 ADC 驱动至 V2.0.0 并添加两点校准功能。
 
 
 ## V4.0.1.3_Patch_0002

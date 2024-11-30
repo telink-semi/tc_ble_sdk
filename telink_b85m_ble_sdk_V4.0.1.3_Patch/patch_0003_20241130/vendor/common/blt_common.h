@@ -322,7 +322,8 @@ static inline void blc_app_loadCustomizedParameters(void)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 #if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x)
-	user_calib_adc_vref(USER_CALIB_FROM_FLASH,(flash_sector_calibration + CALIB_OFFSET_ADC_VREF));
+	extern unsigned char user_calib_adc_vref(unsigned char velfrom, unsigned int addr);
+	user_calib_adc_vref(0x01,(flash_sector_calibration + CALIB_OFFSET_ADC_VREF)); //0x01: USER_CALIB_FROM_FLASH
 #endif
 }
 

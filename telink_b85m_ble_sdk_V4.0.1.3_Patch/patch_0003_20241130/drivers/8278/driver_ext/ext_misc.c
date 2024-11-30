@@ -99,12 +99,21 @@ void generateRandomNum(int len, unsigned char *data)
 
 /************************************************** ADC calibration START********************************************/
 /**
+ * @brief	flash voltage definition
+ */
+typedef enum {
+    USER_CALIB_FROM_FLASH	= 0x01,
+    USER_CALIB_FROM_OTP		= 0x02,
+}user_calib_from_e;
+
+
+/**
  * @brief      This function is used to calib ADC 1.2V vref.
  * @param[in]  velfrom - the calibration value from flash or otp.
  * @param[in]  addr - the calibration value address of flash or otp.
  * @return 	   1 - the calibration value update, 0 - the calibration value is not update.
  */
-unsigned char user_calib_adc_vref(user_calib_from_e velfrom, unsigned int addr)
+unsigned char user_calib_adc_vref(unsigned char velfrom, unsigned int addr)
 {
 /********************************************************************************************
 	There have three kind of calibration value of ADC 1.2V vref in flash,and one calibration value in Efuse.
