@@ -1,4 +1,4 @@
-# V4.0.2.0
+# V4.0.2.0(PR)
 
 ### Version
 * SDK version: tc_ble_sdk V4.0.2.0
@@ -56,7 +56,7 @@
 		- If users do not use Telink OTAs, they need to refer to this design to add similar callback functions in their own OTA code for upper-layer use.
 		- Now only firmware is protected in the sample code. System data and user data are not protected now.
 		- IRQ disabling time too long in driver API "flash_write_status", BLE system interrupt is delayed, causing RX data error. 
-		Driver API "flash_write_status" be replaced by "flash_write_status" in flash_prot.c to solve this issue by calling LinkLayer API "blc_ll_write_flash_status".
+		- Driver API "flash_write_status" be replaced by "flash_write_status" in flash_prot.c to solve this issue by calling LinkLayer API "blc_ll_write_flash_status".
 
 	- Add tlkapi_debug module to print logs
 		- Add tlkapi_debug.h/tlkapi_debug.c in vendor/common folder as a common module for all applications.
@@ -64,7 +64,7 @@
 		- Use GPIO simulating UART TX sequence to output data information to PC UART tool, same function with "printf" function in old SDK.
 		- API "tlkapi_printf" and "tlkapi_send_string_data" are recommended for usage, with some macro in app_config.h to control log enabling such as "APP_LOG_EN".
 		- Only 1M baud rate can be used. When the system clock is 16M/24M, the assembly is used to control the UART TX timing. When the system clock is 32M/48M, the system_timer is used to control the UART TX timing. IRQ disabling and restoring are used in function "uart_putc" to guarantee UART TX byte data integrity is not broken by IRQ. 
-		If the baud rate is too low, IRQ disabling time too long, BLE system interrupt and user interrupt will be affected which may lead to critical error.
+		- If the baud rate is too low, IRQ disabling time too long, BLE system interrupt and user interrupt will be affected which may lead to critical error.
 
 * **feature_test**
 	- Add feature_privacy_peripheral: Sample code for testing peripheral RPA. This sample code to get peer Central(Master) IDA(identity address) if RPA(resolved private address) is used in packet "CONNECT_IND".
@@ -149,7 +149,7 @@
 * **Others**
 	- Add mcu_config.h, including features supported by the MCU.
 
-	- Add ext_calibration.c and ext_calibration.h to support ADC calibration, including flash two-point GPIO calibration, flash single-point GPIO calibration, flash single-point VBAT calibration (supported only by B87) and efuse single-point calibration; Supports flash voltage calibration.
+	- Add ext_calibration.c and ext_calibration.h to support ADC calibration, including flash two-point GPIO calibration, flash single-point GPIO calibration, flash single-point VBAT calibration (supported only by B87) and efuse single-point calibration; supports flash voltage calibration.
 
 	- Add version information function.
 		- Add API "blc_get_sdk_version" to get the SDK version.
@@ -162,8 +162,7 @@
 ### Refactoring
 * **Application**
 	- add app_common.h/app_common.c to process some common initialization or settings for all application projects.
-		- Move SYS_CLK_TYPE/CLOCK_SYS_CLOCK_1S/CLOCK_SYS_CLOCK_1MS/CLOCK_SYS_CLOCK_1US definition from app_config.h to app_common.h. 
-		Users now only define CLOCK_SYS_CLOCK_HZ in app_config.h. 
+		- Move SYS_CLK_TYPE/CLOCK_SYS_CLOCK_1S/CLOCK_SYS_CLOCK_1MS/CLOCK_SYS_CLOCK_1US definition from app_config.h to app_common.h. Users now only define CLOCK_SYS_CLOCK_HZ in app_config.h. 
 		- add API "blc_app_setDeepsleepRetentionSramSize" in app_common to automatically set deepsleep retention SRAM size for all application projects.
 		- add API "blc_app_checkControllerHostInitialization" in app_common to check stack initialization error for the application project.
 		- add API "blc_app_isIrkValid" in app_common to check if local or peer IRK is valid, which can be used in the whitelist and resolving list of relevant applications.
@@ -194,26 +193,26 @@
 		- B85
 			- Use new macro MCU_STARTUP_8253/MCU_STARTUP_8258 to configure IC, and MCU_STARTUP_8258 is used by default.
 			    - Old macro below is not used anymore: 
-				    MCU_STARTUP_8258_RET_32K, 
-				    MCU_STARTUP_8253_RET_32K, 		
-			- B87
-				- Use new macro MCU_STARTUP_8238/MCU_STARTUP_8278 to configure IC, and MCU_STARTUP_8278 is used by default.
+				    - MCU_STARTUP_8258_RET_32K, 
+				    - MCU_STARTUP_8253_RET_32K, 		
+		- B87
+			- Use new macro MCU_STARTUP_8238/MCU_STARTUP_8278 to configure IC, and MCU_STARTUP_8278 is used by default.
 			    - Old macro below is not used anymore: 
-				      MCU_STARTUP_8278_RET_32K, 
-				      MCU_STARTUP_8238_RET_32K, 
+				    - MCU_STARTUP_8278_RET_32K, 
+				    - MCU_STARTUP_8238_RET_32K, 
 
 		- Users do not need to be concerned about how to change configurations of different deepsleep retention SRAM size(16K or 32K). It's now processed automatically.
 			- "blc_app_setDeepsleepRetentionSramSize" is used to configure deepsleep retention SRAM size automatically.
 			- "\_retention_size_" is defined in cstarup.S file, and it is used to automatically calculate the total size of retention SRAM.
-			If "_retention_size" exceeds the maximum value(32K, TC321x support 64K bytes), the compiler will report the error "Error: Retention RAM size overflow." for users to notice this.
+			- If "_retention_size" exceeds the maximum value(32K, TC321x support 64K bytes), the compiler will report the error "Error: Retention RAM size overflow." for users to notice this.
 			- Add user_config.c in vendor/common, and add "__PM_DEEPSLEEP_RETENTION_ENABLE" in this file for retention SRAM size auto calculating and alarming in boot.link.
-			"__PM_DEEPSLEEP_RETENTION_ENABLE" equals to "PM_DEEPSLEEP_RETENTION_ENABLE" which is configurated by user in app_config.h.
+			- "__PM_DEEPSLEEP_RETENTION_ENABLE" equals to "PM_DEEPSLEEP_RETENTION_ENABLE" which is configurated by user in app_config.h.
 
 * **Application**
 	- BLE Flash information and Calibration
 		- Rename blt_common.h/blt_common.c to ble_flash.h/ble_flash.c.
 		- Split function "blc_app_loadCustomizedParameters" into two functions "blc_app_loadCustomizedParameters_normal"	and "blc_app_loadCustomizedParameters_deepRetn".
-		The first one is used when the MCU is powered on or wakes up from deepsleep mode. The second one is used when MCU wakes up from deepsleep retention mode.
+		- The first one is used when the MCU is powered on or wakes up from deepsleep mode. The second one is used when MCU wakes up from deepsleep retention mode.
 		- Add API "blc_flash_read_mid_get_vendor_set_capacity" in "blc_readFlashSize_autoConfigCustomFlashSector" to get Flash mid, vendor and capacity information.
 
 * **Driver**
@@ -503,19 +502,19 @@
 		- B85
 			- 使用新的宏 MCU_STARTUP_8251/MCU_STARTUP_8253/MCU_STARTUP_8258 来配置芯片, 默认配置为 MCU_STARTUP_8258
 			- 以下这些旧的宏不再使用: 
-				MCU_STARTUP_8258_RET_32K, 
-				MCU_STARTUP_8253_RET_32K
+				- MCU_STARTUP_8258_RET_32K, 
+				- MCU_STARTUP_8253_RET_32K
 		- B87
 			- 使用新的宏 MCU_STARTUP_8271/MCU_STARTUP_8238/MCU_STARTUP_8278 来配置芯片, 默认配置为 MCU_STARTUP_8278
 			- 以下这些旧的宏不再使用: 
-				MCU_STARTUP_8278_RET_32K, 
-				MCU_STARTUP_8238_RET_32K, 
+				- MCU_STARTUP_8278_RET_32K, 
+				- MCU_STARTUP_8238_RET_32K, 
 	- 自动配置deepsleep retention SRAM大小(16K或32K)，用户无需关注。
 		- "blc_app_setDeepsleepRetentionSramSize"用来自动配置deepsleep retention SRAM大小。
 		- "\_retention_size_"在cstarup.S中定义，用于自动计算retention SRAM大小。
-		如果“_retention_size_”超过最大值32K字节（TC321x为64K字节），编译器将报告错误"Error: Retention RAM size overflow."，以便用户注意到这一点。
+		- 如果“_retention_size_”超过最大值32K字节（TC321x为64K字节），编译器将报告错误"Error: Retention RAM size overflow."，以便用户注意到这一点。
 		- 在vendor/common中添加user_config.c，在此文件中添加宏"__PM_DEEPSLEEP_RETENTION_ENABLE"，用于在boot.link中自动计算和报警retention SRAM size。
-		  "__PM_DEEPSLEEP_RETENTION_ENABLE"等于用户在app_config.h中配置的"PM_DEEPSLEEP_RETENTTION_ENABLE"。
+		- "__PM_DEEPSLEEP_RETENTION_ENABLE"等于用户在app_config.h中配置的"PM_DEEPSLEEP_RETENTTION_ENABLE"。
 
 * **Application**
 	- 调整BLE Flash配置和校准
