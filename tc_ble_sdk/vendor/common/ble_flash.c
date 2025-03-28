@@ -104,7 +104,7 @@ void blc_readFlashSize_autoConfigCustomFlashSector(void)
 {
 	blc_flash_read_mid_get_vendor_set_capacity();
 
-#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SL_SUPPORT_EN)	//512K
+#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SU_SUPPORT_EN)	//512K
 	if(blc_flash_capacity == FLASH_SIZE_512K){
 		flash_sector_mac_address = CFG_ADR_MAC_512K_FLASH;
 		flash_sector_calibration = CFG_ADR_CALIBRATION_512K_FLASH;
@@ -117,7 +117,7 @@ void blc_readFlashSize_autoConfigCustomFlashSector(void)
 		tlkapi_printf(APP_FLASH_INIT_LOG_EN, "[FLASH][INI] 512K Flash, MAC on 0x%x\n", flash_sector_mac_address);
 	}
 #endif
-#if (FLASH_ZB25WD80B_SUPPORT_EN || FLASH_GD25LD80C_SUPPORT_EN || FLASH_GD25LD80E_SUPPORT_EN || FLASH_P25Q80U_SUPPORT_EN)		//1M
+#if (FLASH_ZB25WD80B_SUPPORT_EN || FLASH_GD25LD80C_SUPPORT_EN || FLASH_GD25LD80E_SUPPORT_EN || FLASH_P25Q80SU_SUPPORT_EN)		//1M
 	else if(blc_flash_capacity == FLASH_SIZE_1M){
 		flash_sector_mac_address = CFG_ADR_MAC_1M_FLASH;
 		flash_sector_calibration = CFG_ADR_CALIBRATION_1M_FLASH;

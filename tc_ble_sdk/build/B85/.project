@@ -134,7 +134,42 @@
 		<link>
 			<name>vendor</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/vendor</locationURI>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>vendor/acl_c1p1_demo</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/acl_c1p1_demo</locationURI>
+		</link>
+		<link>
+			<name>vendor/acl_peripheral_demo</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/acl_peripheral_demo</locationURI>
+		</link>
+		<link>
+			<name>vendor/acl_connection_demo</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/acl_connection_demo</locationURI>
+		</link>
+		<link>
+			<name>vendor/ble_controller</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/ble_controller</locationURI>
+		</link>
+		<link>
+			<name>vendor/common</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/common</locationURI>
+		</link>
+		<link>
+			<name>vendor/feature_test</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/feature_test</locationURI>
+		</link>
+		<link>
+			<name>vendor/acl_central_demo</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/vendor/acl_central_demo</locationURI>
 		</link>
 	</linkedResources>
 

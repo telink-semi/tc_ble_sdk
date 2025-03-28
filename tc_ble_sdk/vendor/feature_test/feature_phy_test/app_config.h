@@ -70,17 +70,19 @@
 #define BOARD_SELECT								BOARD_TC321X_EVK_C1T357A20
 #endif
 
-#if(CHIP_TYPE == CHIP_TYPE_TC321X)
-#define UART_MODULE_SEL						UART0
-#define UART_CONVERT(...)					UART_MODULE_SEL,__VA_ARGS__
+#if (CHIP_TYPE == CHIP_TYPE_TC321X)
+#define UART_NUM							UART0
+#define UART_CONVERT(...)					UART_NUM,__VA_ARGS__
 #define UART_TX_PIN							GPIO_PD0
 #define UART_RX_PIN							GPIO_PD1
 #else
-#define UART_MODULE_SEL
+#define UART_NUM
 #define UART_CONVERT(...)					__VA_ARGS__
 #define UART_TX_PIN							UART_TX_PB1
 #define UART_RX_PIN							UART_RX_PB0
 #endif
+
+#define	UART_BAUDRATE       				(115200)
 
 ///////////////////////// UI Configuration ////////////////////////////////////////////////////
 #define UI_LED_ENABLE								0

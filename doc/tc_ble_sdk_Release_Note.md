@@ -1,3 +1,222 @@
+# V4.0.2.1(PR)
+
+### Version
+* SDK version: tc_ble_sdk V4.0.2.1
+* Chip Version
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0)
+* Hardware Version
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0
+* Platform Version
+  - tc_platform_sdk V3.1.0
+* Toolchain Version
+  - TC32 ELF GCC4.3 ( IDE: [Telink IDE](https://wiki.telink-semi.cn/wiki/IDE-and-Tools/IDE-for-TLSR8-Chips/)/ [TelinkIoTStudio_V2025.2](https://doc.telink-semi.cn/tools/telink_iot_studio/TelinkIoTStudio_V2025.2.zip) )
+
+### Features
+* **Application**
+  - Add demo "ble_remote" into TC321X, which supports "TL_AUDIO_RCU_ADPCM_GATT_TELINK" audio mode.
+  - Add ble_controller demo.
+
+### Bug Fixes
+* **Application**
+  - Fix(TC321X): The flash information is not initialized normally when enabling macro "APP_FLASH_PROTECTION_ENABLE" and using Flash "P25Q80SU".
+  - Fix: Fix compile error when enabling macro "APP_BATT_CHECK_ENABLE".
+
+* **PM**
+  - Fix(TC321X): The MCU can not be waken up normally when using long suspend sleep mode.
+
+### Refactoring
+* **Application**
+  - Modify "USED_DEEP_ANA_REG" setting in "acl_c1p1_demo", "acl_peripheral_demo" and "acl_connection_demo".
+
+### BREAKING CHANGES
+* N/A.
+
+### Flash
+* **B85**
+  - ZB25WD40B
+  - ZB25WD80B
+  - GD25LD40C/GD25LD40E
+  - GD25LD80C/GD25LD80E
+
+* **B87**
+  - GD25LD40C/GD25LD40E
+  - GD25LD80C/GD25LD80E
+  - ZB25WD40B
+  - ZB25WD80B
+
+* **TC321X**
+  - P25D40SU
+  - GD25LD40EGEG (Not Test)
+  - P25Q80SU
+  - P25Q16SU
+
+### CodeSize
+* **B85**
+  * acl_peripheral_demo
+    - Firmware size: 81.4 kBytes
+    - SRAM size: 31.9 kBytes
+    - deepsleep retention SRAM size: 28.3 kBytes
+  * acl_central_demo
+    - Firmware size: 72.8 kBytes
+    - SRAM size: 37.0 kBytes
+  * acl_connection_demo
+    - Firmware size: 87.3 kBytes
+    - SRAM size: 43.0 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 93.4 kBytes
+    - SRAM size: 36.0 kBytes
+    - deepsleep retention SRAM size: 31.9 kBytes
+
+* **B87**
+  * acl_peripheral_demo
+    - Firmware size: 79.4 kBytes
+    - SRAM size: 31.7 kBytes
+    - deepsleep retention SRAM size: 28.1 kBytes
+  * acl_central_demo
+    - Firmware size: 71.8 kBytes
+    - SRAM size: 37.0 kBytes
+  * acl_connection_demo
+    - Firmware size: 91.2 kBytes
+    - SRAM size: 43.0 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 91.3 kBytes
+    - SRAM size: 35.8 kBytes
+    - deepsleep retention SRAM size: 31.7 kBytes
+
+* **TC321X**
+  * acl_peripheral_demo
+    - Firmware size: 79.3 kBytes
+    - SRAM size: 31.8 kBytes
+    - deepsleep retention SRAM size: 28.3 kBytes
+  * acl_central_demo
+    - Firmware size: 71.6 kBytes
+    - SRAM size: 37.3 kBytes
+  * acl_connection_demo
+    - Firmware size: 86.7 kBytes
+    - SRAM size: 43.3 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 91.5 kBytes
+    - SRAM size: 35.9 kBytes
+    - deepsleep retention SRAM size: 32.0 kBytes
+  * ble_remote
+    - Firmware size: 95.5 kBytes
+    - SRAM size: 40.4 kBytes
+    - deepsleep retention SRAM size: 35.5 kBytes
+
+### Version
+* SDK 版本: tc_ble_sdk V4.0.2.1
+* Chip 版本
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0)
+* Hardware 版本
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0
+* Platform 版本
+  - tc_platform_sdk V3.1.0
+* Toolchain 版本
+  - TC32 ELF GCC4.3 ( IDE: [Telink IDE](https://wiki.telink-semi.cn/wiki/IDE-and-Tools/IDE-for-TLSR8-Chips/)/ [TelinkIoTStudio_V2025.2](https://doc.telink-semi.cn/tools/telink_iot_studio/TelinkIoTStudio_V2025.2.zip) )
+
+### Features
+* **Application**
+  - 在TC321X中添加例程“ble_remote”，支持“TL_AUDIO_RCU_ADPCM_GATT_TELINK” audio模式。
+  - 添加ble_controller demo。
+
+### Bug Fixes
+* **Application**
+  - 修复（TC321X）：使能宏“APP_FLASH_PROTECTION_ENABLE”，且使用flash“P25Q80SU”时，flash信息不能正常初始化。
+  - Fix: 使能宏“APP_BATT_CHECK_ENABLE”时的编译错误。
+
+* **PM**
+  - 修复（TC321X）：使用long suspend休眠模式时，MCU无法正常唤醒。
+
+### Refactoring
+* **Application**
+  - 修改“acl_c1p1_demo”、“acl_peripheral_demo”和“acl_connection_demo”中的“USED_DEEP_ANA_REG”设置。
+
+### BREAKING CHANGES
+* N/A.
+
+### Flash
+* **B85**
+  - ZB25WD40B
+  - ZB25WD80B
+  - GD25LD40C/GD25LD40E
+  - GD25LD80C/GD25LD80E
+
+* **B87**
+  - GD25LD40C/GD25LD40E
+  - GD25LD80C/GD25LD80E
+  - ZB25WD40B
+  - ZB25WD80B
+
+* **TC321X**
+  - P25D40SU
+  - GD25LD40EGEG （未测试）
+  - P25Q80SU
+  - P25Q16SU
+
+### CodeSize
+* **B85**
+  * acl_peripheral_demo
+    - Firmware size: 81.4 kBytes
+    - SRAM size: 31.9 kBytes
+    - deepsleep retention SRAM size: 28.3 kBytes
+  * acl_central_demo
+    - Firmware size: 72.8 kBytes
+    - SRAM size: 37.0 kBytes
+  * acl_connection_demo
+    - Firmware size: 87.3 kBytes
+    - SRAM size: 43.0 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 93.4 kBytes
+    - SRAM size: 36.0 kBytes
+    - deepsleep retention SRAM size: 31.9 kBytes
+
+* **B87**
+  * acl_peripheral_demo
+    - Firmware size: 79.4 kBytes
+    - SRAM size: 31.7 kBytes
+    - deepsleep retention SRAM size: 28.1 kBytes
+  * acl_central_demo
+    - Firmware size: 71.8 kBytes
+    - SRAM size: 37.0 kBytes
+  * acl_connection_demo
+    - Firmware size: 91.2 kBytes
+    - SRAM size: 43.0 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 91.3 kBytes
+    - SRAM size: 35.8 kBytes
+    - deepsleep retention SRAM size: 31.7 kBytes
+
+* **TC321X**
+  * acl_peripheral_demo
+    - Firmware size: 79.3 kBytes
+    - SRAM size: 31.8 kBytes
+    - deepsleep retention SRAM size: 28.3 kBytes
+  * acl_central_demo
+    - Firmware size: 71.6 kBytes
+    - SRAM size: 37.3 kBytes
+  * acl_connection_demo
+    - Firmware size: 86.7 kBytes
+    - SRAM size: 43.3 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 91.5 kBytes
+    - SRAM size: 35.9 kBytes
+    - deepsleep retention SRAM size: 32.0 kBytes
+  * ble_remote
+    - Firmware size: 95.5 kBytes
+    - SRAM size: 40.4 kBytes
+    - deepsleep retention SRAM size: 35.5 kBytes
+
+
+
+
 # V4.0.2.0(PR)
 
 ### Version

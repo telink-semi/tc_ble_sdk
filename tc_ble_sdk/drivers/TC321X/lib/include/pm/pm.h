@@ -398,6 +398,10 @@ static inline void blc_pm_select_internal_32k_crystal(void)
  */
 _attribute_ram_code_sec_noinline_ void pm_set_dig_module_power_switch(pm_pd_module_e module, pm_power_sel_e power_sel);
 
+_attribute_ram_code_sec_noinline_ void pm_ble_32k_rc_cal_reset(void);
+
+_attribute_ram_code_sec_noinline_ void pm_ble_cal_32k_rc_offset (int offset_tick, int rc32_cnt);
+
 /********************************************************************************************************
  *                                          internal
  *******************************************************************************************************/

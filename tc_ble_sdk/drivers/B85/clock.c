@@ -63,12 +63,6 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 		analog_write(0x0c, 0xc6);
 	}
 
-#if (MODULE_WATCHDOG_ENABLE)//add by BLE team
-	reg_tmr_ctrl = MASK_VAL(
-		FLD_TMR_WD_CAPT, (MODULE_WATCHDOG_ENABLE ? (WATCHDOG_INIT_TIMEOUT * CLOCK_SYS_CLOCK_1MS >> WATCHDOG_TIMEOUT_COEFF):0)
-		, FLD_TMR_WD_EN, (MODULE_WATCHDOG_ENABLE?1:0));
-#endif
-
 	#if(CLOCK_SYS_CLOCK_HZ == 16000000)  //16M//add by BLE team
 		sys_clock_print = 16;
 	#elif(CLOCK_SYS_CLOCK_HZ == 24000000)  //24M

@@ -291,7 +291,7 @@ void audio_codec_stream0_input_config(codec_stream0_input_src_e source, audio_sa
     audio_set_codec_stream0_input_mode(source >> 3);
     audio_set_codec_stream0_path(source & 3);
     audio_set_codec_stream0_sample_rate(source, rate);
-    audio_set_stream0_dig_gain(CODEC_IN_D_GAIN_m24_DB);
+    audio_set_stream0_dig_gain(CODEC_IN_D_GAIN_6_DB);
     audio_set_codec_en(1);
 }
 

@@ -89,11 +89,6 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 	}
 #endif
 
-#if (MODULE_WATCHDOG_ENABLE)//add by BLE Team
-	reg_tmr_ctrl = MASK_VAL(
-		FLD_TMR_WD_CAPT, (MODULE_WATCHDOG_ENABLE ? (WATCHDOG_INIT_TIMEOUT * CLOCK_SYS_CLOCK_1MS >> WATCHDOG_TIMEOUT_COEFF):0)
-		, FLD_TMR_WD_EN, (MODULE_WATCHDOG_ENABLE?1:0));
-#endif
 	/*
 		In some customer application scenarios, they want code execution time to be short and power consumption to be low.
 		Meanwhile, they do not concerned about the accuracy of 24m rc or they want to control the calibration cycle themselves. 

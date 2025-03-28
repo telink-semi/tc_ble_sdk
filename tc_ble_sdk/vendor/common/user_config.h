@@ -27,12 +27,16 @@
 	#include "vendor/acl_peripheral_demo/app_config.h"
 #elif(__PROJECT_C1P1_DEMO__)
 	#include "vendor/acl_c1p1_demo/app_config.h"
+#elif(__PROJECT_CONTROLLER__)
+	#include "vendor/ble_controller/app_config.h"
 #elif(__PROJECT_ACL_CONN_DEMO__)
 	#include "vendor/acl_connection_demo/app_config.h"
 #elif(__PROJECT_FEATURE_TEST__)
 	#include "vendor/feature_test/app_config.h"
 #elif(__PROJECT_ACL_CEN_DEMO__)
 	#include "vendor/acl_central_demo/app_config.h"
+#elif(__PROJECT_REMOTE__)
+	#include "vendor/ble_remote/app_config.h"
 #else
 	#include "vendor/common/default_config.h"
 #endif

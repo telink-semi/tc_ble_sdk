@@ -51,6 +51,10 @@ typedef struct{
 int	central_smp_pending = 0; 		// SMP: security & encryption;
 
 
+volatile u8 isUartTxDone = 1;
+#define   Tr_clrUartTxDone()    (isUartTxDone = 0)
+#define   Tr_SetUartTxDone()    (isUartTxDone = 1)
+#define   Tr_isUartTxDone()     (!isUartTxDone)
 
 
 
@@ -93,7 +97,6 @@ const u8	tbl_scanRsp [] = {
 		return 0;
 	}
 
-	_attribute_data_retention_ static u32 uart_tx_tick = 0;
 
 	/**
 	 * @brief		this function is used to process tx uart data.
@@ -104,30 +107,22 @@ const u8	tbl_scanRsp [] = {
 	{
 		uart_data_t T_txdata_buf;
 
-		u8 *p = NULL;
-		if (bltHci_txfifo.rptr != bltHci_txfifo.wptr)
-		{
-			p = bltHci_txfifo.p + (bltHci_txfifo.rptr & bltHci_txfifo.mask) * bltHci_txfifo.size;
+		if(bltHci_txfifo.wptr == bltHci_txfifo.rptr){
+			return 0;//have no data
 		}
-
-		if(!p)
-		{
+		if (Tr_isUartTxDone()) {
 			return 0;
 		}
-	#if (ADD_DELAY_FOR_UART_DATA)
-		if (p && !uart_tx_is_busy () && clock_time_exceed(uart_tx_tick, 30000))
-	#else
-		if (p && !uart_tx_is_busy (UART_MODULE_SEL))
-	#endif
-		{
-			smemcpy(&T_txdata_buf.data, p + 2, p[0]+p[1]*256);
-			T_txdata_buf.len = p[0]+p[1]*256 ;
+		u8 *p =  my_fifo_get(&bltHci_txfifo);
+		memcpy(&T_txdata_buf.data, p + 2, p[0] | (p[1] << 8));
 
-			uart_send_dma(UART_CONVERT((unsigned char*)&T_txdata_buf));
-			uart_tx_tick = clock_time();
-			bltHci_txfifo.rptr++;
-		}
-		return 0;
+		T_txdata_buf.len = p[0] | (p[1] << 8);
+		Tr_clrUartTxDone();
+		uart_send_dma(UART_CONVERT((unsigned char*) (&T_txdata_buf)));
+		my_fifo_pop(&bltHci_txfifo);
+
+		return 1;
+
 	}
 #endif
 
@@ -138,10 +133,12 @@ const u8	tbl_scanRsp [] = {
  */
 void app_phytest_irq_proc(void)
 {
-	unsigned char uart_dma_irqsrc;
 	//1. UART irq
-	uart_dma_irqsrc = dma_chn_irq_status_get(UART_MODULE_SEL);///in function,interrupt flag have already been cleared,so need not to clear DMA interrupt flag here
-	if(uart_dma_irqsrc & FLD_DMA_CHN_UART_RX)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_RX) & FLD_DMA_CHN_UART_RX)
+#else
+	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_RX)
+#endif
 	{
 		dma_chn_irq_status_clr(FLD_DMA_CHN_UART_RX);
 		u8* w = hci_rx_fifo.p + (hci_rx_fifo.wptr & (hci_rx_fifo.num-1)) * hci_rx_fifo.size;
@@ -152,11 +149,25 @@ void app_phytest_irq_proc(void)
 			reg_dma0_addr = (u16)((u32)p);
 		}
 	}
-	if(uart_dma_irqsrc & FLD_DMA_CHN_UART_TX){
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_TX) & FLD_DMA_CHN_UART_TX)
+#else
+	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_TX)
+#endif
+	{
 		dma_chn_irq_status_clr(FLD_DMA_CHN_UART_TX);
 	}
-
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+	if (reg_uart_status1(UART_NUM) & FLD_UART_TX_DONE)
+#else
+	if (reg_uart_status1 & FLD_UART_TX_DONE)
+#endif
+	{
+		Tr_SetUartTxDone();
+		uart_clr_tx_done(UART_NUM);
+	}
 }
+
 
 /**
  * @brief      BLE Adv report event handler
@@ -643,30 +654,25 @@ _attribute_no_inline_ void user_init_normal(void)
 
 	#if(BLE_PHYTEST_MODE == PHYTEST_MODE_THROUGH_2_WIRE_UART || BLE_PHYTEST_MODE == PHYTEST_MODE_OVER_HCI_WITH_UART)  //uart
 		uart_gpio_set(UART_CONVERT(UART_TX_PIN, UART_RX_PIN));
-		uart_reset(UART_MODULE_SEL);
+		uart_reset(UART_NUM);
 	#endif
 
 	uart_recbuff_init(UART_CONVERT((unsigned char*)hci_rx_fifo_b, hci_rx_fifo.size));
 
-	#if (CLOCK_SYS_CLOCK_HZ == 16000000)
-		uart_init(9,13,PARITY_NONE, STOP_BIT_ONE); //baud rate: 115200
-	#elif (CLOCK_SYS_CLOCK_HZ == 24000000)
-		uart_init(12,15,PARITY_NONE, STOP_BIT_ONE); //baud rate: 115200
-	#elif(CLOCK_SYS_CLOCK_HZ == 32000000)
-		uart_init(UART_CONVERT(30,8,PARITY_NONE, STOP_BIT_ONE));//baud rate: 115200
-	#elif(CLOCK_SYS_CLOCK_HZ == 48000000)
-		uart_init(25,15,PARITY_NONE, STOP_BIT_ONE);//baud rate: 115200
-	#endif
+	uart_init_baudrate(UART_CONVERT(UART_BAUDRATE, CLOCK_SYS_CLOCK_HZ, PARITY_NONE, STOP_BIT_ONE));
 
 	uart_dma_enable(UART_CONVERT(1,1));
+
 #if(MCU_CORE_TYPE == CHIP_TYPE_TC321X)
-	reg_uart_rx_timeout1(UART_MODULE_SEL)  = UART_BW_MUL4; //packet interval timeout
+	reg_uart_rx_timeout1(UART_NUM)  = UART_BW_MUL4; //packet interval timeout
 #else
 	reg_uart_rx_timeout1 = UART_BW_MUL4; //packet interval timeout
 #endif
 	irq_set_mask(FLD_IRQ_DMA_EN);
 	dma_chn_irq_enable(FLD_DMA_CHN_UART_RX | FLD_DMA_CHN_UART_TX, 1);   	//uart Rx/Tx dma irq enable
 	uart_irq_enable(UART_CONVERT(1,0));
+
+	isUartTxDone = 1;
 
 	/* HCI RX FIFO */
 	if(blc_ll_initHciRxFifo(app_bltHci_rxfifo, HCI_RX_FIFO_SIZE, HCI_RX_FIFO_NUM) != BLE_SUCCESS)	{  while(1); }

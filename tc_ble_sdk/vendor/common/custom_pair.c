@@ -301,14 +301,19 @@ void user_master_host_pairing_management_init(void)
 	#endif
 
 	/* when custom pair enable, ACL Central SMP not disable, so using flash address for SMP storage is OK */
-	#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN)	//512K
+	#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN || FLASH_P25D40SU_SUPPORT_EN)	//512K
 		if(blc_flash_capacity == FLASH_SIZE_512K){
 			flash_sector_custom_pairing = FLASH_ADR_SMP_PAIRING_512K_FLASH;
 		}
 	#endif
-	#if (FLASH_ZB25WD80B_SUPPORT_EN || FLASH_GD25LD80C_SUPPORT_EN || FLASH_GD25LD80E_SUPPORT_EN)	//1M
+	#if (FLASH_ZB25WD80B_SUPPORT_EN || FLASH_GD25LD80C_SUPPORT_EN || FLASH_GD25LD80E_SUPPORT_EN || FLASH_P25Q80SU_SUPPORT_EN)	//1M
 		else if(blc_flash_capacity == FLASH_SIZE_1M){
 			flash_sector_custom_pairing = FLASH_ADR_SMP_PAIRING_1M_FLASH;
+		}
+	#endif
+	#if (FLASH_P25Q16SU_SUPPORT_EN)	//2M
+		else if(blc_flash_capacity == FLASH_SIZE_2M){
+			flash_sector_custom_pairing = FLASH_ADR_SMP_PAIRING_2M_FLASH;
 		}
 	#endif
 

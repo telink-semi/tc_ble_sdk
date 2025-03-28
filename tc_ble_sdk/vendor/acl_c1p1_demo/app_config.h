@@ -97,7 +97,11 @@
 #define CLOCK_SYS_CLOCK_HZ  							32000000
 
 /////////////////// DEEP SAVE FLG //////////////////////////////////
-#define USED_DEEP_ANA_REG                   DEEP_ANA_REG0 //u8,can save 8 bit info when deep
+#if (CHIP_TYPE == CHIP_TYPE_TC321X)
+	#define USED_DEEP_ANA_REG				PM_ANA_REG_WD_CLR_BUF1
+#else
+	#define USED_DEEP_ANA_REG               DEEP_ANA_REG0 //u8,can save 8 bit info when deep
+#endif
 #define	LOW_BATT_FLG					    BIT(0) //if 1: low battery
 
 /////////////////////////////////////// PRINT DEBUG INFO ///////////////////////////////////////

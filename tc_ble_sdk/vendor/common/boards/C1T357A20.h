@@ -151,14 +151,14 @@
  *  @brief  Battery_check Configuration
  */
 #if (APP_BATT_CHECK_ENABLE)
-	//Telink device: you must choose one gpio with adc function to output high level(voltage will equal to vbat), then use adc to measure high level voltage
-	//use PB2 output high level, then adc measure this high level voltage
-	#define GPIO_VBAT_DETECT				GPIO_PB2
-	#define PB2_FUNC						AS_GPIO
-	#define PB2_INPUT_ENABLE				0
-	#define ADC_INPUT_PCHN					B2P    //corresponding  ADC_InputPchTypeDef in adc.h
+	#if 1
+		//use VBAT, then adc measure this VBAT voltage
+		#define ADC_INPUT_PCHN					VBAT
+	#else
+		//Telink device: you must choose one gpio with adc function to output high level(voltage will equal to vbat), then use adc to measure high level voltage
+		//use PB1 output high level, then adc measure this high level voltage
+		#define GPIO_VBAT_DETECT				SD_ADC_GPIO_PB1P
+	#endif
 #endif
-
-#define LED_ON_LEVAL						LED_ON_LEVEL
-
+#define LED_ON_LEVAL 			1 		//gpio output high voltage to turn on led
 #endif /* C1T357A20_H_ */

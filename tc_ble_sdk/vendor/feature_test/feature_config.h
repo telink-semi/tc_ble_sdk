@@ -65,10 +65,12 @@
 
 #define TEST_L2CAP_COC									33
 
+#define TEST_MISC_FUNC									190
+
 #define TEST_FEATURE_BACKUP								200
 
 
-#define FEATURE_TEST_MODE								TEST_PER_ADV_SYNC
+#define FEATURE_TEST_MODE								TEST_FEATURE_BACKUP
 
 
 

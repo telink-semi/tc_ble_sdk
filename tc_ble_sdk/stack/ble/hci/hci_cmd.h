@@ -1287,6 +1287,30 @@ void hci_initHciMng(void);   //Reset
  */
 void hci_DataNumInit(void);   //Disconnect
 /**
+ * @brief	for user to set the flow control state between the controller and the host
+ * @param	none
+ * @return	none
+ */
+ble_sts_t hci_setControllerToHostFlowCtrl(u8 ctrl);
+/**
+ * @brief	for user to get the flow control state between the controller and the host
+ * @param	none
+ * @return	none
+ */
+u8 hci_getControllerToHostFlowCtrl(void);
+/**
+ * @brief	for user to query the buffer state of the host
+ * @param	none
+ * @return	none
+ */
+u16 hci_getHostAvailBufNum(void);
+/**
+ * @brief	for user to reduces the number of buffers available to the host
+ * @param	none
+ * @return	none
+ */
+void hci_reduceOneHostAvailBuf(void);
+/**
  * @brief	for user to sets or queries the host's buffer size
  * @param	cmdPara
  * @return     status, 0x00:  succeed
