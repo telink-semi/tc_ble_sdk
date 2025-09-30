@@ -113,19 +113,19 @@
 
 * **B87**
   * acl_peripheral_demo
-    - Firmware size: 83.2 kBytes
-    - SRAM size: 33.3 kBytes
-    - deepsleep retention SRAM size: 29.6 kBytes
+    - Firmware size: 83.0 kBytes
+    - SRAM size: 32.5 kBytes
+    - deepsleep retention SRAM size: 29.0 kBytes
   * acl_central_demo
     - Firmware size: 74.7 kBytes
-    - SRAM size: 38.0 kBytes
+    - SRAM size: 37.5 kBytes
   * acl_connection_demo
-    - Firmware size: 90.2 kBytes
-    - SRAM size: 44.3 kBytes
+    - Firmware size: 90.3 kBytes
+    - SRAM size: 43.8 kBytes
   * acl_c1p1_demo
-    - Firmware size: 95.0 kBytes
-    - SRAM size: 35.1 kBytes
-    - deepsleep retention SRAM size: 30.9 kBytes
+    - Firmware size: 95.1 kBytes
+    - SRAM size: 34.6 kBytes
+    - deepsleep retention SRAM size: 30.3 kBytes
 
 * **TC321X**
   * acl_peripheral_demo
@@ -379,19 +379,19 @@
 
 * **B87**
   * acl_peripheral_demo
-    - Firmware size: 83.0 kBytes
-    - SRAM size: 32.5 kBytes
-    - deepsleep retention SRAM size: 29.0 kBytes
+    - Firmware size: 79.4 kBytes
+    - SRAM size: 31.7 kBytes
+    - deepsleep retention SRAM size: 28.1 kBytes
   * acl_central_demo
-    - Firmware size: 74.7 kBytes
-    - SRAM size: 37.5 kBytes
+    - Firmware size: 71.8 kBytes
+    - SRAM size: 37.0 kBytes
   * acl_connection_demo
-    - Firmware size: 90.3 kBytes
-    - SRAM size: 43.8 kBytes
+    - Firmware size: 91.2 kBytes
+    - SRAM size: 43.0 kBytes
   * acl_c1p1_demo
-    - Firmware size: 95.1 kBytes
-    - SRAM size: 34.6 kBytes
-    - deepsleep retention SRAM size: 30.3 kBytes
+    - Firmware size: 91.3 kBytes
+    - SRAM size: 35.8 kBytes
+    - deepsleep retention SRAM size: 31.7 kBytes
 
 * **TC321X**
   * acl_peripheral_demo
