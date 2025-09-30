@@ -119,6 +119,12 @@
 #define U32_BYTE2(a) (((a) >> 16) & 0xFF)
 #define U32_BYTE3(a) (((a) >> 24) & 0xFF)
 
+#define BYTE_TO_UINT16(n, p)    {n = ((u16)(p)[0] + ((u16)(p)[1]<<8));}
+#define BYTE_TO_UINT24(n, p)    {n = ((u32)(p)[0] + ((u32)(p)[1]<<8) + \
+                                    ((u32)(p)[2]<<16));}
+#define BYTE_TO_UINT32(n, p)    {n = ((u32)(p)[0] + ((u32)(p)[1]<<8) + \
+                                    ((u32)(p)[2]<<16) + ((u32)(p)[3]<<24));}
+
 #define STREAM_TO_U8(n, p)		{n = *(p); p++;}
 #define STREAM_TO_U16(n, p)		{BYTE_TO_UINT16(n,p); p+=2;}
 #define STREAM_TO_U24(n, p)		{BYTE_TO_UINT24(n,p); p+=3;}
@@ -137,6 +143,65 @@
 
 #define STR_TO_STREAM(p, n, l)	{memcpy(p, n, l); p+=l;}
 
+#define U16_TO_BYTES(n)         ((u8) (n)), ((u8)((n) >> 8))
+#define U24_TO_BYTES(n)         ((u8) (n)), ((u8)((n) >> 8)), ((u8)((n) >> 16))
+#define U32_TO_BYTES(n)         ((u8) (n)), ((u8)((n) >> 8)), ((u8)((n) >> 16)), ((u8)((n) >> 24))
+
+
+static inline void u16_to_bstream_le(u16 val, u8 dst[2])
+{
+    dst[0] = val;
+    dst[1] = val >> 8;
+}
+
+static inline void u24_to_bstream_le(u32 val, u8 dst[3])
+{
+    u16_to_bstream_le(val, dst);
+    dst[2] = val >> 16;
+}
+
+static inline void u32_to_bstream_le(u32 val, u8 dst[4])
+{
+    u16_to_bstream_le(val, dst);
+    u16_to_bstream_le(val >> 16, &dst[2]);
+}
+
+static inline void u48_to_bstream_le(u64 val, u8 dst[6])
+{
+    u32_to_bstream_le(val, dst);
+    u16_to_bstream_le(val >> 32, &dst[4]);
+}
+
+static inline void u64_to_bstream_le(u64 val, u8 dst[8])
+{
+    u32_to_bstream_le(val, dst);
+    u32_to_bstream_le(val >> 32, &dst[4]);
+}
+
+static inline u16 bstream_to_u16_le(const u8 src[2])
+{
+    return ((u16)src[1] << 8) | src[0];
+}
+
+static inline u32 bstream_to_u24_le(const u8 src[3])
+{
+    return ((u32)src[2] << 16) | bstream_to_u16_le(&src[0]);
+}
+
+static inline u32 bstream_to_u32_le(const u8 src[4])
+{
+    return ((u32)bstream_to_u16_le(&src[2]) << 16) | bstream_to_u16_le(&src[0]);
+}
+
+static inline u64 bstream_to_u48_le(const u8 src[6])
+{
+    return ((u64)bstream_to_u32_le(&src[2]) << 16) | bstream_to_u16_le(&src[0]);
+}
+
+static inline u64 bstream_to_u64_le(const u8 src[8])
+{
+    return ((u64)bstream_to_u32_le(&src[4]) << 32) | bstream_to_u32_le(&src[0]);
+}
 
 void swapN (unsigned char *p, int n);
 void swapX(const u8 *src, u8 *dst, int len);

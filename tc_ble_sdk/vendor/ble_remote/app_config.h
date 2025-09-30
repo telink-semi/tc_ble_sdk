@@ -95,7 +95,6 @@
  */
 #if (BLE_AUDIO_ENABLE)
 
-	#define BLE_DMIC_ENABLE					0  //0: Amic   1: Dmic
 	#define IIR_FILTER_ENABLE				0
 
 	/* RCU Audio MODE:

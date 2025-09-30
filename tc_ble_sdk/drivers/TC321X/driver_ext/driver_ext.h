@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    driver_ext.h
  *
- * @brief   This is the header file for B85
+ * @brief   This is the header file for TC321X
  *
  * @author  BLE Group
  * @date    May 8,2018

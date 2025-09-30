@@ -64,9 +64,7 @@ _attribute_ram_code_ int main(void)
 
 	
 	clock_init(SYS_CLK_TYPE);
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
-	wd_32k_stop();
-#endif
+
 	rf_drv_ble_init();
 
 	gpio_init(!deepRetWakeUp);

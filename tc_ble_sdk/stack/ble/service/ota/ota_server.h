@@ -178,6 +178,4 @@ void		blc_ota_setAttHandleOffset(s8 attHandle_offset);
  */
 int	otaWrite(u16 connHandle, void * p);
 
-
-
 #endif /* STACK_BLE_SERVICE_OTA_OTA_SERVER_H_ */

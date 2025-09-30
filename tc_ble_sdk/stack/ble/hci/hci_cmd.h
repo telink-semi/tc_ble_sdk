@@ -1216,23 +1216,51 @@ typedef enum{
 /* Options */
 typedef enum {
 
-	/* BIT(0)
-	 * 0: Use the adv_sid, adv_addr_type, and adv_address parameters to determine which advertiser to listen to.
-	 * 1: Use the Periodic Advertiser List to determine which advertiser to listen to. */
-	SYNC_ADV_SPECIFY	 = 0,
-	SYNC_ADV_FROM_LIST	 = BIT(0),
+    /* BIT(0)
+     * 0: Use the adv_sid, adv_addr_type, and adv_address parameters to determine which advertiser to listen to.
+     * 1: Use the Periodic Advertiser List to determine which advertiser to listen to. */
+    SYNC_ADV_SPECIFY     = 0,
+    SYNC_ADV_FROM_LIST   = BIT(0),
 
-	/* BIT(1)
-	   whether HCI_Periodic_Advertising_Report events for this periodic advertising train are initially enabled
-	   0: enabled
-	   1: disabled
-	*/
-	REPORTING_INITIALLY_EN	 = 0,
-	REPORTING_INITIALLY_DIS	 = BIT(1),
+    /* BIT(1)
+       whether HCI_Periodic_Advertising_Report events for this periodic advertising train are initially enabled
+       0: enabled
+       1: disabled
+    */
+    REPORTING_INITIALLY_EN   = 0,
+    REPORTING_INITIALLY_DIS  = BIT(1),
 
-	/* BIT(2) ~ BIT(7) reserved */
+    /* BIT(2)
+       Duplicate filtering initially
+       0: enabled
+       1: disabled
+    */
+    DUPLICATE_FILTERING_INITIALLY_DIS   = 0,
+    DUPLICATE_FILTERING_INITIALLY_EN  = BIT(2),
+
+    /* BIT(3) ~ BIT(7) reserved */
 } option_msk_t;
 
+
+typedef enum{
+    /* BIT(0): Reporting enabled
+        REPORTING_EN   = BIT(0),
+        REPORTING_DIS  = 0,
+    */
+    REPORTING_EN   = BIT(0),
+    REPORTING_DIS  = 0,
+
+    /*
+       BIT(1): Duplicate filtering enabled
+        DUPLICATE_FILTERING_EN   = BIT(1),
+        DUPLICATE_FILTERING_DIS  = 0,
+    */
+    DUPLICATE_FILTERING_EN   = BIT(1),
+    DUPLICATE_FILTERING_DIS  = 0,
+
+    SYNC_ADV_RCV_EN_MSK = REPORTING_EN | DUPLICATE_FILTERING_EN,
+
+}sync_adv_rcv_en_msk;
 
 /* Synchronization timeout, Time = N * 10 ms,
  * Notice that these are just part of but not all Synchronization timeout value */
@@ -1261,6 +1289,94 @@ typedef enum{
 }sync_tm_t;
 
 
+/**
+ * @brief Command/Return Parameters for "7.8.88 LE Set Periodic Advertising Receive Enable command"
+ */
+typedef struct __attribute__((packed)) {
+    u16     syncHandle;
+    u8      enable;
+}hci_le_setPeriodicAdvReceiveEnCmdParams_t;
+
+
+/**
+ * @brief Command/Return Parameters for "7.8.89 LE Periodic Advertising Sync Transfer command"
+ */
+typedef struct __attribute__((packed)) {
+    u16     connHandle;
+    u16     serviceData;
+    u16     syncHandle;
+}hci_le_pastCmdParams_t;
+
+typedef struct __attribute__((packed)) {
+    u8      status;
+    u16     connHandle;
+}hci_le_pastRetParams_t;
+
+
+/**
+ * @brief Command/Return Parameters for "7.8.90 LE Periodic Advertising Set Info Transfer command"
+ */
+typedef struct __attribute__((packed)) {
+    u16     connHandle;
+    u16     serviceData;
+    u8      advHandle;
+}hci_le_paSetInfoTransferCmdParams_t;
+
+typedef struct __attribute__((packed)) {
+    u8      status;
+    u16     connHandle;
+}hci_le_paSetInfoTransferRetParams_t;
+
+/**
+ * @brief Command/Return Parameters for "7.8.91 LE Set Periodic Advertising Sync Transfer Parameters command"
+ */
+typedef struct __attribute__((packed)) {
+    u16     connHandle;
+    u8      mode;
+    u16     skip;
+    u16     syncTimeout;
+    u8      cteType;
+}hci_le_pastParamsCmdParams_t;
+
+typedef struct __attribute__((packed)) {
+    u8      status;
+    u16     connHandle;
+}hci_le_pastParamsRetParams_t;
+
+
+/**
+ * @brief Command/Return Parameters for "7.8.92 LE Set Default Periodic Advertising Sync Transfer Parameters command"
+ */
+typedef struct __attribute__((packed)) {
+    u8      mode;
+    u16     skip;
+    u16     syncTimeout;
+    u8      cteType;
+}hci_le_dftPastParamsCmdParams_t;
+
+/* Mode parameter for hci_le_dftPastParamsCmdParams_t. */
+typedef enum
+{
+    PAST_MODE_OFF           = 0,    /*!< LE_Periodic_Advertising_Sync_Transfer_Received event is disabled. */
+    PAST_MODE_RPT_DISABLED  = 1,    /*!< LE_Periodic_Advertising_Sync_Transfer_Received event is enabled, LE_Periodic_Advertising_Report events is disabled. */
+    PAST_MODE_RPT_ENABLED_DUP_FILTER_DIS    = 2,    /*!< LE_Periodic_Advertising_Sync_Transfer_Received event is enabled, LE_Periodic_Advertising_Report events is enabled with duplicate filtering disabled. */
+    PAST_MODE_RPT_ENABLED_DUP_FILTER_EN     = 3,    /*!< LE_Periodic_Advertising_Sync_Transfer_Received event is enabled, LE_Periodic_Advertising_Report events is enabled with duplicate filtering enabled. */
+    PAST_MODE_TOTAL = PAST_MODE_RPT_ENABLED_DUP_FILTER_EN
+}past_mode_t;
+
+
+/* CteType parameter for hci_le_dftPastParamsCmdParams_t. */
+typedef enum
+{
+    PAST_CTE_TYPE_NOT_SYNC_TO_AOA     = BIT(0), /*!< Do not sync to packets with an AoA Constant Tone Extension. */
+    PAST_CTE_TYPE_NOT_SYNC_TO_AOD_1US = BIT(1), /*!< Do not sync to packets with an AoD Constant Tone Extension with 1 s slots. */
+    PAST_CTE_TYPE_NOT_SYNC_TO_AOD_2US = BIT(2), /*!< Do not sync to packets with an AoD Constant Tone Extension with 2 s slots. */
+    PAST_CTE_TYPE_ONLY_SYNC_TO_CTE    = BIT(4), /*!< Do not sync to packets without a Constant Tone Extension. */
+
+    PAST_CTE_TYPE_SYNC_TO_WITHOUT_CTE = PAST_CTE_TYPE_NOT_SYNC_TO_AOA |
+                                        PAST_CTE_TYPE_NOT_SYNC_TO_AOD_1US |
+                                        PAST_CTE_TYPE_NOT_SYNC_TO_AOD_2US,
+}cteType_t;
 /* Slaves_Clock_Accuracy */
 typedef enum {
 	PPM_251_500     =	0x00,

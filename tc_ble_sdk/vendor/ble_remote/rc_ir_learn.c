@@ -23,7 +23,7 @@
  *******************************************************************************************************/
 #include "tl_common.h"
 #include "drivers.h"
-
+#include "stack/ble/ble.h"
 #include "rc_ir.h"
 #include "rc_ir_learn.h"
 
@@ -43,31 +43,45 @@ extern ir_send_ctrl_t ir_send_ctrl;
 ************************************************************************/
 void ir_learn_init(void)
 {
+	#if(MCU_CORE_TYPE!=MCU_CORE_TC321X)
+		memset((void*)g_ir_learn_ctrl, 0, sizeof(ir_learn_ctrl_t));  //ir_learn_ctrl_t is same as YF
 
-	memset((void*)g_ir_learn_ctrl, 0, sizeof(ir_learn_ctrl_t));  //ir_learn_ctrl_t is same as YF
+		// To output ircontrol and irout low, then ir receive can work.
+		gpio_set_func(GPIO_IR_OUT, AS_GPIO);
+		gpio_set_input_en(GPIO_IR_OUT, 0);
+		gpio_set_output_en(GPIO_IR_OUT, 1);
+		gpio_set_data_strength(GPIO_IR_OUT, 1);
+		gpio_write(GPIO_IR_OUT, 0);
 
-	// To output ircontrol and irout low, then ir receive can work.
-	gpio_set_func(GPIO_IR_OUT, AS_GPIO);
-	gpio_set_input_en(GPIO_IR_OUT, 0);
-	gpio_set_output_en(GPIO_IR_OUT, 1);
-	gpio_set_data_strength(GPIO_IR_OUT, 1);
-	gpio_write(GPIO_IR_OUT, 0);
+		gpio_set_func(GPIO_IR_CONTROL, AS_GPIO);
+		gpio_set_input_en(GPIO_IR_CONTROL, 0);
+		gpio_set_output_en(GPIO_IR_CONTROL, 1);
+		gpio_set_data_strength(GPIO_IR_CONTROL, 1);//ʹܽGPIOΪʱЧ
+		gpio_write(GPIO_IR_CONTROL, 0);//IRcontrol low ,enable IR learn func.
 
-	gpio_set_func(GPIO_IR_CONTROL, AS_GPIO);
-	gpio_set_input_en(GPIO_IR_CONTROL, 0);
-	gpio_set_output_en(GPIO_IR_CONTROL, 1);
-	gpio_set_data_strength(GPIO_IR_CONTROL, 1);//ʹܽGPIOΪʱЧ
-	gpio_write(GPIO_IR_CONTROL, 0);//IRcontrol low ,enable IR learn func.
+		gpio_set_func(GPIO_IR_LEARN_IN, AS_GPIO);
+		gpio_set_input_en(GPIO_IR_LEARN_IN, 1);
+		gpio_set_output_en(GPIO_IR_LEARN_IN, 0);
+		gpio_setup_up_down_resistor(GPIO_IR_LEARN_IN, PM_PIN_PULLUP_10K);  //open pull up resistor
+		gpio_set_interrupt_pol(GPIO_IR_LEARN_IN, pol_falling);    //falling edge
 
-	gpio_set_func(GPIO_IR_LEARN_IN, AS_GPIO);
-	gpio_set_input_en(GPIO_IR_LEARN_IN, 1);
-	gpio_set_output_en(GPIO_IR_LEARN_IN, 0);
-	gpio_setup_up_down_resistor(GPIO_IR_LEARN_IN, PM_PIN_PULLUP_10K);  //open pull up resistor
-	gpio_set_interrupt_pol(GPIO_IR_LEARN_IN, pol_falling);    //falling edge
-
-	reg_irq_src = FLD_IRQ_GPIO_EN; //clean irq status
-	reg_irq_mask |= FLD_IRQ_GPIO_EN;
+		reg_irq_src = FLD_IRQ_GPIO_EN; //clean irq status
+		reg_irq_mask |= FLD_IRQ_GPIO_EN;
+	#else
+		ir_learn_rx_t ir_learn_rx = {
+			.cnt_mode      = RISING_EDGE_START_CNT,
+			.rx_mode       = ANALOG_RX_MODE,
+			.timeout_cnt   = TICK_VALUE_1048575,
+		};
+		if (g_chip_version == CHIP_VERSION_A0) {
+			ir_learn_rx.cnt_mode = FALLING_EDGE_START_CNT;
+		}
+		ir_learn_rx_init(&ir_learn_rx);
+		ir_learn_ana_rx_dis();
+		memset(g_ir_learn_ctrl, 0, sizeof(g_ir_learn_ctrl));
+	#endif
 }
+
 
 /***********************************************************************
 * Functionir_record(u32 tm) 				  			 			   *
@@ -182,12 +196,33 @@ static inline void ir_record(u32 tm)
 _attribute_ram_code_
 void ir_learn_irq_handler(void)
 {
-    reg_irq_src = IR_LEARN_INTERRUPT_MASK;
-	if ((g_ir_learn_ctrl -> ir_learn_state != IR_LEARN_WAIT_KEY) && (g_ir_learn_ctrl -> ir_learn_state != IR_LEARN_BEGIN))
+    if ((g_ir_learn_ctrl -> ir_learn_state != IR_LEARN_WAIT_KEY) && (g_ir_learn_ctrl -> ir_learn_state != IR_LEARN_BEGIN))
     {
-    	return;
+        return;
     }
-	ir_record(clock_time());  // IR Learning
+	#if(MCU_CORE_TYPE!=MCU_CORE_TC321X)
+		u32 src = reg_irq_src;
+		if ((src & IR_LEARN_INTERRUPT_MASK))
+		{
+			reg_irq_src = IR_LEARN_INTERRUPT_MASK;
+			ir_record(clock_time());  // IR Learning
+		}
+	#else
+		if( ir_learn_get_irq_status(IR_LEARN_CYCLE_IRQ))
+		{
+			ir_learn_clr_irq_status(IR_LEARN_CYCLE_IRQ);
+			ir_learn_clr_irq_status(IR_LEARN_HIGH_IRQ);
+			ir_record(clock_time());  // IR Learning
+		}
+		if( ir_learn_get_irq_status(IR_LEARN_TIMEOUT_IRQ))
+		{
+			/**
+			 * When a timeout interrupt occurs, there is still the last piece of data in the high register.
+			 * Therefore, in the timeout interrupt, we check the high interrupt to retrieve the last value from the high register.
+			 */
+			ir_learn_clr_irq_status(IR_LEARN_TIMEOUT_IRQ);
+		}
+	#endif
 }
 
 /***********************************************************************
@@ -198,14 +233,20 @@ void ir_learn_send_init(void)
 {
 	//only pwm0 support fifo mode
 	pwm_set_clk(CLOCK_SYS_CLOCK_HZ,16000000);
-
-	pwm_n_revert(PWM0_ID);	//if use PWMx_N, user must set "pwm_n_revert" before gpio_set_func(pwmx_N).
-	gpio_set_func(GPIO_IR_OUT, AS_PWM0_N);
+	#if(MCU_CORE_TYPE!=MCU_CORE_TC321X)
+        pwm_n_revert(PWM0_ID);	//if use PWMx_N, user must set "pwm_n_revert" before gpio_set_func(pwmx_N).
+        gpio_set_func(GPIO_IR_OUT, AS_PWM0_N);
+	#endif
 	pwm_set_mode(PWM0_ID, PWM_IR_DMA_FIFO_MODE);
 	pwm_set_phase(PWM0_ID, 0);   //no phase at pwm beginning
 
 	pwm_set_dma_address(&ir_send_dma_data);
-
+	#if(MCU_CORE_TYPE==MCU_CORE_TC321X)
+    ir_learn_tx_t ir_learn_tx = {
+        .tx_mode = ANALOG_TX_MODE,
+    };
+    ir_learn_tx_init(&ir_learn_tx);
+	#endif
 	//add fifo stop irq, when all waveform send over, this irq will triggers
 	//enable system irq PWM
 	reg_irq_mask |= FLD_IRQ_SW_PWM_EN;
@@ -223,8 +264,16 @@ void ir_learn_send_init(void)
 void ir_learn_start(void)
 {
 	memset(&ir_learn_ctrl,0,sizeof(ir_learn_ctrl));
-	reg_irq_src = IR_LEARN_INTERRUPT_MASK;
-	gpio_en_interrupt(GPIO_IR_LEARN_IN, 1);
+	#if(MCU_CORE_TYPE!=MCU_CORE_TC321X)
+        reg_irq_src = IR_LEARN_INTERRUPT_MASK;
+        gpio_en_interrupt(GPIO_IR_LEARN_IN, 1);
+	#else
+        blc_ll_setAdvEnable(BLC_ADV_DISABLE);  //disable adv before IR learning start
+        irq_set_mask(FLD_IRQ_IR_LEARN_EN);
+        ir_learn_set_irq_mask(IR_LEARN_CYCLE_IRQ|IR_LEARN_TIMEOUT_IRQ);
+        ir_learn_ana_rx_en();
+        ir_learn_en();
+	#endif
 	g_ir_learn_ctrl -> ir_learn_state = IR_LEARN_WAIT_KEY;
 	g_ir_learn_ctrl -> ir_learn_tick = clock_time();
 }
@@ -235,8 +284,16 @@ void ir_learn_start(void)
 ***********************************************************************/
 void ir_learn_stop(void)
 {
+	#if(MCU_CORE_TYPE!=MCU_CORE_TC321X)
     reg_irq_src = IR_LEARN_INTERRUPT_MASK;
 	gpio_en_interrupt(GPIO_IR_LEARN_IN, 0);
+	#else
+    irq_disable_type(FLD_IRQ_IR_LEARN_EN);
+    ir_learn_clr_irq_mask(IR_LEARN_CYCLE_IRQ|IR_LEARN_TIMEOUT_IRQ);
+    ir_learn_ana_rx_dis();
+    ir_learn_dis();
+    blc_ll_setAdvEnable(BLC_ADV_ENABLE);  //disable adv before IR learning start
+	#endif
 }
 
 /***********************************************************************
@@ -251,6 +308,8 @@ unsigned char get_ir_learn_state(void)
 {
 	if(g_ir_learn_ctrl -> ir_learn_state == IR_LEARN_SUCCESS)
 		return 0;
+    else if(g_ir_learn_ctrl -> ir_learn_state == IR_LEARN_DISABLE)
+        return 2;
 	else if(g_ir_learn_ctrl -> ir_learn_state < IR_LEARN_SUCCESS)
 		return 1;
 	else

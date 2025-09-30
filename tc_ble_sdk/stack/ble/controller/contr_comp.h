@@ -70,5 +70,7 @@
 #define PM_SLEEP_ACL_SLAVE                              PM_SLEEP_ACL_PERIPHR
 #define LL_RSSI_SNIFFER_FEATURE_ENABLE                  LL_RSSI_SNIFFER_MODE_ENABLE
 
+#define blc_ll_getCurrentMasterRoleNumber   blc_ll_getCurrentCentralRoleNumber
+#define blc_ll_getCurrentSlaveRoleNumber    blc_ll_getCurrentPeripheralRoleNumber
 
 #endif /* CONTR_COMP_H_ */

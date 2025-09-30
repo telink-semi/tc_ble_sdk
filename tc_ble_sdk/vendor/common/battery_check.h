@@ -36,6 +36,7 @@
 
 #if (APP_BATT_CHECK_ENABLE)
 
+extern u32	lowBattDet_tick;
 
 
 /**
@@ -45,13 +46,13 @@
 #define		APP_BATT_CHECK_LOG_EN								0
 #endif
 
-
+#ifndef		APP_BATT_VOLT_LOW_LOG_EN
+#define		APP_BATT_VOLT_LOW_LOG_EN							0
+#endif
 
 #define VBAT_DEEP_THRES_MV				2000   // 2000 mV low battery alarm
 
 #if(MCU_CORE_TYPE==MCU_CORE_TC321X)
-#define SD_ADC_GPIO_MODE        1
-#define SD_ADC_VBAT_MODE        2
 
 #define SD_ADC_SAMPLE_CLOCK_DIV     SD_ADC_SAPMPLE_CLK_2M_DIV(CLOCK_SYS_CLOCK_HZ)
 #define SD_ADC_DOWN_SAMPLE_RATE     SD_ADC_DOWNSAMPLE_RATE_128
@@ -67,11 +68,7 @@
 #define SD_ADC_FIFO_DEPTH           32
 #define SD_ADC_SAMPLE_CNT           16
 
-#define SD_ADC_MODE        SD_ADC_GPIO_MODE
-typedef enum{
-    DC_VOLTAGE_10X,
-    DC_VOLTAGE,
-}dc_result_type_e;
+
 volatile unsigned char dc_flag;
 #endif
 
@@ -115,6 +112,17 @@ _attribute_ram_code_ void adc_vbat_detect_init(void);
  * @return     0: fail, 1: success
  */
 int 		   app_battery_power_check(u16 alram_vol_mv);
+
+/**
+ * @brief       this function is used to process battery power.
+ *              The low voltage protection threshold 2.0V is an example and reference value. Customers should
+ *              evaluate and modify these thresholds according to the actual situation. If users have unreasonable designs
+ *              in the hardware circuit, which leads to a decrease in the stability of the power supply network, the
+ *              safety thresholds must be increased as appropriate.
+ * @param[in]   none
+ * @return      none
+ */
+_attribute_ram_code_ void user_battery_power_check(u16 alarm_vol_mv);
 
 #endif
 

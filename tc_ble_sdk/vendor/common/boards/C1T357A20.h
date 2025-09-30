@@ -128,23 +128,41 @@
 #endif
 
 #if(DEBUG_GPIO_ENABLE)
-	#define GPIO_CHN0							GPIO_PD0
-	#define GPIO_CHN1							GPIO_PD1
-	#define GPIO_CHN2							GPIO_PD2
-	#define GPIO_CHN3							GPIO_PC2
-	#define GPIO_CHN4							GPIO_PC3
-	#define GPIO_CHN5							GPIO_PC6
-	#define GPIO_CHN6							GPIO_PD4
-	#define GPIO_CHN7							GPIO_PC7
+	#define GPIO_CHN0							GPIO_PB1
+	#define GPIO_CHN1							GPIO_PB2
+	#define GPIO_CHN2							GPIO_PB3
+	#define GPIO_CHN3							GPIO_PA7
+	#define GPIO_CHN4							GPIO_PD2
+	#define GPIO_CHN5							GPIO_PD1
+	#define GPIO_CHN6							GPIO_PD0
+	#define GPIO_CHN7							GPIO_PE0
 
-	#define PD0_OUTPUT_ENABLE					1
-	#define PD1_OUTPUT_ENABLE					1
+	#define GPIO_CHN8							GPIO_PC7
+	#define GPIO_CHN9							GPIO_PD4
+	#define GPIO_CHN10							GPIO_PC6
+	#define GPIO_CHN11							GPIO_PC3
+	#define GPIO_CHN12							GPIO_PC2
+	#define GPIO_CHN13							GPIO_PE1
+	#define GPIO_CHN14							GPIO_PC5
+	#define GPIO_CHN15							GPIO_PC0
+
+	#define PB1_OUTPUT_ENABLE					1
+	#define PB2_OUTPUT_ENABLE					1
+	#define PB3_OUTPUT_ENABLE					1
+	#define PA7_OUTPUT_ENABLE					1
 	#define PD2_OUTPUT_ENABLE					1
-	#define PC2_OUTPUT_ENABLE					1
-	#define PC3_OUTPUT_ENABLE					1
-	#define PC6_OUTPUT_ENABLE					1
-	#define PD4_OUTPUT_ENABLE					1
+	#define PD1_OUTPUT_ENABLE					1
+	#define PD0_OUTPUT_ENABLE					1
+	#define PE0_OUTPUT_ENABLE					1
+
 	#define PC7_OUTPUT_ENABLE					1
+	#define PD4_OUTPUT_ENABLE					1
+	#define PC6_OUTPUT_ENABLE					1
+	#define PC3_OUTPUT_ENABLE					1
+	#define PC2_OUTPUT_ENABLE					1
+	#define PE1_OUTPUT_ENABLE					1
+	#define PC5_OUTPUT_ENABLE					1
+	#define PC0_OUTPUT_ENABLE					1
 #endif  //end of DEBUG_GPIO_ENABLE
 
 /**
@@ -157,7 +175,7 @@
 	#else
 		//Telink device: you must choose one gpio with adc function to output high level(voltage will equal to vbat), then use adc to measure high level voltage
 		//use PB1 output high level, then adc measure this high level voltage
-		#define GPIO_VBAT_DETECT				SD_ADC_GPIO_PB1P
+		#define GPIO_VBAT_DETECT				SD_ADC_GPIO_PB5P
 	#endif
 #endif
 #define LED_ON_LEVAL 			1 		//gpio output high voltage to turn on led

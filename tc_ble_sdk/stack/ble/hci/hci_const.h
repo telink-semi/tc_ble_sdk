@@ -82,7 +82,7 @@
 #define HCI_SUB_EVT_LE_CONNECTIONLESS_IQ_REPORT               	     0x15	//core_5.1	7.7.65.21 LE Connectionless IQ Report event
 #define HCI_SUB_EVT_LE_CONNECTION_IQ_REPORT               		 	 0x16	//core_5.1	7.7.65.22 LE Connection IQ Report event
 #define HCI_SUB_EVT_LE_CTE_REQUEST_FAILED                		     0x17	//core_5.1	7.7.65.23 LE CTE Request Failed event
-#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_SYNC_TRANSFOR_RECEIVED   0x18	//core_5.1	7.7.65.24 LE Periodic Advertising Sync Transfer Received event
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_SYNC_TRANSFER_RECEIVED   0x18	//core_5.1	7.7.65.24 LE Periodic Advertising Sync Transfer Received event
 
 
 #define HCI_SUB_EVT_LE_CIS_ESTABLISHED								 0x19	//core_5.2	7.7.65.25 LE CIS Established event
@@ -95,6 +95,16 @@
 #define HCI_SUB_EVT_LE_PATH_LOSS_THRESHOLD							 0x20	//core_5.2	7.7.65.32 LE Path Loss Threshold event
 #define HCI_SUB_EVT_LE_TRANSMIT_POWER_REPORTING						 0x21	//core_5.2	7.7.65.33 LE Transmit Power Reporting event
 #define HCI_SUB_EVT_LE_BIGINFO_ADVERTISING_REPORT					 0x22	//core_5.2	7.7.65.34 LE BIGInfo Advertising Report event
+#define HCI_SUB_EVT_LE_SUBRATE_CHANGE                                0x23   //core_5.3  7.7.65.35 LE Subrate Change event
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_SYNC_ESTABLISHED_V2      0x24
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_REPORT_V2                0x25
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_SYNC_TRANSFER_RECEIVED_V2 0x26
+
+
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_SUBEVENT_DATA_REQUEST    0x27   //core_5.4  7.7.65.36 LE Periodic Advertising Subevent Data Request event
+#define HCI_SUB_EVT_LE_PERIODIC_ADVERTISING_RESPONSE_REPORT          0x28   //core_5.4  7.7.65.37 LE Periodic Advertising Response Report event
+
+#define HCI_SUB_EVT_LE_ENHANCED_CONNECTION_COMPLETE_V2               0x29
 #define HCI_SUB_EVT_MAX												 0x23
 
 
@@ -153,7 +163,7 @@
 #define HCI_LE_EVT_MASK_CONNECTIONLESS_IQ_REPORT                     0x00100000 // core5.1 - bit20
 #define HCI_LE_EVT_MASK_CONNECTION_IQ_REPORTD          				 0x00200000 // core5.1 - bit21
 #define HCI_LE_EVT_MASK_CTE_REQUEST_FAILED                           0x00400000 // core5.1 - bit22
-#define HCI_LE_EVT_MASK_PERIODIC_ADVERTISING_SYNC_TRANSFOR_RECEIVED  0x00800000 // core5.1 - bit23
+#define HCI_LE_EVT_MASK_PERIODIC_ADVERTISING_SYNC_TRANSFER_RECEIVED  0x00800000 // core5.1 - bit23
 
 #define HCI_LE_EVT_MASK_CIS_ESTABLISHED								 0x01000000 // core5.2 - bit24
 #define HCI_LE_EVT_MASK_CIS_REQUESTED								 0x02000000 // core5.2 - bit25
@@ -167,8 +177,13 @@
 #define HCI_LE_EVT_MASK_2_TRANSMIT_POWER_REPORTING					 0x00000001 // core5.2 - bit32
 #define HCI_LE_EVT_MASK_2_BIGINFO_ADVERTISING_REPORT				 0x00000002 // core5.2 - bit33
 
+#define HCI_LE_EVT_MASK_2_SUBRATE_CHANGE                             0x00000004 // core5.3 - bit34
 
 
+#define HCI_LE_EVT_MASK_2_PERIODIC_ADVERTISING_SUBEVENT_DATA_REQUEST         0x00000040 // core5.4 - bit38
+#define HCI_LE_EVT_MASK_2_PERIODIC_ADVERTISING_RESPONSE_REPORT               0x00000080 // core5.4 - bit39
+
+#define HCI_LE_EVT_MASK_2_ENHANCED_CONNECTION_COMPLETE_V2                    0x00000100 // core5.4 - bit40
 #define HCI_LE_EVT_MASK_CONNECTION_ESTABLISH                         0x80000000  //TODO
 
 
@@ -403,7 +418,14 @@
 #define HCI_CMD_LE_SUBRATE_REQUEST									 0x7E //7.8.124 LE Subrate Request command
 //core_5.3 end
 #endif
+//core_5.4 begin
+#define HCI_CMD_LE_SET_PERIODIC_ADVERTISING_SUBEVENT_DATA            0X82 //7.8.125 LE Set Periodic Advertising Subevent Data command
+#define HCI_CMD_LE_SET_PERIODIC_ADVERTISING_RESPONSE_DATA            0x83 //7.8.126 LE Set Periodic Advertising Response Data command
+#define HCI_CMD_LE_SET_PERIODIC_SYNC_SUBEVENT                        0x84 //7.8.127 LE Set Periodic Sync Subevent command
+#define HCI_CMD_LE_EXTENDED_CREATE_CONNECTION_V2                     0x85 //7.8.66 LE Extended Create Connection Command [v2]
+#define HCI_CMD_LE_SET_PERIODIC_ADVERTISING_PARAMETERS_V2            0x86 //7.8.61 LE Set Periodic Advertising Parameters Command [v2]
 
+//core_5.4 end
 #define HCI_CMD_LINK_POLICY_OPCODE_OGF								 0x08 //0x02<<2 = 0x08
 #define HCI_CMD_TEST_OPCODE_OGF										 0x18 //0x06<<2 = 0x18
 

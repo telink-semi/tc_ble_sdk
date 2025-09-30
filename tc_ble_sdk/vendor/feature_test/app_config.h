@@ -57,8 +57,6 @@
 	#include "feature_per_adv_sync/app_config.h"
 #elif (FEATURE_TEST_MODE == TEST_EXT_SCAN)
 	#include "feature_ext_scan/app_config.h"
-#elif (FEATURE_TEST_MODE == TEST_MISC_FUNC)
-	#include "feature_misc/app_config.h"
 #elif (FEATURE_TEST_MODE == TEST_OTA)
 	#include "feature_ota/app_config.h"
 #elif (FEATURE_TEST_MODE == TEST_SOFT_TIMER)
@@ -75,6 +73,8 @@
 	#include "feature_l2cap_coc/app_config.h"
 #elif (FEATURE_TEST_MODE == TEST_BLE_PHY)
 	#include "feature_phy_test/app_config.h"
+#elif (FEATURE_TEST_MODE == TEST_PAWR_SYNC)
+    #include "feature_pawr_sync/app_config.h"
 #endif
 
 

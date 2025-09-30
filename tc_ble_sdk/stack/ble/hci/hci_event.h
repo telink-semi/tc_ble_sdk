@@ -288,7 +288,25 @@ typedef struct {
 	u8         masterClkAccuracy;
 } hci_le_enhancedConnCompleteEvt_t;
 
-
+/**
+ *  @brief  Event Parameters for "7.7.65.10 LE Enhanced Connection Complete event V2"
+ */
+typedef struct __attribute__((packed)) {
+    u8         subEventCode;
+    u8         status;
+    u16        connHandle;
+    u8         role;
+    u8         PeerAddrType;
+    u8         PeerAddr[6];
+    u8         localRslvPrivAddr[6];
+    u8         Peer_RslvPrivAddr[6];
+    u16        connInterval;
+    u16        connLatency;
+    u16        superTimeout;
+    u8         masterClkAccuracy;
+    u8         Advertising_Handle;
+    u16        Sync_Handle;
+} hci_le_enhancedConnCompleteEvt_t_V2;
 
 /**
  *  @brief  Event Parameters for "7.7.65.11 LE Directed Advertising Report event"
@@ -375,13 +393,31 @@ typedef struct{
 	u8   tx_power;
 
 	u8   rssi;
-	u8   unused;
+	u8   cte_type;
 	u8   data_status;
 	u8   data_len;
 
 	u8   data[1];
 }le_periodAdvReportEvt_t;
 
+typedef struct __attribute__((packed)) {
+    u8   sub_code;
+    u16  sync_handle;
+    u8   tx_power;
+
+    u8   rssi;
+    u8   cte_type;
+    u16  periodic_evt_cnt;
+
+    u8   subevent;
+    u8   data_status;
+    u8   data_len;  // 0 to 247
+
+    u8   data[1];
+}le_periodAdvReportEvt_t_v2;
+
+#define PDAADV_INFO_LENGTH              8
+#define PDAADV_RPT_DATA_LEN_MAX         247
 #define EXTADV_INFO_LENGTH				24	 //byte number from "event_type" to "data_length"
 #define EXTADV_RPT_DATA_LEN_MAX			229  //253 - 24 = 229
 
@@ -466,6 +502,27 @@ typedef struct {
 	u8		advClkAccuracy;
 }hci_le_periodicAdvSyncEstablishedEvt_t;
 
+/**
+ *  @brief  Event Parameters for "7.7.65.14 LE Periodic Advertising Sync Established event v2"
+ */
+typedef struct __attribute__((packed)) {
+    u8      subEventCode;
+    u8      status;
+    u16     syncHandle;
+//  extadv_id_t adverting_id;
+    u8      advSID;
+    u8      advAddrType;
+    u8      advAddr[6];
+    u8      advPHY;
+    u16     perdAdvItvl;
+    u8      advClkAccuracy;
+
+    ///the following is for pawr
+    u8      num_subevent;
+    u8      subevent_intvl;
+    u8      rsp_slot_delay;
+    u8      rsp_slot_spacing;
+}hci_le_periodicAdvSyncEstablishedEvtV2_t;
 
 /**
  *  @brief  Event Parameters for "7.7.65.15 LE Periodic Advertising Report event"
@@ -481,6 +538,24 @@ typedef struct {
 	u8		data[1];
 } hci_le_periodicAdvReportEvt_t;
 
+
+/**
+ *  @brief  Event Parameters for "7.7.65.15 LE Periodic Advertising Report event V2"
+ */
+typedef struct __attribute__((packed)) {
+    u8      subEventCode;
+    u16     syncHandle;
+    u8      txPower;
+
+    u8      RSSI;
+    u8      cteType;
+    u16     paEventCounter;
+
+    u8      subevent;
+    u8      dataStatus;
+    u8      dataLength;  // 0 to 247 Length of the Data field
+    u8      data[1];
+} hci_le_periodicAdvReportEvtV2_t;
 
 /**
  *  @brief  Event Parameters for "7.7.65.16 LE Periodic Advertising Sync Lost event"
@@ -530,6 +605,42 @@ typedef struct {
 
 //#if (CUSTOM_CONNECTION_ESTABLISH_EVT_ENABLE)
 /* create connection fail reason */
+typedef struct __attribute__((packed)) {
+    u8         subEventCode;
+    u8         status;
+    u16        connHandle;
+    u16        serviceData;
+    u16        syncHandle;
+    u8         advSID;
+    u8         advAddrType;
+    u8         advAddr[6];
+    u8         advPHY;
+    u16        perdAdvItvl;
+    u8         advClkAccuracy;
+
+    u8         num_subevt;
+    u8         subevent_intvl;
+    u8         rsp_slot_delay;
+    u8         rsp_slot_spacing;
+} hci_le_periodicAdvSyncTransferRcvdEvt_V2_t;
+
+/**
+ *  @brief  Event Parameters for "7.7.65.24 LE Periodic Advertising Sync Transfer Received event"
+ */
+typedef struct __attribute__((packed)) {
+    u8         subEventCode;
+    u8         status;
+    u16        connHandle;
+    u16        serviceData;
+    u16        syncHandle;
+    u8         advSID;
+    u8         advAddrType;
+    u8         advAddr[6];
+    u8         advPHY;
+    u16        perdAdvItvl;
+    u8         advClkAccuracy;
+} hci_le_periodicAdvSyncTransferRcvdEvt_t;
+
 /**
  *  @brief  Event Parameters for Telink Private "LE Connection Establish event"
  */
@@ -565,11 +676,16 @@ typedef enum{
 
 int		hci_le_periodicAdvSyncEstablished_evt (u8 status, u16 syncHandle,u8 advSID, u8 advAddrType, u8 advAddress[6], u8 advPHY,
 										       u16 perdAdvItvl, u8 advClkAccuracy);
+
+int     hci_le_periodicAdvSyncEstablished_evt_v2 (u8 status, u16 syncHandle,u8 advSID, u8 advAddrType, u8 advAddress[6], u8 advPHY,u16 perdAdvItvl,
+                                                  u8 advClkAccuracy,u8 num_subevent, u8 subevent_intvl, u8 rsp_slot_delay, u8 rsp_slot_spacing);
 //int		hci_le_periodicAdvSyncEstablished_evt (u8 status, u16 syncHandle, extadv_id_t *pId, u8 advPHY, u16 perdAdvItvl, u8 advClkAccuracy);
 
 int		hci_le_periodicAdvReport_evt (u8 subEventCode, u16 syncHandle, u8 txPower, u8 RSSI, u8 cteType,u8 dataStatus, u8 dataLength,
 								      u8* data);
 int		hci_le_periodicAdvSyncLost_evt (u16 syncHandle);
+int     hci_le_periodicAdvSyncTransferRcvd_evt (u8 status, u16 connHandle, u16 serviceData, u16 syncHandle,u8 advSID,
+                                                u8 advAddrType, u8 advAddr[6],u8 advPHY, u16 perdAdvItvl, u8 advClkAccuracy);
 
 int		hci_disconnectionComplete_evt(u8 status, u16 connHandle, u8 reason);
 int		hci_cmdComplete_evt(u8 numHciCmds, u8 opCode_ocf, u8 opCode_ogf, u8 paraLen, u8 *para, u8 *result);

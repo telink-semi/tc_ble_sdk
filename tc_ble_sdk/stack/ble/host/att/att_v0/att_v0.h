@@ -1,5 +1,5 @@
 /********************************************************************************************************
- * @file    att.h
+ * @file    att_v0.h
  *
  * @brief   This is the header file for BLE SDK
  *
@@ -62,25 +62,6 @@
 #define ATT_PERMISSIONS_AUTHOR_RDWR          (ATT_PERMISSIONS_RDWR | ATT_PERMISSIONS_AUTHOR) 		//!< Read & Write requires Authorization
 
 /** @End GAP_ATT_PERMISSIONS_BITMAPS */
-
-
-
-
-/**
- * @brief		GATT_Characteristic_Property GATT characteristic properties
- */
-#define CHAR_PROP_BROADCAST              0x01 //!< permit broadcasts of the Characteristic Value
-#define CHAR_PROP_READ                   0x02 //!< permit reads of the Characteristic Value
-#define CHAR_PROP_WRITE_WITHOUT_RSP      0x04 //!< Permit writes of the Characteristic Value without response
-#define CHAR_PROP_WRITE                  0x08 //!< Permit writes of the Characteristic Value with response
-#define CHAR_PROP_NOTIFY                 0x10 //!< Permit notifications of a Characteristic Value without acknowledgement
-#define CHAR_PROP_INDICATE               0x20 //!< Permit indications of a Characteristic Value with acknowledgement
-#define CHAR_PROP_AUTHEN                 0x40 //!< permit signed writes to the Characteristic Value
-#define CHAR_PROP_EXTENDED               0x80 //!< additional characteristic properties are defined
-/** end of group GATT_Characteristic_Property */
-
-
-
 
 typedef int (*att_readwrite_callback_t)(u16 connHandle, void* p);
 

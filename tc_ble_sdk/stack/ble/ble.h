@@ -31,6 +31,9 @@
 
 #include "controller/ble_controller.h"
 #include "host/ble_host.h"
+#if defined(BLE_HOST_V1)
+#include "profile/ble_profile.h"
+#endif /* BLE_HOST_V1 */
 
 #include "hci/hci.h"
 #include "hci/hci_const.h"

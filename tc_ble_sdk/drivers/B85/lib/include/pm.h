@@ -488,6 +488,7 @@ unsigned short efuse_get_adc_calib_value(void);
 
 void soft_reboot_dly13ms_use24mRC(void);
 
+void check_32k_clk_stable(void);
 
 /**
  * @brief		This function serves to set flash voltage vdd_f.TO ensure the vdd_f is enough to supply the flash,need to calibration the vdd_f.

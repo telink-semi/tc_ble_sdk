@@ -50,16 +50,6 @@ typedef enum{
 }legadv_en_str_t;  //legacy ADV enable strategy
 
 
-
-/**
- * @brief      for user to initialize legacy advertising module
- *             notice that only one module can be selected between legacy advertising module and extended advertising module
- * @param      none
- * @return     none
- */
-void blc_ll_initLegacyAdvertising_module(void);
-
-
 /**
  * @brief      for user to initialize legacy advertising module
  * 			   notice that only one module can be selected between legacy advertising module, legacy advertising local RPA module and extended advertising module

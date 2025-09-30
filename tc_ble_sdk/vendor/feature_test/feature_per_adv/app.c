@@ -435,14 +435,14 @@ _attribute_no_inline_ void user_init_normal(void)
 
 	blc_ll_initStandby_module(mac_public);						   //mandatory
 
-    blc_ll_initLegacyAdvertising_module(); 	//adv module: 		 mandatory for BLE slave,
+    //blc_ll_initLegacyAdvertising_module(); 	//adv module: 		 mandatory for BLE slave,
 
-    blc_ll_initLegacyScanning_module(); 	//scan module: 		 mandatory for BLE master
+    //blc_ll_initLegacyScanning_module(); 	//scan module: 		 mandatory for BLE master
 
-    blc_ll_initLegacyInitiating_module();	//initiate module: 	 mandatory for BLE master
+    //blc_ll_initLegacyInitiating_module();	//initiate module: 	 mandatory for BLE master
 
 	blc_ll_initAclConnection_module();
-	blc_ll_initAclCentralRole_module();
+	//blc_ll_initAclCentralRole_module();
 	blc_ll_initAclPeriphrRole_module();
 
 

@@ -24,23 +24,34 @@
 #ifndef STACK_BLE_HOST_BLE_HOST_H_
 #define STACK_BLE_HOST_BLE_HOST_H_
 
-#include "stack/ble/debug/debug.h"
-
 #include "stack/ble/ble_common.h"
 #include "stack/ble/ble_format.h"
+
+#include "stack/ble/debug/debug.h"
 
 #include "stack/ble/host/l2cap/l2cap.h"
 
 #include "stack/ble/host/signaling/signaling.h"
 
-#include "stack/ble/host/attr/att.h"
-#include "stack/ble/host/attr/gatt.h"
+/* ATT/GATT old version */
+#include "stack/ble/host/att/att_v0/att_v0.h"
+#include "stack/ble/host/att/att_v0/gatt_v0.h"
+
+/* ATT/GATT new version */
+#include "stack/ble/host/att/atts.h"
+#include "stack/ble/host/att/attc.h"
+#include "stack/ble/host/att/att_uuid.h"
+#include "stack/ble/host/att/att_cmd.h"
+#include "stack/ble/host/gatt/gatt.h"
+#include "stack/ble/host/gatt/gatts.h"
+#include "stack/ble/host/gatt/gattc.h"
 
 
 #include "stack/ble/host/smp/smp.h"
 #include "stack/ble/host/smp/smp_storage.h"
 
 #include "stack/ble/host/gap/gap.h"
+#include "stack/ble/host/gap/gapc.h"
 #include "stack/ble/host/gap/gap_event.h"
 
 #include "stack/ble/host/host_comp.h"

@@ -44,6 +44,10 @@ u8      ir_hw_initialed = 0;   		//note: can not be retention variable
 _attribute_data_retention_	int 	ir_not_released;
 int central_disconnect_connhandle;   //mark the central connection which is in un_pair disconnection flow
 
+#if (REMOTE_IR_LEARN_ENABLE)
+    extern ir_learn_ctrl_t *g_ir_learn_ctrl;
+    ir_learn_send_t ir_learn_result;
+#endif
 
 extern	u32 	latest_user_event_tick;
 extern  u8 		ota_is_working;
@@ -418,11 +422,7 @@ void app_ui_init_normal(void)
 
 
 	#if (BLE_AUDIO_ENABLE)
-		#if (BLE_DMIC_ENABLE)
-			dmic_gpio_reset();
-		#else
-			amic_gpio_reset();
-		#endif
+		amic_gpio_reset();
 	#endif
 
 

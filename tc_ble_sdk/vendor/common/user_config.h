@@ -25,6 +25,8 @@
 
 #if(__PROJECT_ACL_PER_DEMO__)
 	#include "vendor/acl_peripheral_demo/app_config.h"
+#elif(__PROJECT_ESLP_ESL_DEMO__)
+	#include "vendor/eslp_esl_demo/app_config.h"
 #elif(__PROJECT_C1P1_DEMO__)
 	#include "vendor/acl_c1p1_demo/app_config.h"
 #elif(__PROJECT_CONTROLLER__)

@@ -26,7 +26,7 @@
 
 #include "register.h"
 #include "clock.h"
-#include "timer.h"
+#include "lib/include/stimer.h"
 
 /**
  * @brief  enum variable, the number of PWM channels supported
@@ -378,6 +378,37 @@ static inline void pwm_set_dma_address(void * pdat)
 	//so set reg_dma7_size to the maximum, it has been guaranteed that the maximum length supported by the hardware (511bytes) can be sent.
 	//The maximum length that dma hardware can send is limited to the setting range of the first four bytes in ram (the actual length of dma sent)
 	reg_dma7_size = 0xff; 
+}
+
+/**
+ * @brief     This function servers to set the pwm's dma address in DMA_PINGPONG_MODE.
+ * @param[in] pdat - variable of pointer to indicate the address.
+ * @return	  none.
+ */
+static inline void pwm_set_dma_address_pingpong(void * pdat)
+{
+    reg_dma_pwm_addr = (unsigned short)((unsigned int)pdat);
+    reg_dma7_addrHi = 0x04;
+    reg_dma_pwm_mode  &= ~FLD_DMA_WR_MEM;
+    reg_dma_pwm_mode  |= FLD_DMA_PINGPONG_EN;
+    reg_dma7_size = 0x21;//0x21 is the maximum value and the user does not need to change it.
+}
+
+/**
+ * @brief     This function servers to start the dma pingpong_chain in DMA_PINGPONG_MODE.
+ * @param[in] chain_num - 0:chain 0, 1:chain 1
+ * @return	  none.
+ */
+static inline void pwm_dma_pingpong_chain_start(unsigned char chain_num)
+{
+	if(chain_num == 0)
+	{
+		reg_dma_tx_rdy0 |= FLD_DMA_CHN_PWM;
+	}
+	else
+	{
+		reg_dma_tx_rdy1 |= FLD_DMA_CHN_PWM;
+	}
 }
 
 /**

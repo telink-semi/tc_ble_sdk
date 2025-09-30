@@ -290,6 +290,8 @@
 	#include "boards/C1T357A20.h"
 #elif ( BOARD_SELECT == BOARD_TC321X_RCU_C1T362A5)
 	#include "boards/C1T362A5.h"
+#elif ( BOARD_SELECT == BOARD_TC321X_EVK_C1T357A78)
+	#include "boards/CIT357A78.h"
 #endif
 
 

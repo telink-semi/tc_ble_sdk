@@ -36,6 +36,9 @@ typedef enum {
 	PM_SLEEP_ACL_SLAVE		= BIT(2),     	    PM_SLEEP_ACL_PERIPHR		= BIT(2),
 	PM_SLEEP_ACL_MASTER 	= BIT(3),       	PM_SLEEP_ACL_CENTRAL 		= BIT(3),
 	PM_SLEEP_EXT_ADV	    = BIT(4),
+	PM_SLEEP_PDA_SYNC		= BIT(5),
+    PM_SLEEP_PAWRS_SUB      = BIT(6),
+    PM_SLEEP_PAWRS_RSP      = BIT(7),
 }sleep_mask_t;
 /**
  *  @brief	DeepSleepRetention_Enable

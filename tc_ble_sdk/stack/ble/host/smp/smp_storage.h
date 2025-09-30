@@ -125,6 +125,17 @@ u32 			blc_smp_getBondingInfoCurStartAddr(void);
  */
 u32 			blc_smp_searchBondingSlaveDevice_by_PeerMacAddress( u8 peer_addr_type, u8* peer_addr);
 
+// This API is for slave only, to search if current master device is already paired with slave
+/**
+ * @brief      This function is used to obtain binding information according to the central's address and address type.
+ * @param[in]  connHandle - connection handle.
+ * @param[in]  peer_addr_type - Address type.
+ * @param[in]  peer_addr - Address.
+ * @return     0: Failed to get binding information;
+ *             others: FLASH address of the information area.
+ */
+u32 			blc_smp_searchBondingCentralDevice_by_PeerMacAddress(u16 connHandle, u8 peer_addr_type, u8* peer_addr);
+
 //Delete
 /**
  * @brief      This function is used to delete binding information according to the peer device address and device address type.
@@ -134,6 +145,17 @@ u32 			blc_smp_searchBondingSlaveDevice_by_PeerMacAddress( u8 peer_addr_type, u8
  *             others: FLASH address of the deleted information area.
  */
 int				blc_smp_deleteBondingSlaveInfo_by_PeerMacAddress(u8 peer_addr_type, u8* peer_addr);
+
+
+/**
+ * @brief      This function is used to delete bonding central information according to the peer device address and device address type.
+ * @param[in]  connHandle - connection handle.
+ * @param[in]  peer_addr_type - Address type.
+ * @param[in]  peer_addr - Address.
+ * @return     0: Failed to delete binding information;
+ *             others: FLASH address of the deleted information area.
+ */
+int				blc_smp_deleteBondingCentralInfo_by_PeerMacAddress(u16 connHandle, u8 peer_addr_type, u8* peer_addr);
 
 
 /**

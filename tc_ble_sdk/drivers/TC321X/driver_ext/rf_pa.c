@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    rf_pa.c
  *
- * @brief   This is the source file for BLE SDK
+ * @brief   This is the source file for TC321X
  *
  * @author  BLE GROUP
  * @date    2020.06

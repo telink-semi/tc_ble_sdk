@@ -81,9 +81,18 @@ build_B85_base:
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_peripheral_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_c1p1_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_connection_demo
+    - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_central_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/ble_controller    
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/feature_test
     - date
+
+  artifacts:
+    paths:
+    - "./tc_ble_sdk/build/B85/**/*.lst"
+    - "./tc_ble_sdk/build/B85/**/*.bin"
+    - "*.bin"
+    - "*.lst"
+
   when: manual
 
 build_B87_base:
@@ -103,9 +112,18 @@ build_B87_base:
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_peripheral_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_c1p1_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_connection_demo
+    - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_central_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/ble_controller    
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/feature_test
     - date
+
+  artifacts:
+    paths:
+    - "./tc_ble_sdk/build/B87/**/*.lst"
+    - "./tc_ble_sdk/build/B87/**/*.bin"
+    - "*.bin"
+    - "*.lst"
+
   when: manual
   
 build_tc321x_base:
@@ -125,10 +143,20 @@ build_tc321x_base:
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_peripheral_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_c1p1_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_connection_demo
+    - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/acl_central_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/ble_controller
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/ble_remote
+    - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/eslp_esl_demo
     - $TELINK_IDE_BUILD  -data ${CI_PIPELINE_ID}_WS  -import $ECLIPSE_PROJECT_PATH -cleanBuild $ECLIPSE_PROJECT_NAME/feature_test
     - date
+
+  artifacts:
+    paths:
+    - "./tc_ble_sdk/build/tc321x/**/*.lst"
+    - "./tc_ble_sdk/build/tc321x/**/*.bin"
+    - "*.bin"
+    - "*.lst"
+
   when: manual
 
 build_all_feature:

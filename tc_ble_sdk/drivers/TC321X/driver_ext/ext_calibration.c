@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    ext_calibration.c
  *
- * @brief   This is the source file for B85
+ * @brief   This is the source file for TC321X
  *
  * @author  BLE Group
  * @date    May 8,2018
@@ -27,12 +27,49 @@
 
 
 /**
+ * @brief       This function is used to tighten the judgment of illegal values for gpio calibration and vbat calibration in the flash.
+ * @param[in]   gain - the value of single_gpio_gain_10000x ,diff_gpio_gain_10000x and vbat_gain_10000x
+ *              offset - the value of single_gpio_offset_10x ,diff_gpio_offset_10x and vbat_offset_10x
+ *              calib_func - Function pointer to gpio_calibration or vbat_calibration.
+ * @return      1:the calibration function is invalid; 0:the calibration function is valid.
+ */
+unsigned char flash_set_adc_calib_value(unsigned short gain, signed short offset, void (*calib_func)(unsigned short, signed short))
+{
+    /**
+     * -# For CHIP_VERSION_A0, the legal range of gain for single_gpio/diff_gpio and vbat in flash is [8590,10500],
+     * and the legal range of offset for single_gpio/diff_gpio and vbat is [-1000,1000].
+     * -# For CHIP_VERSION_A1, the legal range of gain for single_gpio/diff_gpio and vbat in flash is [10260,12540],
+     * and the legal range of offset for single_gpio/diff_gpio and vbat is [-1000,1000].
+     */
+	if (g_chip_version == CHIP_VERSION_A0) {
+	    if ((gain >= 8590) && (gain <= 10500) && (offset >= -1000) && (offset <= 1000)) {
+	        (*calib_func)(gain, offset);
+	        return 0;
+	    }
+	}else {
+        if ((gain >= 10260) && (gain <= 12540) && (offset >= -1000) && (offset <= 1000)) {
+            (*calib_func)(gain, offset);
+            return 0;
+        }
+    }
+	return 1;
+
+}
+
+/**
  * @brief      This function is used to calib ADC 1.2V vref.
  */
 
-int user_calib_adc_vref(unsigned char * adc_vref_calib_value_rd) {
-	//Todo
-	return 0;
+int user_calib_adc_vref(sd_adc_calib_t  calib_value) {
+    if (flash_set_adc_calib_value(calib_value.single_gpio_gain_10000x, calib_value.single_gpio_offset_10x, adc_set_single_gpio_calib_vref) ||
+        flash_set_adc_calib_value(calib_value.vbat_gain_10000x, calib_value.vbat_offset_10x, adc_set_vbat_calib_vref) ||
+		flash_set_adc_calib_value(calib_value.diff_gpio_gain_10000x, calib_value.diff_gpio_offset_10x, adc_set_diff_gpio_calib_vref) )
+    {
+        return false;
+    }else
+    {
+    	return true;
+    }
 }
 
 /**

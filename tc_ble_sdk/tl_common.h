@@ -28,7 +28,7 @@
 #include "common/types.h"
 #include "common/bit.h"
 #include "common/utility.h"
-
+#include "common/assert.h"
 #include "common/sdk_version.h"
 
 #include "vendor/common/user_config.h"

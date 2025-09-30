@@ -42,6 +42,7 @@
 #include "stack/ble/controller/ll/acl_conn/acl_peripheral.h"
 #include "stack/ble/controller/ll/acl_conn/acl_central.h"
 
+#include "stack/ble/controller/ll/past/past.h"
 
 #include "stack/ble/controller/ll/adv/adv.h"
 #include "stack/ble/controller/ll/adv/leg_adv.h"
@@ -60,6 +61,7 @@
 #include "stack/ble/controller/ll/prdadv/pda.h"
 #include "stack/ble/controller/ll/prdadv/prd_adv.h"
 #include "stack/ble/controller/ll/prdadv/pda_sync.h"
+#include "stack/ble/controller/ll/prdadv/PAwR_sync.h"
 
 
 #include "stack/ble/controller/whitelist/whitelist.h"

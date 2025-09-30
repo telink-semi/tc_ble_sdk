@@ -1,5 +1,5 @@
 /********************************************************************************************************
- * @file    gatt.h
+ * @file    gatt_v0.h
  *
  * @brief   This is the header file for BLE SDK
  *
@@ -21,8 +21,8 @@
  *          limitations under the License.
  *
  *******************************************************************************************************/
-#ifndef GATT_H_
-#define GATT_H_
+#ifndef GATT_V0_H_
+#define GATT_V0_H_
 
 /* GATT data handle call-back. */
 typedef int (*gatt_handler_t) (u16 conn, u8 * p);
@@ -153,4 +153,4 @@ ble_sts_t	blc_gatt_pushErrResponse(u16 connHandle, u8 reqOpcode, u16 attHdlInErr
 ble_sts_t blc_gatt_pushConfirm(u16 connHandle);
 
 
-#endif /* GATT_H_ */
+#endif /* GATT_V0_H_ */

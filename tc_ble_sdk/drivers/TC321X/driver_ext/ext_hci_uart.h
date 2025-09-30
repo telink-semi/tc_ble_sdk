@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    ext_hci_uart.h
  *
- * @brief   This is the header file for B91
+ * @brief   This is the header file for TC321X
  *
  * @author  BLE Group
  * @date    2020

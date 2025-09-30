@@ -42,11 +42,7 @@ _attribute_ram_code_ void irq_handler(void)
 #endif
 
 #if (REMOTE_IR_LEARN_ENABLE)
-	u32 src = reg_irq_src;
-	if ((src & IR_LEARN_INTERRUPT_MASK))
-	{
-		ir_learn_irq_handler();
-	}
+    ir_learn_irq_handler();
 #endif
 	blc_sdk_irq_handler();
 

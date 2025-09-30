@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    ext_misc.h
  *
- * @brief   This is the header file for B91
+ * @brief   This is the header file for TC321X
  *
  * @author  BLE Group
  * @date    2020
@@ -24,6 +24,7 @@
 #ifndef DRIVERS_TC321X_EXT_MISC_H_
 #define DRIVERS_TC321X_EXT_MISC_H_
 #include "../register.h"
+#include "../flash.h"
 
 
 

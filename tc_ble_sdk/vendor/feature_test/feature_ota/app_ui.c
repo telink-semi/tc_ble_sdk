@@ -240,7 +240,7 @@ void app_ota_result(int result)
 
 			#if 0 //this is only for debug,  can not use this in application code
 				irq_disable();
-				WATCHDOG_DISABLE;
+				wd_stop();
 
 				while(1){
 				}

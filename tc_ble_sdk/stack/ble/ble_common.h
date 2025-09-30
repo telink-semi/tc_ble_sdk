@@ -103,6 +103,9 @@ typedef enum {
     HCI_ERR_LIMIT_REACHED										   = 0x43,
     HCI_ERR_OP_CANCELLED_BY_HOST								   = 0x44,
     HCI_ERR_PACKET_TOO_LONG										   = 0x45,
+    HCI_ERR_TOO_LATE                                               = 0x46,
+    HCI_ERR_TOO_EARLY                                              = 0x47,
+    HCI_ERR_INSUFFICIENT_CHANNELS                                  = 0x48,
 	//DBG used only for CIS
 	HCI_ERR_CONN_TERM_CIS_MIC_FAILURE                              = 0xD3,
 
@@ -143,12 +146,17 @@ typedef enum {
 	GATT_ERR_INVALID_PARAMETER 									   = 0xB0,
 	GATT_ERR_PREVIOUS_INDICATE_DATA_HAS_NOT_CONFIRMED,
 	GATT_ERR_SERVICE_DISCOVERY_TIMEOUT,
-	GATT_ERR_NOTIFY_INDICATION_NOT_PERMITTED,
+	GATT_ERR_NOTIFY_INDICATION_BUSY,
 	GATT_ERR_DATA_PENDING_DUE_TO_SERVICE_DISCOVERY_BUSY,
 	GATT_ERR_DATA_LENGTH_EXCEED_MTU_SIZE,
+	GATT_ERR_DATA_LENGTH_EXCEED_MEM_RESTRICTION,
+	GATT_ERR_UNSPECIFIED,
 
 	//GAP status
 	GAP_ERR_INVALID_PARAMETER 								   	   = 0xC0,
+    GAP_ERR_STATE_NO_IDLE,
+    GAP_ERR_WRITE_BUSY,
+
 	//IAL
 	IAL_ERR_SDU_LEN_EXCEED_SDU_MAX,
 	IAL_ERR_LOSS_SDU_INTRVEL,
@@ -159,7 +167,20 @@ typedef enum {
 	//Service status
 	SERVICE_ERR_INVALID_PARAMETER 								   = 0xD0,
 
+    //Profile common error
+	PRF_ERR_INVALID_ATTR_HANDLE,
+	PRF_ERR_INVALID_PARAMETER,
 
+    //Audio Profile status
+	AUDIO_ERR_NO_MEMORY											   = 0xE0,
+	AUDIO_ERR_INVALID_PARAMETER,
+	AUDIO_ERR_DISCOVERY_FAILED,
+	AUDIO_ERR_BUSY,
+	AUDIO_ERR_STATUS,
+
+    //LE Audio Server
+	LE_AUDIO_SERVER_INVALID_SERVICE								   = 0xF0,
+	LE_AUDIO_SERVER_INVALID_HANDLE,
 
 } ble_sts_t;
 /**
@@ -368,7 +389,9 @@ typedef enum {
 	DT_CHM_UPT_IND							= 0x28,		//	Channel Map Update Indication
 	DT_BIGINFO								= 0x2C,		//	BIGInfo
 	DT_BROADCAST_CODE						= 0x2D,		// 	Broadcast_Code
+	DT_ENCRYPTED_ADVERTISING_DATA           = 0x31,
 	DT_PA_RESPONSE_TIMING_INFORMATION		= 0x32,
+	DT_ELECTRONIC_SHELF_LABEL               = 0x34,
 	DT_3D_INFORMATION_DATA					= 0x3D,		//	3D Information Data
 
 	DATA_TYPE_MANUFACTURER_SPECIFIC_DATA 	= 0xFF,     //	Manufacturer Specific Data

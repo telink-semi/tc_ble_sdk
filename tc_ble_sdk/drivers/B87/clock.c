@@ -88,7 +88,6 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 		clock_rc_set(SYS_CLK);
 	}
 #endif
-
 	/*
 		In some customer application scenarios, they want code execution time to be short and power consumption to be low.
 		Meanwhile, they do not concerned about the accuracy of 24m rc or they want to control the calibration cycle themselves. 
@@ -102,6 +101,10 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 		sys_clock_print = 16;
 	#elif(CLOCK_SYS_CLOCK_HZ == 24000000)  //24M
 		sys_clock_print = 24;
+	#elif(CLOCK_SYS_CLOCK_HZ == 32000000)  //32M
+		sys_clock_print = 32;
+	#elif(CLOCK_SYS_CLOCK_HZ == 48000000)  //48M
+		sys_clock_print = 48;
 	#endif
 
 }

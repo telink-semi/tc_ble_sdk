@@ -39,7 +39,7 @@
  *    be directly used on user's mass production application without any change. User should refer to sample code, understand the
  *    principles and methods, then change and implement a more appropriate mechanism according to their application if needed.
  */
-#define APP_FLASH_PROTECTION_ENABLE						0
+#define APP_FLASH_PROTECTION_ENABLE						1
 
 /* User must check battery voltage on mass production application to prevent abnormal writing or erasing Flash at a low voltage !!! */
 #define APP_BATT_CHECK_ENABLE							0

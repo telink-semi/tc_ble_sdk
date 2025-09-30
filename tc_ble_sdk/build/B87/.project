@@ -82,11 +82,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>algorithm</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/algorithm</locationURI>
-		</link>
-		<link>
 			<name>application</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/application</locationURI>

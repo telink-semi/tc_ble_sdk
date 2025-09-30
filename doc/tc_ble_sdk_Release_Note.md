@@ -1,3 +1,309 @@
+# V4.0.2.2(PR)
+
+### Version
+* SDK version: tc_ble_sdk V4.0.2.2
+* Chip Version
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0/A1)
+* Hardware Version
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0
+* Platform Version
+  - tc_platform_sdk V3.3.1
+* Toolchain Version
+  - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+* (TC321X) Since the analog registers of TC321X are cleared after a software reboot, watchdog reboot or deep sleep, the judgment logic for low battery check has been modified. The flag bit `LOW_BATT_FLG` is set when the voltage is normal and cleared when it is abnormal. As a result, during the first power-up, the voltage must be above 2.2V(user configurable) for the program to run; otherwise, it will enter deep sleep mode.
+
+### Known issue
+* For TC321X, in the ble_remote reference design, after switching the key mode to IR mode, if the chip enters deep sleep and then wakes up, the key mode state will be lost. It is necessary to reconfigure it to IR mode.
+
+### Features
+* **Chip**
+  - Support TC321X chip A1 version.
+
+* **Application**
+  - Add ADC calibration in TC321X.
+  - TC321X ble_remote reference design supports IR Learning.
+  - For TC321X, add the eslp_esl_demo project, which supports the ESL(Electronic Shelf Label) Server function.
+  - For TC321X, add the ESL image display board `C1T357A78.h` in the "vendor/common/boards" folder.
+  
+* **Controller**
+  - Add PAwR(Periodic Advertising with Responses):
+      * Add `PAwR_sync.h`  in the folder "stack/ble/controller/ll/prdadv".
+  - Add PAST(Periodic Advertising Sync Transfer):
+      * Add the new folder "stack/ble/controller/ll/past".
+
+* **Host**
+  - Add an API `blc_smp_searchBondingCentralDevice_by_PeerMacAddress()` to obtain bonding information according to the central's address and address type.
+  - Add an API `blc_smp_deleteBondingCentralInfo_by_PeerMacAddress()` to delete bonding central information according to the peer device address and device address type.
+  - Add the API `blc_l2cap_pktHandler_V1()` for ESL to handle L2CAP data.
+  - For TC321X, add `stack/ble/profile`,`stack/ble/host/att` and `stack/ble/host/gatt` folders to support the ESL Server function.
+
+### Bug Fixes
+* **Application**
+  - Fixed (TC321X): Enabling `APP_BATT_CHECK_ENABLE` leads to increased current consumption in deep sleep mode.
+
+* **Controller**
+  - Fixed (B85/B87/TC321X): For the `TEST_BLE_PHY` reference design in feature_test, when switching from 1M PHY to 2M PHY, the 2M PHY can not work properly.
+  - Fixed (B85/B87/TC321X): Frequent GPIO wake-up will cause the disconnection issue when `BLE_APP_PM_ENABLE` is enabled.
+
+* **CoC** 
+  - Fixed (B85/B87/TC321X): The parameter check is incorrect when establishing new CoC (Connection-oriented channels) channels.
+
+* **Driver**
+  - Fixed (TC321X A0): MCU reboot failure after OTA when calling start_reboot.
+
+### Refactoring
+* **Application**
+  - (TC321X) Delete Audio DMIC setting.
+  - (TC321X) Optimize the pop noise issue when audio is turned on, and disable the audio module after audio ends to reduce power consumption.
+  - (B85/B87/TC321X) When the `flash_mid` acquisition fails or no matching MID value is found, set `blc_flashProt.init_err = 1` to indicate a flash protection initialization failure.
+  - (B85/B87/TC321X) Place the variable `tick_adv_rpt` in the "retention_data" sector to prevent it from being reset after deep retention sleep.
+  - (TC321X) Remove `wd_32k_stop()` in acl_c1p1_demo initialization, which has already been handled in the library.
+  - (TC321X) Modify the default setting of ​DEBUG_GPIO​ in `​C1T357A20.h`.
+  - (TC321X) Modify the low battery check GPIO pin in both ​`C1T357A20.h​` and ​`C1T362A5.h`​ to `GPIO_PB5`.
+  
+* **Host**
+  - (B85/B87/TC321X) Move the contents of the "stack/ble/host/attr" folder to "stack/ble/host/att/att_v0" folder.
+  - (TC321X) Add ESL function related header file references in `ble_host.h`.
+  
+* **Controller**
+  - (B85/B87/TC321X) Optimize the SRAM size for c1p1.
+  - (B85/B87/TC321X) Clean the master and slave name in the controller:
+    - Rename API `blc_ll_getCurrentMasterRoleNumber()` to `blc_ll_getCurrentCentralRoleNumber()`.
+    - Rename API `blc_ll_getCurrentSlaveRoleNumber()` to `blc_ll_getCurrentPeripheralRoleNumber()`.
+    - Add macro definitions `blc_ll_getCurrentSlaveRoleNumber()` and `blc_ll_getCurrentMasterRoleNumber()` in `contr_comp.h` for compatibility.
+  - Remove the duplicate definition of the API `blc_ll_initLegacyAdvertising_module()` in `leg_adv.h`.
+  - (B85/B87/TC321X) Modify the definition of `PERD_ADV_PARAM_LENGTH` to 456.
+  - (TC321X) Add PAwR and PAST header file references to `ble_controller.h`.
+  
+* **HCI**
+  - (TC321X) Add command and event definitions for the PAwR and PAST HCI interfaces to `hci_const.h`, `hci_cmd.h`, and `hci_event.h`.
+
+* **Link & Startup**
+  - (TC321X) Add a new sector "platform_func" to store the platform data.
+  - (B85/B87) Add a new sector "cstartup_ram_funcs".
+  - (B85/B87/TC321X) Move the functions in `div_mod.S` from the "ram_code" sector to "cstartup_ram_funcs" sector.
+  - (TC321X) Add RF software configuration invocation interface `rf_sw_config()` in the `cstartup_TC321X.S`.
+
+### BREAKING CHANGES
+* N/A.
+
+### CodeSize
+
+* **B85**
+  * acl_peripheral_demo
+    - Firmware size: 83.5 kBytes
+    - SRAM size: 32.5 kBytes
+    - deepsleep retention SRAM size: 28.9 kBytes
+  * acl_central_demo
+    - Firmware size: 73.9 kBytes
+    - SRAM size: 37.1 kBytes
+  * acl_connection_demo
+    - Firmware size: 89.2 kBytes
+    - SRAM size: 43.6 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 95.4 kBytes
+    - SRAM size: 34.3 kBytes
+    - deepsleep retention SRAM size: 30.3 kBytes
+
+* **B87**
+  * acl_peripheral_demo
+    - Firmware size: 83.2 kBytes
+    - SRAM size: 33.3 kBytes
+    - deepsleep retention SRAM size: 29.6 kBytes
+  * acl_central_demo
+    - Firmware size: 74.7 kBytes
+    - SRAM size: 38.0 kBytes
+  * acl_connection_demo
+    - Firmware size: 90.2 kBytes
+    - SRAM size: 44.3 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 95.0 kBytes
+    - SRAM size: 35.1 kBytes
+    - deepsleep retention SRAM size: 30.9 kBytes
+
+* **TC321X**
+  * acl_peripheral_demo
+    - Firmware size: 88.2 kBytes
+    - SRAM size: 33.4 kBytes
+    - deepsleep retention SRAM size: 30.0 kBytes
+  * acl_central_demo
+    - Firmware size: 79.6 kBytes
+    - SRAM size: 38.5 kBytes
+  * acl_connection_demo
+    - Firmware size: 95.1 kBytes
+    - SRAM size: 44.8 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 100.0 kBytes
+    - SRAM size: 35.2 kBytes
+    - deepsleep retention SRAM size: 31.3 kBytes
+  * ble_remote
+    - Firmware size: 102.2 kBytes
+    - SRAM size: 39.9 kBytes
+    - deepsleep retention SRAM size: 34.9 kBytes
+  * eslp_esl_demo
+    - Firmware size: 158.2 kBytes
+    - SRAM size: 47.4 kBytes
+    - deepsleep retention SRAM size: 43.7 kBytes
+
+### Version
+
+* SDK 版本: tc_ble_sdk V4.0.2.2
+* Chip 版本
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0/A1)
+* Hardware 版本
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0
+* Platform 版本
+  - tc_platform_sdk V3.3.1
+* Toolchain 版本
+  - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+* (TC321X) 由于TC321X的模拟寄存器在软件复位、看门狗复位或deep sleep后会清掉，因此修改了低压检测的判断逻辑，电压正常时写入标志位`LOW_BATT_FLG`，异常时清除该标志位。所造成的影响是，第一次上电电压需要高于2.2V(用户可配置)才能使程序运行，否则会直接进入deep sleep状态。
+
+### Known issue
+* 对于TC321X，在ble_remote中按键模式切换为IR模式后，如果芯片进入deep sleep，唤醒回来后会丢失按键模式状态，需要重新设置为IR模式。
+
+### Features
+* **Chip**
+  - 支持 TC321X A1版本芯片。
+
+* **Application**
+  - 在 TC321X 中添加ADC校准。
+  - TC321X ble_remote 参考设计支持IR学习。
+  - 对于 TC321X，新增 eslp_esl_demo 工程，支持 ESL(Electronic Shelf Label) Server功能。
+  - 对于 TC321X，在文件夹 "vendor/common/boards" 中添加`C1T357A78.h` 文件，支持 ESL 的图片显示功能。
+
+* **Controller**
+  - 添加 PAwR(Periodic Advertising with Responses) 功能：
+      - 在文件夹 "stack/ble/controller/ll/prdadv" 中添加了`PAwR_sync.h` 文件。
+  - 添加 PAST(Periodic Advertising Sync Transfer)功能：
+      - 新增文件夹 "stack/ble/controller/ll/past"。
+
+* **Host**
+  - 添加 `blc_smp_searchBondingCentralDevice_by_PeerMacAddress()` 接口，用于根据主机端设备地址和地址类型获取绑定信息。
+  - 添加 `blc_smp_deleteBondingCentralInfo_by_PeerMacAddress()` 接口，用于根据对端设备地址和地址类型删除绑定的主机端信息。
+  - 添加 `blc_l2cap_pktHandler_V1()` 接口，用于处理ESL L2CAP层的数据。
+  - 对于TC321X，新增文件夹 "stack/ble/profile"、"stack/ble/host/att"和"stack/ble/host/gatt"文件夹，支持 ESL Server功能。
+
+### Bug Fixes
+* **Application**
+  - 修复（TC321X）：开启	`APP_BATT_CHECK_ENABLE`后，deep sleep模式下电流过大。
+
+* **Controller**
+  - 修复（B85/B87/TC321X）：在feature_test的`TEST_BLE_PHY`参考设计中，从1M PHY切换到2M PHY时，2M PHY无法正常工作。
+  - 修复（B85/B87/TC321X）：当使能`BLE_APP_PM_ENABLE`时，频繁GPIO唤醒将导致断连。
+
+* **CoC** 
+  - 修复：建立新CoC通道时参数检查错误。
+
+* **Driver**
+  - 修复 (TC321X A0)：OTA结束后调用`start_reboot()`函数无法正常重启MCU的问题。
+
+### Refactoring
+* **Application**
+  - (TC321X) 删除 Audio DMIC 设置。
+  - (TC321X) 优化当开启语音时的POP噪声问题，并在语音结束后关闭语音模块以降低功耗。
+  - (B85/B87/TC321X) 当 `flash_mid` 获取失败或未找到匹配的 MID 值时，设置 `blc_flashProt.init_err = 1`， 表示 flash 保护初始化失败。
+  - (B85/B87/TC321X) 将变量`tick_adv_rpt`放到"retention_data"段，防止其在deep retention sleep后重置。
+  - (TC321X) 移除acl_c1p1_demo初始化中的`wd_32k_stop()`，该功能已在库中处理。
+  - (TC321X) 修改 `C1T357A20.h` 中默认设置的DEBUG_GPIO。
+  - (TC321X) 将`C1T357A20.h` 和 `C1T362A5.h` 中的低压检测的GPIO检测口修改为`GPIO_PB5`。
+
+* **Host**
+  - (B85/B87/TC321X) 将"stack/ble/host/attr"文件夹下的内容移动到"stack/ble/host/att/att_v0"文件夹。
+  - (TC321X) 在`ble_host.h`中增加ESL功能相关头文件引用。
+  
+* **Controller**
+  - (B85/B87/TC321X) 优化 c1p1 的 SRAM 大小。
+  - (B85/B87/TC321X) 清理 controller 中的 master 和 slave 命名：
+    - 将 `blc_ll_getCurrentMasterRoleNumber()` 重命名为 `blc_ll_getCurrentCentralRoleNumber()`。
+    - 将 `blc_ll_getCurrentSlaveRoleNumber()` 重命名为 `blc_ll_getCurrentPeripheralRoleNumber()`。
+    - 在`contr_comp.h`中添加宏定义`blc_ll_getCurrentSlaveRoleNumber()`和`blc_ll_getCurrentMasterRoleNumber()`进行兼容。
+  - (B85/B87/TC321X) 移除`leg_adv.h`中重复的API `blc_ll_initLegacyAdvertising_module()`的定义。
+  - (B85/B87/TC321X) 将`PERD_ADV_PARAM_LENGTH`的定义修改为456。
+  - (TC321X) 在`ble_controller.h`增加PAwR和PAST头文件引用。
+  
+* **HCI**
+  - (TC321X) 在`hci_const.h`、`hci_cmd.h`和`hci_event.h`中增加PAwR和PAST HCI接口相关的Command和Event定义。
+
+* **Link & Startup**
+  - (TC321X) 添加"platform_func"段，用于存储平台数据。
+  - (B85/B87) 添加"cstartup_ram_funcs" 段。
+  - (B85/B87/TC321X) 将 `div_mod.S` 中的函数从 "ram_code" 段移动到 "cstartup_ram_funcs" 段。
+  - (TC321X) 在`cstartup_TC321X.S`中添加 RF 软件配置调用接口`rf_sw_config()`。
+
+### BREAKING CHANGES
+* N/A.
+
+### CodeSize
+* **B85**
+  * acl_peripheral_demo
+    - Firmware size: 83.5 kBytes
+    - SRAM size: 32.5 kBytes
+    - deepsleep retention SRAM size: 28.9 kBytes
+  * acl_central_demo
+    - Firmware size: 73.9 kBytes
+    - SRAM size: 37.1 kBytes
+  * acl_connection_demo
+    - Firmware size: 89.2 kBytes
+    - SRAM size: 43.6 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 95.4 kBytes
+    - SRAM size: 34.3 kBytes
+    - deepsleep retention SRAM size: 30.3 kBytes
+
+* **B87**
+  * acl_peripheral_demo
+    - Firmware size: 83.0 kBytes
+    - SRAM size: 32.5 kBytes
+    - deepsleep retention SRAM size: 29.0 kBytes
+  * acl_central_demo
+    - Firmware size: 74.7 kBytes
+    - SRAM size: 37.5 kBytes
+  * acl_connection_demo
+    - Firmware size: 90.3 kBytes
+    - SRAM size: 43.8 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 95.1 kBytes
+    - SRAM size: 34.6 kBytes
+    - deepsleep retention SRAM size: 30.3 kBytes
+
+* **TC321X**
+  * acl_peripheral_demo
+    - Firmware size: 88.2 kBytes
+    - SRAM size: 33.4 kBytes
+    - deepsleep retention SRAM size: 30.0 kBytes
+  * acl_central_demo
+    - Firmware size: 79.6 kBytes
+    - SRAM size: 38.5 kBytes
+  * acl_connection_demo
+    - Firmware size: 95.1 kBytes
+    - SRAM size: 44.8 kBytes
+  * acl_c1p1_demo
+    - Firmware size: 100.0 kBytes
+    - SRAM size: 35.2 kBytes
+    - deepsleep retention SRAM size: 31.3 kBytes
+  * ble_remote
+    - Firmware size: 102.2 kBytes
+    - SRAM size: 39.9 kBytes
+    - deepsleep retention SRAM size: 34.9 kBytes
+  * eslp_esl_demo
+    - Firmware size: 158.2 kBytes
+    - SRAM size: 47.4 kBytes
+    - deepsleep retention SRAM size: 43.7 kBytes
+
+
+
 # V4.0.2.1(PR)
 
 ### Version
@@ -73,19 +379,19 @@
 
 * **B87**
   * acl_peripheral_demo
-    - Firmware size: 79.4 kBytes
-    - SRAM size: 31.7 kBytes
-    - deepsleep retention SRAM size: 28.1 kBytes
+    - Firmware size: 83.0 kBytes
+    - SRAM size: 32.5 kBytes
+    - deepsleep retention SRAM size: 29.0 kBytes
   * acl_central_demo
-    - Firmware size: 71.8 kBytes
-    - SRAM size: 37.0 kBytes
+    - Firmware size: 74.7 kBytes
+    - SRAM size: 37.5 kBytes
   * acl_connection_demo
-    - Firmware size: 91.2 kBytes
-    - SRAM size: 43.0 kBytes
+    - Firmware size: 90.3 kBytes
+    - SRAM size: 43.8 kBytes
   * acl_c1p1_demo
-    - Firmware size: 91.3 kBytes
-    - SRAM size: 35.8 kBytes
-    - deepsleep retention SRAM size: 31.7 kBytes
+    - Firmware size: 95.1 kBytes
+    - SRAM size: 34.6 kBytes
+    - deepsleep retention SRAM size: 30.3 kBytes
 
 * **TC321X**
   * acl_peripheral_demo

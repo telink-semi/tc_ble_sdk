@@ -141,4 +141,12 @@ u8   	bls_l2cap_setMinimalUpdateReqSendingTime_after_connCreate(u16 connHandle, 
  */
 int 	blc_l2cap_pktHandler (u16 connHandle, u8 *raw_pkt);
 
+/**
+ * @brief   This function is used to handler L2CAP data (new version)
+ * @param   connHandle - connection handle
+ * @param   *p - the pointer of l2cap data
+ * @return  0
+ */
+int blc_l2cap_pktHandler_V1(u16 connHandle, u8 *raw_pkt);
+
 #endif

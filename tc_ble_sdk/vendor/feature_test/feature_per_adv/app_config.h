@@ -29,8 +29,8 @@
 #if (FEATURE_TEST_MODE == TEST_PER_ADV)
 
 
-#define ACL_CENTRAL_MAX_NUM								4
-#define ACL_PERIPHR_MAX_NUM								4
+#define ACL_CENTRAL_MAX_NUM								0
+#define ACL_PERIPHR_MAX_NUM								1
 
 
 

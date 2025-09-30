@@ -118,7 +118,7 @@ void ui_enable_mic (int en)
 		audio_init();
 		buffer_mic_pkt_rptr = buffer_mic_pkt_wptr = 0;
 		//Amic config
-		audio_set_mute_pga(0);  ////enable audio need follow this step: 1 enable bias; 2 disable mute_pga;
+		audio_set_mute_pga(0);  ////enable audio
 		gpio_set_output_en(GPIO_AMIC_SP, 0);
 		gpio_set_output_en(GPIO_AMIC_SN, 0);
 		audio_codec_stream0_input_t audio_codec_stream0_input =
@@ -131,8 +131,10 @@ void ui_enable_mic (int en)
 			.data_buf_size = TL_MIC_BUFFER_SIZE,
 		};
 		audio_codec_stream0_input_init(&audio_codec_stream0_input);
+		audio_set_mute_mic(1);
+        audio_codec_clr_input_pop(20);
+		audio_set_codec_en(1);
 		audio_dfifo_config(FIFO0,(u16*)buffer_mic,TL_MIC_BUFFER_SIZE);
-		audio_txfifo_en(FIFO0);
 
 
 		#if (IIR_FILTER_ENABLE)
@@ -147,6 +149,7 @@ void ui_enable_mic (int en)
 	}
 	else{  //audio off
 		audio_codec_adc_power_down();
+		audio_power_down();
 		amic_gpio_reset();
 		buffer_mic_pkt_rptr = buffer_mic_pkt_wptr = 0;
 	}

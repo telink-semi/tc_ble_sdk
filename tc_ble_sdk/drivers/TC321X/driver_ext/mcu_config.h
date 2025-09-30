@@ -1,7 +1,7 @@
 /********************************************************************************************************
  * @file    mcu_config.h
  *
- * @brief   This is the header file for B85
+ * @brief   This is the header file for TC321X
  *
  * @author  BLE Group
  * @date    May 8,2018
@@ -32,13 +32,11 @@
 
 /*
 	Flash Type	uid CMD			MID		Company
-	P25D40SU				0x136085	PY
-	GD25LD80E	0x4b(AN)	0x1460C8	GD
+	P25D40SU/P25D40TU		0x136085	PY
 	P25Q80SU				0x146085	PY
 	P25Q16SU				0x156085	PY
  */
 #define FLASH_P25D40SU_SUPPORT_EN					1
-#define FLASH_GD25LD40E_SUPPORT_EN					1
 #define FLASH_P25Q80SU_SUPPORT_EN					1
 #define FLASH_P25Q16SU_SUPPORT_EN					1
 
