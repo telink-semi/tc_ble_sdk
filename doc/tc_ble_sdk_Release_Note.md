@@ -24,8 +24,8 @@
 
 - **Application**
   - (B85/B87/TC321X): Added new flash models and implement protection mechanisms for it.
-	- (TC321X): Modified the low battery check logic to be consistent with the B85 and B87 platforms.
-	- (TC321X): Added voltage calibration functionality for the TC321X B0.
+  - (TC321X): Modified the low battery check logic to be consistent with the B85 and B87 platforms.
+  - (TC321X): Added voltage calibration functionality for the TC321X B0.
 
 ### Bug Fixes
 - **PM**
