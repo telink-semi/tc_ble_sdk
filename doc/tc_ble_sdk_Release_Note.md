@@ -1,3 +1,219 @@
+# V4.0.2.3(PR)
+
+### Version
+* SDK version: tc_ble_sdk_V4.0.2.3
+* Chip Version
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0/A1/B0)
+* Hardware Version
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+* Platform Version
+  - tc_platform_sdk V3.4.0
+* Toolchain Version
+  - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+- (TC321X): The function to retain the values of analog registers 0x3b and 0x3c after a software reboot has been restored. As a result, the low battery check logic is now aligned with the B85 and B87 platforms, using bit 0 of register 0x3b as the low battery check flag: the "LOW_BATT_FLG" is cleared when voltage is normal, and set when voltage is abnormal. On first power-up, the system can operate normally if the voltage is above 2.0 V; if it enters deep sleep mode due to voltage dropping below 2.0 V, the minimum voltage required to resume operation is increased to 2.2 V. Note that enabling this feature requires adding a "reboot_data" section.
+
+### Features
+- **Chip**
+  - (TC321X) Supported chip TC321X B0.
+
+- **Application**
+  - (B85/B87/TC321X): Added new flash models and implement protection mechanisms for it.
+	- (TC321X): Modified the low battery check logic to be consistent with the B85 and B87 platforms.
+	- (TC321X): Added voltage calibration functionality for the TC321X B0.
+
+### Bug Fixes
+- **PM**
+  - For TC321X
+    - Fixed an issue where failure to enter sleep mode due to the wake-up key being pressed could result in disconnection.
+      - Detailed Description:​ In key-wakeup mode, if the system detects that the key is already pressed when attempting to enter sleep, sleep entry is correctly aborted. However, a flaw in the error handling logic previously caused the interrupt mask to be lost, leading to communication disconnection.
+      - After Fix:​ The device now operates normally and no longer disconnects when sleep entry is prevented by a pressed key.
+      - Update Recommendation:​ Recommended to update.
+
+- **Analog Register**
+  - For TC321X
+    - Fixed the issue where analog registers 0x3b (PM_ANA_REG_POWER_ON_CLR_BUF1) and 0x3c (PM_ANA_REG_POWER_ON_CLR_BUF2) were reset to their default values after software reboot.
+      - Detailed Description:​ When the chip recovered from a reboot state, registers 0x3b and 0x3c were restored to their default values, resulting in loss of stored data.
+      - After Fix:​ After the fix, when the chip recovers from a reboot state, registers 0x3b and 0x3c will retain their pre-reboot values.
+      - Update Recommendation:​ Recommended to update.
+
+- **Scan**
+  - For B85/TC321X
+    - Fix the issue where the TIFS timing for sending scan request and connect indication is inaccurate when operating as a central device.
+      - Detailed Description: When the system clock frequency is below 48 MHz and operating as a central device, the TIFS timing for the transmitted scan request and connect indication is inaccurate.
+      - After Fix: The TIFS timing for the transmitted scan request and connect indication is accurate.
+      - Update Recommendation: Evaluate if needed.
+
+  - For B85/B87/TC321X
+    - Fixed incorrect SCA value in the Connect Indication packet sent when acting as a central device.
+      - Detailed Description: The SCA (Clock Accuracy) value in the Connect Indication packet was incorrect when the device acted as a central.
+      - After Fix:  The SCA value in the Connect Indication packet is now correct.
+      - Update Recommendation: Evaluate if needed.
+
+### Refactoring
+- **Application**
+  - (TC321X): To make it more convenient for customers to configure the 32k watchdog, the handling of disabling the 32k watchdog is moved out of cpu_wakeup_init and placed after the execution of the cpu_wakeup_init function.
+  - (TC321X): Clean up compiler errors when UI_LED_ENABLE is disabled while REMOTE_IR_ENABLE or REMOTE_IR_LEARN_ENABLE is enabled in ble_remote reference design.
+  - (B85/B87/TC321X): Move the configuration of UART_PRINT_DEBUG_ENABLE from app_config.h to the individual configuration files of each board, and add a check for DEBUG_INFO_TX_PIN not being set in application/print/putchar.c.
+  - (TC321X): Change the default board number selection for TC321X to BOARD_TC321X_EVK_C1T357A20_V2_1. 
+  - (B85/B87/TC321X): Remove the setting of blc_ll_setMaxAdvDelay_for_AdvEvent(MAX_DELAY_0MS)in acl_c1p1_demo and acl_peripheral_demo.
+
+* **HCI**
+  - (B85/B87/TC321X): Clean up comments in hci.h, hci_cmd.h, and hci_const.h.
+
+- **link**
+  - (TC321X): Add a new section "reboot_data".
+
+### BREAKING CHANGES
+* N/A.
+
+### CodeSize
+
+* **B85**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 83.5                      | 32.5                         | 28.9                                   |
+| acl_central_demo                    | 74.1                      | 37.3                         | /                                      |
+| acl_connection_demo                 | 89.2                      | 43.6                         | /                                      |
+| acl_c1p1_demo                       | 95.4                      | 34.3                         | 30.3                                   |
+
+
+* **B87**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 83.0                      | 32.6                         | 28.9                                   |
+| acl_central_demo                    | 74.8                      | 37.5                         | /                                      |
+| acl_connection_demo                 | 90.3                      | 43.8                         | /                                      |
+| acl_c1p1_demo                       | 95.0                      | 34.6                         | 30.4                                   |
+
+
+* **TC321X**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 91.8                      | 34.9                         | 31.3                                   |
+| acl_central_demo                    | 82.9                      | 39.8                         | /                                      |
+| acl_connection_demo                 | 98.7                      | 46.3                         | /                                      |
+| acl_c1p1_demo                       | 103.5                     | 36.7                         | 32.7                                   |
+| ble_remote                          | 105.6                     | 41.2                         | 36.3                                   |
+| eslp_esl_demo                       | 163.0                     | 49.1                         | 45.3                                  |
+
+
+### Version
+
+* SDK 版本: tc_ble_sdk_V4.0.2.3
+* Chip 版本
+  - B85: TLSR825X
+  - B87: TLSR827X
+  - TC321X (A0/A1/B0)
+* Hardware 版本
+  - B85: C1T139A30_V1_2, C1T139A3_V2_0
+  - B87: C1T197A30_V1_1, C1T201A3_V1_0
+  - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+* Platform 版本
+  - tc_platform_sdk V3.4.0
+* Toolchain 版本
+  - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+  - (TC321X)：现已恢复TC321X模拟寄存器0x3b和0x3c在软件复位后的值保留功能，因此将其低压检测逻辑调整为与B85及B87平台保持一致，并以0x3b模拟寄存器的BIT(0)作为低压检测的标志位：电压正常时清除“LOW_BATT_FLG”标志位，异常时则置位该标志。系统首次上电时，电压高于2.0V即可正常运行；若因电压低于2.0V进入deep sleep状态，则再次恢复工作所需的电压阈值提升至2.2V。需要注意，支持此功能需要添加“reboot_data”段。
+
+### Features
+* **Chip**
+  - (TC321X)：支持 TC321X B0 芯片。
+
+* **Application**
+  - (B85/B87/TC321X)：增加支持的Flash型号并为其添加保护处理。
+  - (TC321X)：修改低压检测逻辑，与B85及B87平台保持一致。
+  - (TC321X)：为TC321X B0芯片添加电压校准功能。
+
+### Bug Fixes
+- **PM**
+  - For TC321X
+    - 修复设置为按键唤醒时，若因按键在唤醒态导致没能进入睡眠，会导致断连。
+	  - 详细描述：当设置为睡眠按键唤醒时，如果进入睡眠时按键恰好处于按下的状态，那么将禁止进入睡眠，但是由于错误的处理，导致中断mask丢失，造成断连。
+	  - 修复效果：当由于按键按下未进入睡眠时，程序正常工作不再出现断连。
+	  - 更新建议：建议更新。
+
+- **Analog Register**
+  - For TC321X
+    - 修复芯片重启后，0x3b(PM_ANA_REG_POWER_ON_CLR_BUF1) 与 0x3c(PM_ANA_REG_POWER_ON_CLR_BUF2) 模拟寄存器被重置为默认值的问题。
+	  - 详细描述：当芯片从软件 reboot 状态恢复时，0x3b 与 0x3c 模拟寄存器会被恢复为默认值，导致存储的值丢失。
+	  - 修复效果：当芯片从软件 reboot 状态恢复时，0x3b 与 0x3c 模拟寄存器仍保留为软件 reboot 之前的值。
+	  - 更新建议：建议更新。
+
+- **Scan**
+  - For B85/TC321X
+    - 修复作为central端时，发送scan req和connect ind的TIFS不准的问题。
+      - 详细描述：当主频低于48M且作为central端时，发送的scan request和connect indication的TIFS不准。
+      - 修复效果：发送的scan request和connect indication的TIFS是准确的。
+      - 更新建议：自行评估。
+
+  - For B85/B87/TC321X
+    - 修复作为central端时，发送的connect ind包中的SCA值错误的问题。
+      - 详细描述：当作为central端时，发送的connect indication包中的SCA(Clock Accuracy)值错误。
+      - 修复效果：发送的connect indication包中的SCA值正确。
+      - 更新建议：自行评估。
+
+### Refactoring
+* **Application**
+  - (TC321X): 为了更方便客户对32k watchdog的配置，将关闭32k watchdog的处理从cpu_wakeup_init中移出，并放置在cpu_wakeup_init函数执行结束之后。
+  - (TC321X)：清理在ble_remote参考设计中禁用 UI_LED_ENABLE 并启用 REMOTE_IR_ENABLE 和 REMOTE_IR_LEARN_ENABLE时的编译错误。
+  - (B85/B87/TC321X)：将 UART_PRINT_DEBUG_ENABLE 的配置从 app_config.h 移至各 board 独立配置文件中，并在 application/print/putchar.c 中添加未设置 DEBUG_INFO_TX_PIN 的检查。
+  - (TC321X)：将 TC321X 的默认板号选择修改为BOARD_TC321X_EVK_C1T357A20_V2_1。
+  - (B85/B87/TC321X)：移除acl_c1p1_demo和acl_peripheral_demo中blc_ll_setMaxAdvDelay_for_AdvEvent(MAX_DELAY_0MS)的设置。
+
+* **HCI**
+  - (B85/B87/TC321X)：清理 hci.h、hci_cmd.h 和 hci_const.h 中的注释。
+
+- **link**
+  - (TC321X): 添加"reboot_data" 段。
+
+### BREAKING CHANGES
+* N/A.
+
+### CodeSize
+
+* **B85**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 83.5                      | 32.5                         | 28.9                                   |
+| acl_central_demo                    | 74.1                      | 37.3                         | /                                      |
+| acl_connection_demo                 | 89.2                      | 43.6                         | /                                      |
+| acl_c1p1_demo                       | 95.4                      | 34.3                         | 30.3                                   |
+
+
+* **B87**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 83.0                      | 32.6                         | 28.9                                   |
+| acl_central_demo                    | 74.8                      | 37.5                         | /                                      |
+| acl_connection_demo                 | 90.3                      | 43.8                         | /                                      |
+| acl_c1p1_demo                       | 95.0                      | 34.6                         | 30.4                                   |
+
+
+* **TC321X**
+
+| reference design                    | Firmware size (kBytes)    | SRAM size (kBytes)           | deepsleep retention SRAM size (kBytes) |
+| :-------------                      | :-----------------------: | :--------------------------: | :-----------------------------------:  |
+| acl_peripheral_demo                 | 91.8                      | 34.9                         | 31.3                                   |
+| acl_central_demo                    | 82.9                      | 39.8                         | /                                      |
+| acl_connection_demo                 | 98.7                      | 46.3                         | /                                      |
+| acl_c1p1_demo                       | 103.5                     | 36.7                         | 32.7                                   |
+| ble_remote                          | 105.6                     | 41.2                         | 36.3                                   |
+| eslp_esl_demo                       | 163.0                     | 49.1                         | 45.3                                   |
+
+
+
 # V4.0.2.2(PR)
 
 ### Version
