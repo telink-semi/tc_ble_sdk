@@ -62,9 +62,11 @@ int main(void)
 		cpu_wakeup_init();
 	#elif(MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X)
 		cpu_wakeup_init(DCDC_LDO_MODE, INTERNAL_CAP_XTAL24M);
+	#elif (MCU_CORE_TYPE == MCU_CORE_TC123X)
+		cpu_wakeup_init(INTERNAL_CAP_XTAL24M);
 	#endif
 
-	#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+	#if(MCU_CORE_TYPE == MCU_CORE_TC321X || MCU_CORE_TYPE == MCU_CORE_TC123X)
 		wd_32k_stop();
 	#endif
 

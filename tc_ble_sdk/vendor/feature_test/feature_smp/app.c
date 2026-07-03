@@ -123,7 +123,7 @@ void UART_Init(u8 *rxBuf, u32 byteNum)
 	uart_recbuff_init(UART_CONVERT(rxBuf, byteNum));
 
 	uart_gpio_set(UART_CONVERT(UART_TX_PIN, UART_RX_PIN));
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	uart_reset(UART_MODULE_SEL);  //will reset uart digital registers from 0x90 ~ 0x9f, so uart setting must set after this reset
 #else
 	uart_reset();  //will reset uart digital registers from 0x90 ~ 0x9f, so uart setting must set after this reset
@@ -140,7 +140,7 @@ void UART_Init(u8 *rxBuf, u32 byteNum)
 
 void uart_irq_handler(void)
 {
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_RX) & FLD_DMA_CHN_UART_RX)
 #else
 	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_RX)
@@ -214,7 +214,7 @@ void uart_irq_handler(void)
 	}
 
 	/* UART DMA Tx IRQ */
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_TX) & FLD_DMA_CHN_UART_TX)
 #else
 	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_RX)
@@ -667,9 +667,12 @@ _attribute_no_inline_ void user_init_normal(void)
 
 	/* random number generator must be initiated here( in the beginning of user_init_nromal).
 	 * When deepSleep retention wakeUp, no need initialize again */
-	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x)
+	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || (MCU_CORE_TYPE == MCU_CORE_TC123X))
 	random_generator_init();
-#endif
+	#endif
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
+	#endif
 
 	#if(UART_PRINT_DEBUG_ENABLE)
 		tlkapi_debug_init();

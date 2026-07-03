@@ -127,7 +127,7 @@ void battery_set_detect_enable (int en)
 	 * initialized to battery detect mode when battery detect function used again
 	 * so here we must clear */
 	if(!en){
-		#if (MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_825x)
+		#if (MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_TC123X)
 			battery_clear_adc_setting_flag();  //need initialized again
 		#elif (MCU_CORE_TYPE == MCU_CORE_TC321X)
 			sd_adc_power_off(SD_ADC_SAMPLE_MODE);
@@ -311,6 +311,27 @@ _attribute_ram_code_ void adc_vbat_detect_init(void)
 	sd_adc_power_on(SD_ADC_SAMPLE_MODE);
 	sleep_us(160);
 	sd_adc_sample_start();
+#elif (MCU_CORE_TYPE == MCU_CORE_TC123X)
+	adc_init(NDMA_M_CHN);
+
+# ifdef	GPIO_VBAT_DETECT
+	adc_gpio_cfg_t adc_gpio_cfg_m =
+	{
+		.v_ref       = ADC_VREF_1P2V,
+		.pre_scale   = ADC_PRESCALE_1F4,
+		.sample_freq = ADC_SAMPLE_FREQ_96K,
+		.pin         = GPIO_VBAT_DETECT,
+	};
+
+	adc_gpio_sample_init(ADC_M_CHANNEL, adc_gpio_cfg_m);
+#else
+	adc_vbat_sample_init(ADC_M_CHANNEL);
+# endif /* GPIO_VBAT_DETECT */
+
+	adc_power_on();
+
+	adc_start_sample_nodma();
+
 #endif
 }
 
@@ -430,6 +451,8 @@ _attribute_ram_code_ int app_battery_power_check(u16 alram_vol_mv)
         #endif
 		sd_adc_power_off(SD_ADC_SAMPLE_MODE);
 
+ 	 #elif (MCU_CORE_TYPE == MCU_CORE_TC123X)
+		volatile unsigned short batt_vol_mv = adc_sample_and_get_result();
 	#endif
 	tlkapi_printf(APP_BATT_CHECK_LOG_EN, "[APP][BAT] The battery power is %dmV!\n", batt_vol_mv);
 
@@ -481,6 +504,8 @@ _attribute_ram_code_ void user_battery_power_check(u16 alarm_vol_mv)
 				if (g_chip_version != CHIP_VERSION_A0) {
 					wd_clear(); //clear watch dog, in case that some user callBack function take too much time.
 				}
+			#elif (MCU_CORE_TYPE == MCU_CORE_TC123X)
+				wd_32k_feed();
 			#endif
 			#if (GPIO_LED_BLUE)
 				gpio_write(GPIO_LED_BLUE, LED_ON_LEVEL);

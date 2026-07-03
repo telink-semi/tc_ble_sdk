@@ -36,6 +36,10 @@
 void blc_app_setDeepsleepRetentionSramSize(void)
 {
 	extern u32 _retention_size_;
+
+#if(MCU_CORE_TYPE == MCU_CORE_TC123X)
+	blc_pm_setDeepsleepRetentionType(DEEPSLEEP_MODE_RET_SRAM_LOW64K); //retention size < 64k, use 64k deep retention
+#else
 	if (((u32)&_retention_size_) < 0x8000){
 		blc_pm_setDeepsleepRetentionType(DEEPSLEEP_MODE_RET_SRAM_LOW32K); //retention size < 32k and >16k, use 32k deep retention
 	}
@@ -44,12 +48,14 @@ void blc_app_setDeepsleepRetentionSramSize(void)
 		blc_pm_setDeepsleepRetentionType(DEEPSLEEP_MODE_RET_SRAM_LOW64K); //retention size < 64k and >32k, use 64k deep retention
 	}
 #endif
+
 	else{
 		/* retention size > 32k, overflow. deep retention size setting err*/
 		#if (UART_PRINT_DEBUG_ENABLE)
 			tlkapi_printf(APP_LOG_EN, "[APP][INI] deep retention size setting err");
 		#endif
 	}
+#endif
 }
 
 

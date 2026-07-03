@@ -134,7 +134,7 @@ const u8	tbl_scanRsp [] = {
 void app_phytest_irq_proc(void)
 {
 	//1. UART irq
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X  || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_RX) & FLD_DMA_CHN_UART_RX)
 #else
 	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_RX)
@@ -149,7 +149,7 @@ void app_phytest_irq_proc(void)
 			reg_dma0_addr = (u16)((u32)p);
 		}
 	}
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X  || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	if(dma_chn_irq_status_get(FLD_DMA_CHN_UART_TX) & FLD_DMA_CHN_UART_TX)
 #else
 	if(dma_chn_irq_status_get() & FLD_DMA_CHN_UART_TX)
@@ -157,7 +157,7 @@ void app_phytest_irq_proc(void)
 	{
 		dma_chn_irq_status_clr(FLD_DMA_CHN_UART_TX);
 	}
-#if(MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_TC321X  || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	if (reg_uart_status1(UART_NUM) & FLD_UART_TX_DONE)
 #else
 	if (reg_uart_status1 & FLD_UART_TX_DONE)
@@ -519,9 +519,12 @@ _attribute_no_inline_ void user_init_normal(void)
 
 	/* random number generator must be initiated here( in the beginning of user_init_nromal).
 	 * When deepSleep retention wakeUp, no need initialize again */
-	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x)
+	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || (MCU_CORE_TYPE == MCU_CORE_TC123X))
 	random_generator_init();
-#endif
+	#endif
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
+	#endif
 
 	#if(UART_PRINT_DEBUG_ENABLE)
 		tlkapi_debug_init();

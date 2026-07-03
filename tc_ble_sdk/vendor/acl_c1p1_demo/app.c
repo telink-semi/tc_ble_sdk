@@ -669,8 +669,11 @@ _attribute_no_inline_ void user_init_normal(void)
 {
 	/* random number generator must be initiated here( in the beginning of user_init_nromal).
 	 * When deepSleep retention wakeUp, no need initialize again */
-	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x)
+	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC123X)
 	random_generator_init();
+	#endif
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
 	#endif
 
 	#if(UART_PRINT_DEBUG_ENABLE)
@@ -830,6 +833,8 @@ _attribute_no_inline_ void user_init_normal(void)
 			#elif(MCU_CORE_TYPE == MCU_CORE_827x)
 				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(350);
 			#elif(MCU_CORE_TYPE == MCU_CORE_TC321X)
+				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(350);
+			#elif(MCU_CORE_TYPE == MCU_CORE_TC123X)
 				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(350);
 			#endif
 		#else

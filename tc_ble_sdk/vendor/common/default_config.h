@@ -267,6 +267,9 @@
 	#elif (MCU_CORE_TYPE == MCU_CORE_TC321X)
 		//Only support BOARD_TC321X_EVK_C1T357A20
 		#define BOARD_SELECT							BOARD_TC321X_EVK_C1T357A20
+	#elif (MCU_CORE_TYPE == MCU_CORE_TC123X)
+		//Only support BOARD_TC321X_EVK_C1T357A20
+		#define BOARD_SELECT							BOARD_TC123X_EVK_C1T414A20
 	#else
 		#error "SDK do not support this MCU!"
 	#endif
@@ -294,6 +297,8 @@
 	#include "boards/C1T362A5.h"
 #elif ( BOARD_SELECT == BOARD_TC321X_EVK_C1T357A78)
 	#include "boards/CIT357A78.h"
+#elif ( BOARD_SELECT == BOARD_TC123X_EVK_C1T414A20)
+	#include "boards/C1T414A20.h"
 #endif
 
 

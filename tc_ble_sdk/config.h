@@ -28,6 +28,7 @@
 #define	CHIP_TYPE_825x  	1
 #define CHIP_TYPE_827x      2
 #define CHIP_TYPE_TC321X	3
+#define CHIP_TYPE_TC123X	4
 
 
 #ifndef CHIP_TYPE
@@ -42,6 +43,7 @@
 #define	MCU_CORE_825x 		1
 #define MCU_CORE_827x       2
 #define MCU_CORE_TC321X     3
+#define MCU_CORE_TC123X     4
 
 
 #if(CHIP_TYPE == CHIP_TYPE_825x)
@@ -50,6 +52,8 @@
 	#define MCU_CORE_TYPE	MCU_CORE_827x
 #elif(CHIP_TYPE == CHIP_TYPE_TC321X)
 	#define MCU_CORE_TYPE	MCU_CORE_TC321X
+#elif(CHIP_TYPE == CHIP_TYPE_TC123X)
+	#define MCU_CORE_TYPE	MCU_CORE_TC123X
 #else
 	#error "unsupported mcu type !"
 #endif

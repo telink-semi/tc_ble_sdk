@@ -497,8 +497,11 @@ _attribute_no_inline_ void user_init_normal(void)
 
 	/* random number generator must be initiated here( in the beginning of user_init_nromal).
 	 * When deepSleep retention wakeUp, no need initialize again */
-	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x)
+	#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || (MCU_CORE_TYPE == MCU_CORE_TC123X))
 	random_generator_init();
+	#endif
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
 	#endif
 
 	#if(UART_PRINT_DEBUG_ENABLE)
@@ -506,6 +509,7 @@ _attribute_no_inline_ void user_init_normal(void)
 		blc_debug_enableStackLog(STK_LOG_DISABLE);
 	#endif
 
+	
 	blc_readFlashSize_autoConfigCustomFlashSector();
 
 	/* attention that this function must be called after "blc_readFlashSize_autoConfigCustomFlashSector" !!!*/
@@ -616,9 +620,6 @@ _attribute_no_inline_ void user_init_normal(void)
 	blc_app_checkControllerHostInitialization();
 //////////////////////////// BLE stack Initialization  End //////////////////////////////////
 
-
-
-
 //////////////////////////// User Configuration for BLE application ////////////////////////////
 	blc_ll_setAdvData( (u8 *)tbl_advData, sizeof(tbl_advData) );
 	blc_ll_setScanRspData( (u8 *)tbl_scanRsp, sizeof(tbl_scanRsp));
@@ -645,6 +646,8 @@ _attribute_no_inline_ void user_init_normal(void)
 				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(350);
 			#elif(MCU_CORE_TYPE == MCU_CORE_TC321X)
 				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(350);
+			#elif(MCU_CORE_TYPE == MCU_CORE_TC123X)
+				blc_pm_setDeepsleepRetentionEarlyWakeupTiming(100);
 			#endif
 		#else
 			blc_pm_setDeepsleepRetentionEnable(PM_DeepRetn_Disable);
@@ -680,6 +683,9 @@ _attribute_no_inline_ void user_init_normal(void)
  */
 _attribute_ram_code_ void user_init_deepRetn(void)
 {
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
+	#endif
 
 #if (PM_DEEPSLEEP_RETENTION_ENABLE)
 	blc_app_loadCustomizedParameters_deepRetn();

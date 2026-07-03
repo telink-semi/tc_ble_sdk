@@ -1,3 +1,183 @@
+# V4.0.2.4(PR)
+
+### Version
+
+* SDK version: tc_ble_sdk_V4.0.2.4
+* Chip Version
+    - B85: TLSR825X
+    - B87: TLSR827X
+    - TC321X (A0/A1/B0)
+    - TC123X (A0)
+* Hardware Version
+    - B85: C1T139A30_V1_2, C1T139A3_V2_0
+    - B87: C1T197A30_V1_1, C1T201A3_V1_0
+    - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+    - TC123X: C1T414A20_V1_1
+* Platform Version
+    - tc_platform_sdk V3.5.0
+* Toolchain Version
+    - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+
+- N/A
+
+### Features
+
+- **Chip**
+    - (TC123X): Supported chip TC123X A0.
+- **STIMER**
+    - (TC321X): Added interfaces stimer_get_lev_irq_status and stimer_clr_lev_irq_status for getting/clearing the stimer track 32k interrupt and the interrupt for completing the reading of the 32k tick value.
+
+
+### Bug Fixes
+
+- (TC321X): Fix the issue in gpio_set_interrupt_risc0/1/2/3 where other interrupts are mistakenly cleared.
+    - Detailed description: Because |= retains all bits that have been set to 1 and writes them back, under the influence of the W1C (Write 1 to Clear) mechanism, this will cause the interrupt flag bits that are queuing up for processing to be mistakenly cleared.
+    - After Fix: Fixed the issue of mistakenly clearing other interrupts.
+    - Update Recommendation: When using RSIC IRQ, an update is necessary.
+
+
+### Refactoring
+
+- **ir**
+    - (TC321X): Optimize the IR learning distance to improve the performance of infrared signal reception and enhance the reliability of remote control learning functionality.
+
+### BREAKING CHANGES
+
+* N/A.
+
+### CodeSize
+
+* **B85**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.5          |        32.5        |                  28.9                  |
+| acl_central_demo    |          74.1          |        37.3        |                   /                    |
+| acl_connection_demo |          89.2          |        43.6        |                   /                    |
+| acl_c1p1_demo       |          95.4          |        34.3        |                  30.3                  |
+
+
+* **B87**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.0          |        32.6        |                  28.9                  |
+| acl_central_demo    |          74.8          |        37.5        |                   /                    |
+| acl_connection_demo |          90.3          |        43.8        |                   /                    |
+| acl_c1p1_demo       |          95.0          |        34.6        |                  30.4                  |
+
+
+* **TC321X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          91.8          |        34.9        |                  31.3                  |
+| acl_central_demo    |          84.4          |        41.0        |                   /                    |
+| acl_connection_demo |         100.1          |        47.5        |                   /                    |
+| acl_c1p1_demo       |         104.9          |        37.9        |                  34.0                  |
+| ble_remote          |         107.0          |        42.4        |                  37.5                  |
+| eslp_esl_demo       |         162.6          |        49.2        |                  45.4                  |
+
+- **TC123X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.4          |        33.6        |                  30.2                  |
+| acl_central_demo    |          75.3          |        40.1        |                   /                    |
+| acl_connection_demo |          90.8          |        46.4        |                   /                    |
+| acl_c1p1_demo       |          95.9          |        37.0        |                  32.8                  |
+
+### Version
+
+* SDK 版本: tc_ble_sdk_V4.0.2.4
+* Chip 版本
+    - B85: TLSR825X
+    - B87: TLSR827X
+    - TC321X (A0/A1/B0)
+    - TC123X (A0)
+* Hardware 版本
+    - B85: C1T139A30_V1_2, C1T139A3_V2_0
+    - B87: C1T197A30_V1_1, C1T201A3_V1_0
+    - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+    - TC123X: C1T414A20_V1_1
+* Platform 版本
+    - tc_platform_sdk V3.5.0
+* Toolchain 版本
+    - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+
+  - N/A
+
+### Features
+
+* **Chip**
+    - (TC123X)： 支持 TC123X A0 芯片。
+* **STIMER**
+    - (TC321X)：新增接口stimer_get_lev_irq_status和stimer_clr_lev_irq_status用于获取/清除stimer track 32k中断和读取32k tick值完成中断。
+
+### Bug Fixes
+
+- (TC321X)：修复gpio_set_interrupt_risc0/1/2/3中，误清除其他中断的问题。
+    - 详细描述：由于 |= 会保留所有已置 1 的位并写回，受 W1C (Write 1 to Clear) 机制影响，这会导致那些正在排队等待处理的中断标志位被误清除。
+    - 修复效果：修复了误清除其他中断的问题。
+    - 更新建议：使用 rsic irq 时 必须更新。
+
+### Refactoring
+
+* **ir**
+    - (TC321X) 优化IR学习距离，提高红外信号接收性能，增强遥控器学习功能的可靠性。
+
+### BREAKING CHANGES
+
+* N/A.
+
+### CodeSize
+
+* **B85**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.5          |        32.5        |                  28.9                  |
+| acl_central_demo    |          74.1          |        37.3        |                   /                    |
+| acl_connection_demo |          89.2          |        43.6        |                   /                    |
+| acl_c1p1_demo       |          95.4          |        34.3        |                  30.3                  |
+
+
+* **B87**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.0          |        32.6        |                  28.9                  |
+| acl_central_demo    |          74.8          |        37.5        |                   /                    |
+| acl_connection_demo |          90.3          |        43.8        |                   /                    |
+| acl_c1p1_demo       |          95.0          |        34.6        |                  30.4                  |
+
+
+* **TC321X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          91.8          |        34.9        |                  31.3                  |
+| acl_central_demo    |          84.4          |        41.0        |                   /                    |
+| acl_connection_demo |         100.1          |        47.5        |                   /                    |
+| acl_c1p1_demo       |         104.9          |        37.9        |                  34.0                  |
+| ble_remote          |         107.0          |        42.4        |                  37.5                  |
+| eslp_esl_demo       |         162.6          |        49.2        |                  45.4                  |
+
+- **TC123X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.4          |        33.6        |                  30.2                  |
+| acl_central_demo    |          75.3          |        40.1        |                   /                    |
+| acl_connection_demo |          90.8          |        46.4        |                   /                    |
+| acl_c1p1_demo       |          95.9          |        37.0        |                  32.8                  |
+
+
+
 # V4.0.2.3(PR)
 
 ### Version
@@ -31,16 +211,16 @@
 - **PM**
   - For TC321X
     - Fixed an issue where failure to enter sleep mode due to the wake-up key being pressed could result in disconnection.
-      - Detailed Description:​ In key-wakeup mode, if the system detects that the key is already pressed when attempting to enter sleep, sleep entry is correctly aborted. However, a flaw in the error handling logic previously caused the interrupt mask to be lost, leading to communication disconnection.
-      - After Fix:​ The device now operates normally and no longer disconnects when sleep entry is prevented by a pressed key.
-      - Update Recommendation:​ Recommended to update.
+      - Detailed Description: In key-wakeup mode, if the system detects that the key is already pressed when attempting to enter sleep, sleep entry is correctly aborted. However, a flaw in the error handling logic previously caused the interrupt mask to be lost, leading to communication disconnection.
+      - After Fix: The device now operates normally and no longer disconnects when sleep entry is prevented by a pressed key.
+      - Update Recommendation: Recommended to update.
 
 - **Analog Register**
   - For TC321X
     - Fixed the issue where analog registers 0x3b (PM_ANA_REG_POWER_ON_CLR_BUF1) and 0x3c (PM_ANA_REG_POWER_ON_CLR_BUF2) were reset to their default values after software reboot.
-      - Detailed Description:​ When the chip recovered from a reboot state, registers 0x3b and 0x3c were restored to their default values, resulting in loss of stored data.
-      - After Fix:​ After the fix, when the chip recovers from a reboot state, registers 0x3b and 0x3c will retain their pre-reboot values.
-      - Update Recommendation:​ Recommended to update.
+      - Detailed Description: When the chip recovered from a reboot state, registers 0x3b and 0x3c were restored to their default values, resulting in loss of stored data.
+      - After Fix: After the fix, when the chip recovers from a reboot state, registers 0x3b and 0x3c will retain their pre-reboot values.
+      - Update Recommendation: Recommended to update.
 
 - **Scan**
   - For B85/TC321X

@@ -96,6 +96,23 @@
     #ifndef FLASH_SDP_ATT_ADDRESS_512K_FLASH
     #define FLASH_SDP_ATT_ADDRESS_512K_FLASH                        0x78000 //78000 & 79000
     #endif
+#elif (MCU_CORE_TYPE == MCU_CORE_TC123X)   // Oriole:need to reconfig
+	#ifndef     CFG_ADR_MAC_512K_FLASH
+    #define     CFG_ADR_MAC_512K_FLASH                              0x7F000
+    #endif
+
+    #ifndef     CFG_ADR_CALIBRATION_512K_FLASH
+    #define     CFG_ADR_CALIBRATION_512K_FLASH                      0x7E000
+    #endif
+
+    #ifndef     FLASH_ADR_SMP_PAIRING_512K_FLASH
+    #define     FLASH_ADR_SMP_PAIRING_512K_FLASH                    0x7A000 //7A000 & 7B000 & 7C000 & 7D000
+    #endif
+
+/* for ACL Central simple SDP: bonding ACL Peripheral GATT service critical information area */
+    #ifndef FLASH_SDP_ATT_ADDRESS_512K_FLASH
+    #define FLASH_SDP_ATT_ADDRESS_512K_FLASH                        0x78000 //78000 & 79000
+    #endif
 #endif
 
 
@@ -148,7 +165,7 @@
 #define		CALIB_OFFSET_CAP_INFO								0x00
 #define		CALIB_OFFSET_TP_INFO								0x40
 
-#define		CALIB_OFFSET_ADC_VREF								0xC0
+#define		CALIB_OFFSET_ADC_VREF								0xC4
 
 #define		CALIB_OFFSET_FIRMWARE_SIGNKEY						0x180
 

@@ -220,7 +220,7 @@ void flip_addr(u8 *dest, u8 *src);
 static inline u64 mul64_32x32(u32 u, u32 v)
 {
 	//Kite/Vulture's HW do not support HW long mul, here must open
-#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X || (MCU_CORE_TYPE == MCU_CORE_TC123X))
     u32  u0,   v0,   w0;
     u32  u1,   v1,   w1,   w2,   t;
     u32  x, y;
@@ -245,7 +245,7 @@ static inline u64 mul64_32x32(u32 u, u32 v)
 #endif
 }
 
-#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X)
+#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X || (MCU_CORE_TYPE == MCU_CORE_TC123X))
 
 	u32 __div64_32(u64 *dividend, u32 divisor);
 	u64 __div64_64(u64 *dividend, u64 divisor);
@@ -276,7 +276,7 @@ static inline u64 mul64_32x32(u32 u, u32 v)
 		return __div64_64(&result, divisor);
 	}
 
-#endif ///#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X)
+#endif ///#if(MCU_CORE_TYPE == MCU_CORE_825x || MCU_CORE_TYPE == MCU_CORE_827x || MCU_CORE_TYPE == MCU_CORE_TC321X|| (MCU_CORE_TYPE == MCU_CORE_TC123X))
 
 typedef	struct {
 	u32		size;

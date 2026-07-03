@@ -121,7 +121,7 @@ void flash_protection_init(void)
 				break;
 		#endif
 
-		#if (FLASH_P25D40SU_SUPPORT_EN)
+		#if (FLASH_P25D40SU_SUPPORT_EN || FLASH_P25D40T_SUPPORT_EN)
 			case MID136085:
 				flash_lock_mid = (flash_lock_t)flash_lock_mid136085;
 				flash_unlock_mid = (flash_unlock_t)flash_unlock_mid136085;
@@ -246,7 +246,7 @@ u16 flash_change_app_lock_block_to_flash_lock_block(flash_app_lock_e app_lock_bl
 				break;
 		#endif
 
-		#if (FLASH_P25D40SU_SUPPORT_EN) //512K capacity
+		#if (FLASH_P25D40SU_SUPPORT_EN || FLASH_P25D40T_SUPPORT_EN) //512K capacity
 			case MID136085:
 				if(app_lock_block == FLASH_LOCK_FW_LOW_256K){
 					flash_lock_block_size = FLASH_LOCK_LOW_256K_MID136085;

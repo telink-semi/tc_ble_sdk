@@ -102,7 +102,7 @@ int swire_putc(int c) {
 #error  "Please define DEBUG_INFO_TX_PIN in your board header file and configure the pin as GPIO output mode"
 #endif
 
-#if (MCU_CORE_TYPE == CHIP_TYPE_TC321X)
+#if (MCU_CORE_TYPE == CHIP_TYPE_TC321X) || (MCU_CORE_TYPE == CHIP_TYPE_TC123X)
 #define UART_DEBUG_TX_PIN_REG	reg_gpio_out_set_clear(DEBUG_INFO_TX_PIN)
 #else
 #define UART_DEBUG_TX_PIN_REG	reg_gpio_out(DEBUG_INFO_TX_PIN)
@@ -161,7 +161,7 @@ void uart_putb(unsigned short *p)
 
 int uart_putc(char byte) //GPIO simulate uart print func
 {
-#if(MCU_CORE_TYPE == CHIP_TYPE_TC321X)
+#if(MCU_CORE_TYPE == CHIP_TYPE_TC321X) || (MCU_CORE_TYPE == CHIP_TYPE_TC123X)
     unsigned short tmp_bit0 = (DEBUG_INFO_TX_PIN & 0xff) << 8;
     unsigned short tmp_bit1 = DEBUG_INFO_TX_PIN & 0xff;
 #else

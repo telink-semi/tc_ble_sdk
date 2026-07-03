@@ -28,7 +28,7 @@
 
 
 #define ACL_CENTRAL_MAX_NUM								0
-#define ACL_PERIPHR_MAX_NUM								4
+#define ACL_PERIPHR_MAX_NUM								1
 
 
 ///////////////////////// Feature Configuration////////////////////////////////////////////////
@@ -94,7 +94,7 @@
 
 
 /////////////////// DEEP SAVE FLG //////////////////////////////////
-#if (CHIP_TYPE == CHIP_TYPE_TC321X)
+#if (CHIP_TYPE == CHIP_TYPE_TC321X) || (CHIP_TYPE == CHIP_TYPE_TC123X)
 	#define USED_DEEP_ANA_REG				PM_ANA_REG_POWER_ON_CLR_BUF1
 #else
 	#define USED_DEEP_ANA_REG               DEEP_ANA_REG0 //u8,can save 8 bit info when deep

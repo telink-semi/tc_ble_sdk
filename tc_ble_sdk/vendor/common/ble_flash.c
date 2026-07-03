@@ -44,6 +44,11 @@
 	_attribute_data_retention_	unsigned int flash_sector_calibration = CFG_ADR_CALIBRATION_2M_FLASH;
 	_attribute_data_retention_	unsigned int flash_sector_smp_storage = FLASH_ADR_SMP_PAIRING_2M_FLASH;
 	_attribute_data_retention_	unsigned int flash_sector_simple_sdp_att = FLASH_SDP_ATT_ADDRESS_2M_FLASH;
+#elif(MCU_CORE_TYPE == MCU_CORE_TC123X)
+	_attribute_data_retention_	unsigned int flash_sector_mac_address = CFG_ADR_MAC_1M_FLASH;
+	_attribute_data_retention_	unsigned int flash_sector_calibration = CFG_ADR_CALIBRATION_1M_FLASH;
+	_attribute_data_retention_	unsigned int flash_sector_smp_storage = FLASH_ADR_SMP_PAIRING_1M_FLASH;
+	_attribute_data_retention_	unsigned int flash_sector_simple_sdp_att = FLASH_SDP_ATT_ADDRESS_1M_FLASH;
 #endif
 
 
@@ -104,7 +109,7 @@ void blc_readFlashSize_autoConfigCustomFlashSector(void)
 {
 	blc_flash_read_mid_get_vendor_set_capacity();
 
-#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SU_SUPPORT_EN || FLASH_ZB25WD40C_SUPPORT_EN)	//512K
+#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SU_SUPPORT_EN || FLASH_P25D40T_SUPPORT_EN || FLASH_ZB25WD40C_SUPPORT_EN)	//512K
 	if(blc_flash_capacity == FLASH_SIZE_512K){
 		flash_sector_mac_address = CFG_ADR_MAC_512K_FLASH;
 		flash_sector_calibration = CFG_ADR_CALIBRATION_512K_FLASH;
@@ -286,6 +291,17 @@ void blc_app_loadCustomizedParameters_normal(void)
 		sd_adc_calib_t sd_adc_calib_value;
 		flash_read_page(flash_sector_calibration + CALIB_OFFSET_ADC_VREF, 12, (unsigned char*)&sd_adc_calib_value);
 		user_calib_adc_vref(sd_adc_calib_value);
+	#endif
+
+	#if (MCU_CORE_TYPE == MCU_CORE_TC123X)
+		extern void user_calib_adc_vref(unsigned int addr);
+		user_calib_adc_vref(flash_sector_calibration + CALIB_OFFSET_ADC_VREF);
+//	    // Note: This function must be called, otherwise an abnormal situation may occur.
+//	    // Called immediately after cpu_wakeup_init, set in other positions, some calibration values may not take effect.
+//		/******get adc calibration value from EFUSE********/
+//		efuse_calib_adc_vref();
+//		/******get rf calibration value from EFUSE********/
+//		efuse_calib_rf_freq();
 	#endif
 }
 

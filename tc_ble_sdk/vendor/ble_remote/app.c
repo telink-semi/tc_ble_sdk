@@ -444,6 +444,10 @@ _attribute_no_inline_ void user_init_normal(void)
 {
 //////////////////////////// basic hardware Initialization  Begin //////////////////////////////////
 
+	#if((MCU_CORE_TYPE == MCU_CORE_TC123X))
+	aes_init();
+	#endif
+
 	#if(UART_PRINT_DEBUG_ENABLE)
 		tlkapi_debug_init();
 		blc_debug_enableStackLog(STK_LOG_DISABLE);

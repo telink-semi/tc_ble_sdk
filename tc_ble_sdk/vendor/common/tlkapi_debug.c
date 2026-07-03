@@ -51,6 +51,7 @@ int tlk_printf(const char *format, ...)
 	if(tlkDbgCtl.dbg_en){
 		va_list args;
 		va_start( args, format );
+
 		v_printf(format,args);
 		va_end( args );
 	}
@@ -86,7 +87,6 @@ void tlkapi_send_str_data (char *str, u8 *pData, u32 data_len)
 		}
 
 		temp_str[i * 3] = '\0';
-
 
 		u_printf(str, temp_str);
 	}
