@@ -26,6 +26,7 @@
 #include "gpio.h"
 #include "lib/include/pm/pm_internal.h"
 
+/* BLE USED */
 #ifndef	PM_32k_RC_CALIBRATION_ALGORITHM_EN
 #define PM_32k_RC_CALIBRATION_ALGORITHM_EN	1
 #endif
@@ -304,6 +305,8 @@ void cpu_stall_wakeup(irq_list_e irq_mask);
  * @return     indicate whether the cpu is wake up successful.
  */
 int  cpu_sleep_wakeup_32k_rc(SleepMode_TypeDef sleep_mode,  SleepWakeupSrc_TypeDef wakeup_src, pm_wakeup_tick_type_e wakeup_tick_type, unsigned int  wakeup_tick);
+
+/* BLE USED */
 typedef int (*cpu_pm_handler_t)(SleepMode_TypeDef sleep_mode,  SleepWakeupSrc_TypeDef wakeup_src, pm_wakeup_tick_type_e wakeup_tick_type, unsigned int  wakeup_tick);
 extern  cpu_pm_handler_t         cpu_sleep_wakeup_and_longsleep;
 #define cpu_sleep_wakeup(sleep_mode, wakeup_src, wakeup_tick)  cpu_sleep_wakeup_and_longsleep(sleep_mode, wakeup_src, PM_TICK_STIMER, wakeup_tick)
@@ -349,7 +352,7 @@ _attribute_ram_code_sec_noinline_ void pm_update_status_info(unsigned char clr_e
 _attribute_ram_code_sec_noinline_ void pm_sys_reboot_with_reason(pm_sw_reboot_reason_e reboot_reason);
 
 
-
+/* BLE USED */
 /**
  * @brief   pm 32k rc calibration algorithm.
  */

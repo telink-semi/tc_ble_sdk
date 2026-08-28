@@ -34,7 +34,7 @@
 											                                 ((LDO_MODE == power) ? (arr)[2][0][index] : (arr)[2][1][index])))
 
 /*For internal use only; customers cannot modify it.*/
-#define RF_ONLY_BLE          1
+#define RF_ONLY_BLE          0
 #if(0)
 /**
  *  Some notice for timing sequence.
@@ -338,6 +338,10 @@ typedef enum {
 #define    RF_TPLL_PACKET_TIMESTAMP_GET(p)          (p[p[0]-4] | (p[p[0]-3]<<8) | (p[p[0]-2]<<16) | (p[p[0]-1]<<24))
 #define    RF_SB_PACKET_TIMESTAMP_GET(p)           (p[p[0]-4] | (p[p[0]-3]<<8) | (p[p[0]-2]<<16) | (p[p[0]-1]<<24))
 
+/**
+ *  @brief This define serve to calculate the DMA length of packet.
+ */
+#define rf_tx_packet_dma_len(rf_data_len) rf_data_len
 
 /**********************************************************************************************************************
  *                                       RF global data type                                                          *
@@ -880,7 +884,7 @@ extern void rf_start_srx2tx  (void* addr, unsigned int tick);
  * @param   chn_num - channel numbers.
  * @return  none.
  */
-_attribute_ram_code_ void rf_set_ble_channel (signed char chn_num);
+void rf_set_ble_channel (signed char chn_num);
 
 /**
  * @brief     This function performs to enable RF Tx.

@@ -62,6 +62,7 @@
 #include "s7816.h"
 #include "qdec.h"
 
+// #include "printf.h" /* BLE UNUSED */
 #include "lpc.h"
 #include "mdec.h"
 #include "usbhw.h"

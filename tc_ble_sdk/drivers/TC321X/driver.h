@@ -51,6 +51,7 @@
 #include "dma.h"
 #include "timer.h"
 #include "s7816.h"
+// #include "printf.h" /* BLE UNUSED */
 #include "ir_learn.h"
 #include "qdec.h"
 #include "keyscan.h"

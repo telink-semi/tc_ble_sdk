@@ -58,9 +58,27 @@ void user_calib_adc_vref(unsigned int addr)
     if (addr != 0) {
         ret = flash_calib_adc_vref(addr);
     }
-    if (ret == 1) {
+    //The register used for distinguishing the A0 judgment is 0x7D, and the A0 version value is 0.
+    if (ret == 1 && 0 != read_reg8(0x7d)) { // A0 version not use the calib value in efuse
         efuse_calib_adc_vref();
     }
+}
+
+/**
+ * @brief      This function serves to update rf frequency offset.
+ * @param[in]  addr - the frequency offset value address of flash.
+ * @return        1 - the frequency offset update, 0 - the frequency offset is not update.
+ */
+unsigned char user_calib_freq_offset(unsigned int addr)
+{
+    unsigned char frequency_offset_value = 0xff;
+    flash_read_page(addr, 1, &frequency_offset_value);
+    if(0xff != (0xff&frequency_offset_value))
+    {
+        rf_update_internal_cap(frequency_offset_value);
+        return 1;
+    }
+    return 0;
 }
 
 /**

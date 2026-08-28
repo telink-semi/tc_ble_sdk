@@ -120,12 +120,6 @@ typedef enum {
     FLASH_SIZE_8M      = 0x17,
 } Flash_CapacityDef;
 
-typedef enum{
-	FLASH_ETOX_ARCH  	= 0x01000000,
-	FLASH_SONOS_ARCH  	= 0x02000000,
-	FLASH_NORD_ARCH     = 0x04000000,
-}flash_architecture_e;
-
 /**
  * @brief	flash voltage definition(when VDD_F voltage with no load).
  */
@@ -140,6 +134,13 @@ typedef enum {
 	FLASH_VOLTAGE_1V9      = 0x00,
 
 } Flash_VoltageDef;
+
+/* BLE USED */
+typedef enum{
+	FLASH_ETOX_ARCH  	= 0x01000000,
+	FLASH_SONOS_ARCH  	= 0x02000000,
+	FLASH_NORD_ARCH     = 0x04000000,
+}flash_architecture_e;
 
 typedef void (*flash_handler_t)(unsigned long, unsigned long, unsigned char*);
 extern _attribute_data_retention_ flash_handler_t flash_read_page;

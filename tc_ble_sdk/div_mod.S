@@ -399,7 +399,7 @@ CRC24_BYTE_LOOP:			//r4: src; r6: dat; r2: crc; r5: tmp
 	tasr	r2, r2, #4		//r2 >> 4 (crc >> 4)
 	tadd	r0, #1
 	txor	r2, r6			//r2 = r6 ^  r2
-	tjne	CRC24_BYTE_LOOP
+	tj	CRC24_BYTE_LOOP
 CRC24_BYTE_END:
 	tmov	r1, r8
 	tcmp	r1, #0

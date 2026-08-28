@@ -25,6 +25,8 @@
 
 #include "gpio.h"
 #include "lib/include/pm/pm_internal.h"
+
+/* BLE USED */
 #ifndef	PM_32k_RC_CALIBRATION_ALGORITHM_EN
 #define PM_32k_RC_CALIBRATION_ALGORITHM_EN	1
 #endif
@@ -166,6 +168,7 @@ typedef enum
     PM_POWER_DOWN       = 1,
 }pm_power_sel_e;
 
+/* BLE USED */
 /**
  * @brief   pm 32k rc calibration algorithm.
  */
@@ -418,6 +421,7 @@ static inline void blc_pm_select_internal_32k_crystal(void)
  */
 _attribute_ram_code_sec_noinline_ void pm_set_dig_module_power_switch(pm_pd_module_e module, pm_power_sel_e power_sel);
 
+/* BLE USED */
 _attribute_ram_code_sec_noinline_ void pm_ble_32k_rc_cal_reset(void);
 
 _attribute_ram_code_sec_noinline_ void pm_ble_cal_32k_rc_offset (int offset_tick, int rc32_cnt);

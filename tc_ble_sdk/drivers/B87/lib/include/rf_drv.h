@@ -531,6 +531,10 @@ typedef enum {
 
 #define    rf_aoa_aod_iq_data_offset(p)					(p[5]+10)
 
+/**
+ *  @brief This define serve to calculate the DMA length of packet.
+ */
+#define rf_tx_packet_dma_len(rf_data_len) rf_data_len
 
 /*******************************            General APIs            **************************/
 
@@ -946,8 +950,6 @@ extern void rf_start_stx2rx  (void* addr, unsigned int tick);
 *	@param[in]	addr 	Tx packet address in RAM. Should be 4-byte aligned.
 *	@param[in]	tick   Tick value of system timer. It determines when to
 *								start SrxToTx mode.
-*	@param[in]	timeout_us  Unit is us. It indicates timeout duration in Rx status.
-*								Max value: 0xffffff (16777215)
 *
 *	@return	 	none
 */
@@ -1044,6 +1046,7 @@ static inline void rf_set_ble_access_code (unsigned char *p)
 {
 	write_reg32 (0x800408, p[3] | (p[2]<<8) | (p[1]<<16) | (p[0]<<24));
 
+    /* BLE USED */
 	//notice: This state will be reset after reset baseband
 	write_reg8 (0x800405, read_reg8(0x405)|0x80);//setting access code needs to writ 0x405 access code trigger bit 1 to enable in long range mode,,and the mode of  BLE1M and BLE2M need not.
 }
@@ -1058,6 +1061,7 @@ static inline void rf_set_ble_access_code_value (unsigned int ac)
 {
 	write_reg32 (0x800408, ac);
 
+    /* BLE USED */
 	//notice: This state will be reset after reset baseband
 	write_reg8 (0x800405, read_reg8(0x405)|0x80);//setting access code needs to writ 0x405 access code trigger bit 1 to enable in long range mode,,and the mode of  BLE1M and BLE2M need not.
 }
@@ -1071,6 +1075,7 @@ static inline void rf_set_ble_access_code_adv (void)
 {
 	write_reg32 (0x800408, 0xd6be898e);
 
+    /* BLE USED */
 	//notice: This state will be reset after reset baseband
 	write_reg8 (0x800405, read_reg8(0x405)|0x80);//setting access code needs to writ 0x405 access code trigger bit 1 to enable in long range mode,,and the mode of  BLE1M and BLE2M need not.
 }

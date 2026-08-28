@@ -109,7 +109,10 @@ void blc_readFlashSize_autoConfigCustomFlashSector(void)
 {
 	blc_flash_read_mid_get_vendor_set_capacity();
 
-#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SU_SUPPORT_EN || FLASH_P25D40T_SUPPORT_EN || FLASH_ZB25WD40C_SUPPORT_EN)	//512K
+#if (FLASH_ZB25WD40B_SUPPORT_EN || FLASH_GD25LD40C_SUPPORT_EN || \
+	FLASH_GD25LD40E_SUPPORT_EN	|| FLASH_P25D40SU_SUPPORT_EN || \
+	FLASH_P25D40T_SUPPORT_EN || FLASH_ZB25WD40C_SUPPORT_EN || \
+	FLASH_UC25WD40I_SUPPORT_EN)	//512K
 	if(blc_flash_capacity == FLASH_SIZE_512K){
 		flash_sector_mac_address = CFG_ADR_MAC_512K_FLASH;
 		flash_sector_calibration = CFG_ADR_CALIBRATION_512K_FLASH;
@@ -122,6 +125,21 @@ void blc_readFlashSize_autoConfigCustomFlashSector(void)
 		tlkapi_printf(APP_FLASH_INIT_LOG_EN, "[FLASH][INI] 512K Flash, MAC on 0x%x\n", flash_sector_mac_address);
 	}
 #endif
+
+#if (FLASH_UC25WD20I_SUPPORT_EN) // 256K
+	else if(blc_flash_capacity == FLASH_SIZE_256K){
+		flash_sector_mac_address = CFG_ADR_MAC_256K_FLASH;
+		flash_sector_calibration = CFG_ADR_CALIBRATION_256K_FLASH;
+		flash_sector_smp_storage = FLASH_ADR_SMP_PAIRING_256K_FLASH;
+
+		#if (ACL_CENTRAL_SIMPLE_SDP_ENABLE)
+			flash_sector_simple_sdp_att = FLASH_SDP_ATT_ADDRESS_256K_FLASH;
+		#endif
+
+		tlkapi_printf(APP_FLASH_INIT_LOG_EN, "[FLASH][INI] 256K Flash, MAC on 0x%x\n", flash_sector_mac_address);
+	}
+#endif
+
 #if (FLASH_ZB25WD80B_SUPPORT_EN || FLASH_GD25LD80C_SUPPORT_EN || FLASH_GD25LD80E_SUPPORT_EN || FLASH_P25Q80SU_SUPPORT_EN || \
 		FLASH_TH25Q80U_SUPPORT_EN || FLASH_ZB25WD80C_SUPPORT_EN)		//1M
 	else if(blc_flash_capacity == FLASH_SIZE_1M){
@@ -294,6 +312,7 @@ void blc_app_loadCustomizedParameters_normal(void)
 	#endif
 
 	#if (MCU_CORE_TYPE == MCU_CORE_TC123X)
+		user_calib_freq_offset(flash_sector_calibration);
 		extern void user_calib_adc_vref(unsigned int addr);
 		user_calib_adc_vref(flash_sector_calibration + CALIB_OFFSET_ADC_VREF);
 //	    // Note: This function must be called, otherwise an abnormal situation may occur.

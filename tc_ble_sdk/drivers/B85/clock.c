@@ -35,6 +35,30 @@ _attribute_data_retention_	unsigned char system_clk_type;
 /*24m rc calibrate configuration, the default value is set to require calibration*/
 volatile static unsigned char g_24m_rc_calib_flag = 1;
 _attribute_data_retention_  unsigned char sys_clock_print;//add by BLE team
+/**
+ * @brief       This function to set RC for the system clock.
+ * @param[in]   SYS_CLK - the clock source of the system clock.
+ * @return      none
+ */
+void clock_rc_set(SYS_CLK_TypeDef SYS_CLK)
+{
+	unsigned char temp = analog_read(0x04)&0xfc;
+	if(SYS_CLK==SYS_CLK_24M_RC)
+	{
+		analog_write(0x04, temp|0x00);
+		rc_24m_cal();
+	}
+	else if(SYS_CLK==SYS_CLK_32M_RC)
+	{
+		analog_write(0x04, temp|0x01);
+		//rc_32m_cal();
+	}
+	else if(SYS_CLK==SYS_CLK_48M_RC)
+	{
+		analog_write(0x04, temp|0x03);
+		rc_48m_cal();
+	}
+}
 
 /**
  * @brief       This function to select the system clock source.
@@ -54,8 +78,11 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 	reg_clk_sel = (unsigned char)SYS_CLK;
 	system_clk_type = (unsigned char)SYS_CLK;
 
-
+#if (SYSCLK_RC_CLOCK_EN)
+	if(SYS_CLK == SYS_CLK_48M_Crystal || SYS_CLK == SYS_CLK_48M_RC)
+#else
 	if(SYS_CLK == SYS_CLK_48M_Crystal)
+#endif
 	{
 		/*default c4: dcdc 1.8V  -> GD flash 48M clock may error  need higher DCDC voltage
 		          c6: dcdc 1.9V
@@ -72,6 +99,13 @@ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 	#elif(CLOCK_SYS_CLOCK_HZ == 48000000)  //48M
 		sys_clock_print = 48;
 	#endif
+    
+#if (SYSCLK_RC_CLOCK_EN)
+	if(SYS_CLK<SYS_CLK_RC_THRES)
+	{
+		clock_rc_set(SYS_CLK);
+	}
+#endif
 	/*
 		In some customer application scenarios, they want code execution time to be short and power consumption to be low.
 		Meanwhile, they do not concerned about the accuracy of 24m rc or they want to control the calibration cycle themselves. 

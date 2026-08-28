@@ -43,7 +43,7 @@
 #include "register.h"
 #include "dma.h"
 #include "timer.h"
-//#include "printf.h"		// ble unused
+//#include "printf.h"   /* BLE UNUSED */
 #include "flash/flash_type.h"
 #include "sdk_version.h"
 #include "flash/flash_common.h"

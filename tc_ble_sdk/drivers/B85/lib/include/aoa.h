@@ -27,6 +27,7 @@
 #include "analog.h"
 #include "register.h"
 #include "gpio.h"
+// #include "printf.h" // BLE UNUSED
 #include "string.h"
 #include "rf_drv.h"
 

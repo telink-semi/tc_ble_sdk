@@ -425,6 +425,11 @@ typedef enum {
 
 #define    rf_aoa_aod_iq_data_offset(p)					(p[5]+10)
 
+/**
+ *  @brief This define serve to calculate the DMA length of packet.
+ */
+//#define rf_tx_packet_dma_len(rf_data_len) rf_data_len
+
 /*******************************            General APIs            **************************/
 
 /**
@@ -853,8 +858,6 @@ extern void rf_start_stx2rx  (void* addr, unsigned int tick);
 *	@param[in]	addr 	Tx packet address in RAM. Should be 4-byte aligned.
 *	@param[in]	tick   Tick value of system timer. It determines when to
 *								start SrxToTx mode.
-*	@param[in]	timeout_us  Unit is us. It indicates timeout duration in Rx status.
-*								Max value: 0xffffff (16777215)
 *
 *	@return	 	none
 */

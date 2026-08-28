@@ -771,7 +771,7 @@ extern void rf_start_srx2tx  (void* addr, unsigned int tick);
  * @param   chn_num - channel numbers.
  * @return  none.
  */
-_attribute_ram_code_ void rf_set_ble_channel (signed char chn_num);
+void rf_set_ble_channel (signed char chn_num);
 
 /**
  * @brief     This function performs to enable RF Tx.

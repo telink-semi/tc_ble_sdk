@@ -56,6 +56,7 @@
 #include "usbhw.h"
 #include "s7816.h"
 #include "qdec.h"
+// #include "printf.h" // BLE UNUSED
 #include "lpc.h"
 #include "flash/flash_type.h"
 #include "flash/flash_common.h"

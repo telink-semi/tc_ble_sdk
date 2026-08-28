@@ -25,7 +25,7 @@
 #include "clock.h"
 #include "lib/include/stimer.h"
 #include "lib/include/pm/pm.h"
-#include "tl_common.h"
+#include "tl_common.h"  /* BLE USED */
 
 _attribute_data_retention_ unsigned char tl_24mrc_cal = 0x80;
 
@@ -52,7 +52,7 @@ _attribute_data_retention_ unsigned char tl_24mrc_cal = 0x80;
  *                                              local variable                                                     *
  *********************************************************************************************************************/
 _attribute_data_retention_  unsigned char system_clk_type;
-_attribute_data_retention_  unsigned char sys_clock_print;
+_attribute_data_retention_  unsigned char sys_clock_print;  /* BLE USED */
 
 /*24m rc calibrate configuration, the default value is set to require calibration*/
 volatile static unsigned char g_24m_rc_calib_flag = 1;
@@ -285,6 +285,7 @@ _attribute_ram_code_sec_noinline_ void clock_init(SYS_CLK_TypeDef SYS_CLK)
 	g_24m_rc_is_used &= ~MODULE_CLK_INIT;
     pm_24mrc_power_down_if_unused();
 
+    /* BLE USED */
     #if(CLOCK_SYS_CLOCK_HZ == 16000000)  //16M
         sys_clock_print = 16;
     #elif(CLOCK_SYS_CLOCK_HZ == 24000000)  //24M

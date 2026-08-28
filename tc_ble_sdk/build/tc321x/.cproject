@@ -64,6 +64,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1965962957" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.2037286336" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.678749982" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="acl_connection_demo.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.705227849" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.1323865233" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.1268176278" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -144,7 +145,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1351800399" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.1777051785" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.1071491822" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="feature_test.lst" valueType="string"/>
-								<option id="com.telink.tc32eclipse.objdump.option.stdopts.1713715065" name="Options to create Extended Listing" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -D -l -S" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.1713715065" name="Options to create Extended Listing" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.1208044897" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.1568833329" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -225,6 +226,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.192341091" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.1923410935" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.78120022" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="acl_peripheral_demo.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.895466826" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.290455184" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.296199184" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -305,6 +307,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1246071724" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.114214494" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.1065635899" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="acl_c1p1_demo.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.1146010312" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.1304740825" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.372396413" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -385,6 +388,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1770342486" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.252907786" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.1559095432" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="acl_central_demo.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.1578251424" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.600018633" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.2119116107" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -465,6 +469,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1236589560" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.253997046" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.830195011" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="ble_remote.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.299356739" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.1440890836" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.1387052040" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>
@@ -545,6 +550,7 @@
 							<tool id="com.telink.tc32eclipse.tool.archiver.TC32Win.base.1870001644" name="TC32 Archiver" superClass="com.telink.tc32eclipse.tool.archiver.TC32Win.base"/>
 							<tool id="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug.2015325399" name="TC32 Create Extended Listing" superClass="com.telink.tc32eclipse.tool.objdump.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objdump.option.output.1441235695" name="Output Filename" superClass="com.telink.tc32eclipse.objdump.option.output" useByScannerDiscovery="false" value="ble_controller.lst" valueType="string"/>
+								<option id="com.telink.tc32eclipse.objdump.option.stdopts.1991224004" superClass="com.telink.tc32eclipse.objdump.option.stdopts" useByScannerDiscovery="false" value="-x -l -S" valueType="string"/>
 							</tool>
 							<tool id="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug.1880595528" name="TC32 Create Flash image" superClass="com.telink.tc32eclipse.tool.objcopy.flash.TC32Win.app.debug">
 								<option id="com.telink.tc32eclipse.objcopy.flash.option.output.1711983107" name="Output Filename" superClass="com.telink.tc32eclipse.objcopy.flash.option.output" useByScannerDiscovery="false" value="" valueType="string"/>

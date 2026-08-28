@@ -318,5 +318,12 @@ void user_master_host_pairing_management_init(void)
 		}
 	#endif
 
+#if (FLASH_UC25WD20I_SUPPORT_EN)
+		else if(blc_flash_capacity == FLASH_SIZE_256K){
+			flash_sector_custom_pairing = FLASH_ADR_SMP_PAIRING_256K_FLASH;
+		}
+#endif
+
+
 	user_master_host_pairing_flash_init();
 }

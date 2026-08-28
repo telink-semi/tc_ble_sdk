@@ -1,3 +1,190 @@
+# V4.0.2.5(PR)
+
+### Version
+
+* SDK version: tc_ble_sdk_V4.0.2.5
+* Chip Version
+    - B85: TLSR825X
+    - B87: TLSR827X
+    - TC321X (A0/A1/B0)
+    - TC123X (A0)
+* Hardware Version
+    - B85: C1T139A30_V1_2, C1T139A3_V2_0
+    - B87: C1T197A30_V1_1, C1T201A3_V1_0
+    - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+    - TC123X: C1T414A20_V1_1
+* Platform Version
+    - tc_platform_sdk V3.5.2
+* Toolchain Version
+    - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+
+- N/A
+
+### Features
+
+- **calibration**
+    * (TC123X): Add logic to read calibration values and IEEE address from the 256KB Flash.
+
+
+### Bug Fixes
+
+- **watchdog**
+    - (TC123X): Fixed an issue where the 32k watchdog reset time could be shorter than the configured interval due to hardware inaccuracies:
+        - Detailed description: To ensure that the watchdog reset time never falls below the set interval, software compensation has been introduced by adding a maximum allowable timing error as an offset during interval configuration.  
+        - Fixing effect: The 32k watchdog reset time will never be less than the configured interval. 
+        - Update suggestion: Using the watchdog must be updated.
+
+
+
+### Refactoring
+
+- **pm**
+    - (TC321X): The `pm_set_power_mode` interface is not publicly available, removed the interface declaration.
+- **rf**
+    - (TC321X): Optimize RF‑related configurations to improve communication stability.
+
+
+### BREAKING CHANGES
+
+* N/A
+
+### CodeSize
+
+* **B85**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.5          |        32.5        |                  28.9                  |
+| acl_central_demo    |          74.1          |        37.3        |                   /                    |
+| acl_connection_demo |          89.2          |        43.6        |                   /                    |
+| acl_c1p1_demo       |          95.4          |        34.3        |                  30.3                  |
+
+
+* **B87**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.9          |         32         |                  28.5                  |
+| acl_central_demo    |          75.3          |        37.5        |                   /                    |
+| acl_connection_demo |          91.6          |        44.6        |                   /                    |
+| acl_c1p1_demo       |          96.3          |        35.3        |                  31.2                  |
+
+
+* **TC321X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          91.6          |        34.6        |                  31.3                  |
+| acl_central_demo    |          84.5          |        41.1        |                   /                    |
+| acl_connection_demo |         100.3          |        47.6        |                   /                    |
+| acl_c1p1_demo       |         105.1          |        37.9        |                  33.9                  |
+| ble_remote          |         107.2          |        42.4        |                  37.5                  |
+| eslp_esl_demo       |         162.6          |        49.2        |                  45.4                  |
+
+- **TC123X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.5          |        33.6        |                  30.3                  |
+| acl_central_demo    |          75.4          |        40.1        |                   /                    |
+| acl_connection_demo |          90.9          |        46.4        |                   /                    |
+| acl_c1p1_demo       |          96.0          |        37.0        |                  32.9                  |
+
+### Version
+
+* SDK 版本: tc_ble_sdk_V4.0.2.5
+* Chip 版本
+    - B85: TLSR825X
+    - B87: TLSR827X
+    - TC321X (A0/A1/B0)
+    - TC123X (A0)
+* Hardware 版本
+    - B85: C1T139A30_V1_2, C1T139A3_V2_0
+    - B87: C1T197A30_V1_1, C1T201A3_V1_0
+    - TC321X: C1T357A20_V1_1, C1T362A5_V1_0, C1T357A78_V1_0, C1T357A20_V2_1
+    - TC123X: C1T414A20_V1_1
+* Platform 版本
+    - tc_platform_sdk V3.5.2
+* Toolchain 版本
+    - TC32 ELF GCC4.3 ( IDE: [Telink IoT Studio](https://www.telink-semi.com/development-tools) )
+
+### Note
+
+  - N/A
+
+### Features
+
+* **calibration**
+    * (TC123X)：增加从 256K 容量的 flash 中读取校准值和 ieee 地址值的逻辑。
+
+### Bug Fixes
+
+- **watchdog**
+    - (TC123X)：修复了 32k watchdog 因硬件误差导致复位时间可能小于设置时间的问题：
+        - 详细描述：为了保证在设置 interval 时，watchdog 的复位时间不会小于设置时间，在设置 interval 时，软件上增加了最大的时间误差，作为补偿值。
+        - 修复效果：32k watchdog 复位时间永远不会小于设置时间。
+        - 更新建议：使用 watchdog 必须更新。
+
+
+### Refactoring
+
+* **pm**
+    * (TC321X)：pm_set_power_mode 接口不对外开放，删掉接口声明。
+* **rf**
+    * (TC321X)：优化RF相关配置，提高通信稳定性。
+
+### BREAKING CHANGES
+
+* N/A
+
+### CodeSize
+
+* **B85**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          83.5          |        32.5        |                  28.9                  |
+| acl_central_demo    |          74.1          |        37.3        |                   /                    |
+| acl_connection_demo |          89.2          |        43.6        |                   /                    |
+| acl_c1p1_demo       |          95.4          |        34.3        |                  30.3                  |
+
+
+* **B87**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.9          |         32         |                  28.5                  |
+| acl_central_demo    |          75.3          |        37.5        |                   /                    |
+| acl_connection_demo |          91.6          |        44.6        |                   /                    |
+| acl_c1p1_demo       |          96.3          |        35.3        |                  31.2                  |
+
+
+* **TC321X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          91.6          |        34.6        |                  31.3                  |
+| acl_central_demo    |          84.5          |        41.1        |                   /                    |
+| acl_connection_demo |         100.3          |        47.6        |                   /                    |
+| acl_c1p1_demo       |         105.1          |        37.9        |                  33.9                  |
+| ble_remote          |         107.2          |        42.4        |                  37.5                  |
+| eslp_esl_demo       |         162.6          |        49.2        |                  45.4                  |
+
+- **TC123X**
+
+| reference design    | Firmware size (kBytes) | SRAM size (kBytes) | deepsleep retention SRAM size (kBytes) |
+| :------------------ | :--------------------: | :----------------: | :------------------------------------: |
+| acl_peripheral_demo |          82.5          |        33.6        |                  30.3                  |
+| acl_central_demo    |          75.4          |        40.1        |                   /                    |
+| acl_connection_demo |          90.9          |        46.4        |                   /                    |
+| acl_c1p1_demo       |          96.0          |        37.0        |                  32.9                  |
+
+
+
+
+
 # V4.0.2.4(PR)
 
 ### Version

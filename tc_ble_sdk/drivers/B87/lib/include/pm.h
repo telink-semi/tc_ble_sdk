@@ -32,6 +32,7 @@
 #ifndef	PM_32k_RC_CALIBRATION_ALGORITHM_EN
 #define PM_32k_RC_CALIBRATION_ALGORITHM_EN	1
 #endif
+
 #if(PM_DEBUG)
 volatile unsigned char debug_pm_info;
 volatile unsigned int ana_32k_tick;
@@ -40,10 +41,10 @@ volatile unsigned int ana_32k_tick;
 #define PM_LONG_SUSPEND_EN					1
 
 #ifndef PM_TIM_RECOVER_MODE
-#define PM_TIM_RECOVER_MODE			    	0		//no need, if PM_32k_RC_CALIBRATION_ALGORITHM_EN = 1
+#define PM_TIM_RECOVER_MODE			    	0 //this function only support for interface of cpu_sleep_wakeup_32k_rc and cpu_sleep_wakeup_32k_xtal
 #endif
 
-#define RAM_CRC_EN							0 //if use RAM_CRC func, retention ldo will turn down to 0.6V in A1, A0 is 0.8V.
+#define RAM_CRC_EN							1 //if use RAM_CRC func, retention ldo will turn down to 0.6V in A1, A0 is 0.8V.
 
 
 #define EARLYWAKEUP_TIME			19
@@ -224,6 +225,7 @@ extern  suspend_handler_t 		 func_before_suspend;
 typedef void (*check_32k_clk_handler_t)(void);
 extern  check_32k_clk_handler_t  pm_check_32k_clk_stable;
 
+/* BLE USED */
 extern unsigned int	ota_program_bootAddr;
 extern unsigned int	ota_firmware_max_size;
 extern unsigned int	ota_program_offset;
@@ -468,6 +470,9 @@ static inline void blc_pm_select_external_32k_crystal(void)
 
 
 /**********************************  Internal APIs (not for user)***************************************************/
+/* BLE UNUSED */
+// extern  unsigned char 		    tl_multi_addr_L;
+// extern  unsigned char 		    tl_multi_addr_H;
 extern  unsigned char 		    tl_24mrc_cal;
 extern 	unsigned int 			tick_32k_calib;
 extern  unsigned int 			tick_cur;

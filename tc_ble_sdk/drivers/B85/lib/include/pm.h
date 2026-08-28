@@ -37,7 +37,7 @@ volatile unsigned int ana_32k_tick;
 #define PM_LONG_SUSPEND_EN					1
 
 #ifndef PM_TIM_RECOVER_MODE
-#define PM_TIM_RECOVER_MODE			    	0		//no need, if PM_32k_RC_CALIBRATION_ALGORITHM_EN = 1
+#define PM_TIM_RECOVER_MODE			    	0 //this function only support for interface of cpu_sleep_wakeup_32k_rc and cpu_sleep_wakeup_32k_xtal
 #endif
 
 #define PM_XTAL_DELAY_DURATION      		500
@@ -204,6 +204,8 @@ typedef struct  _attribute_aligned_(4){
 }pm_r_delay_us_s;
 
 extern volatile pm_r_delay_us_s g_pm_r_delay_us;
+
+/* BLE ADDED */
 /**
  * @brief   pm 32k rc calibration algorithm.
  */
@@ -228,6 +230,8 @@ typedef struct  _attribute_aligned_(4)	pm_clock_drift
 
 } pm_clock_drift_t;
 
+
+/* BLE ADDED */
 //Add 4 bytes aligned to solve that if the structure is not aligned, 
 //the compiler will split u32 into 4 bytes to process separately, wasting code.
 //_attribute_aligned_(4) must be added to variable declaration, variable definition, and struct definitions.
@@ -249,6 +253,7 @@ extern _attribute_aligned_(4) pm_tim_recover_t			pm_timRecover;
 typedef int (*suspend_handler_t)(void);
 extern  suspend_handler_t 		 func_before_suspend;
 
+/* BLE ADDED */
 typedef void (*check_32k_clk_handler_t)(void);
 extern  check_32k_clk_handler_t  pm_check_32k_clk_stable;
 void check_32k_clk_stable(void);
@@ -367,7 +372,7 @@ extern unsigned int pm_get_32k_tick(void);
  * @note	When this function called after power on or deep sleep wakeup, it will cost about 6~7ms for perform 32k RC calibration. 
  * 			If do not want this logic, you can check the usage and precautions of cpu_wakeup_init_calib_32k_rc_cfg().
  */
-void cpu_wakeup_init(void);
+_attribute_ram_code_sec_noinline_ void cpu_wakeup_init(void);
 
 /**
  * @brief 	  This function performs to configure whether to calibrate the 32k rc in the cpu_wakeup_init() when power-on or wakeup from deep sleep mode.If wakeup from deep retention sleep mode will not calibrate.
@@ -461,12 +466,13 @@ static inline void blc_pm_select_external_32k_crystal(void)
 {
 	cpu_sleep_wakeup 	 	= cpu_sleep_wakeup_32k_xtal;
 	pm_tim_recover		 	= pm_tim_recover_32k_xtal;
-	pm_check_32k_clk_stable = check_32k_clk_stable;
+	pm_check_32k_clk_stable = check_32k_clk_stable; /* BLE ADDED */
 
 	blt_miscParam.pad32k_en 	= 1; // set '1': 32k clk src use external 32k crystal
 }
 
 /**********************************  Internal APIs (not for user)***************************************************/
+// extern  unsigned char 		    tl_multi_addr; // BLE REMOVED
 extern  unsigned char 		    tl_24mrc_cal;
 extern 	unsigned short 			tick_32k_calib;
 extern  unsigned int 			tick_cur;

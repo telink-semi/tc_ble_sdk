@@ -45,7 +45,7 @@ typedef enum{
 	MID0113325E   = 0x0113325e,//ZB25WD40C
 	MID1360C8   =   0x1360c8,//GD25LD40C/GD25LD40E
 	MID14325E   =   0x14325e,//ZB25WD80B
-	MID0114325E   = 0x0114325e,//ZB25WD80B
+	MID0114325E   = 0x0114325e,//ZB25WD80C
 	MID146085   =   0x146085,//P25Q80U
 	MID1460C8   =   0x1460c8,//GD25LD80C/GD25LD80E
 }flash_mid_e;
@@ -124,11 +124,6 @@ typedef enum {
     FLASH_SIZE_8M      = 0x17,
 } Flash_CapacityDef;
 
-typedef enum{
-	FLASH_ETOX_ARCH  	= 0x01000000,
-	FLASH_SONOS_ARCH  	= 0x02000000,
-}flash_architecture_e;
-
 /**
  * @brief	flash voltage definition
  */
@@ -142,6 +137,12 @@ typedef enum {
     FLASH_VOLTAGE_1V65     = 0x01,
     FLASH_VOLTAGE_1V6      = 0x00,
 } Flash_VoltageDef;
+
+/* BLE USED */
+typedef enum{
+	FLASH_ETOX_ARCH  	= 0x01000000,
+	FLASH_SONOS_ARCH  	= 0x02000000,
+}flash_architecture_e;
 
 typedef void (*flash_handler_t)(unsigned long, unsigned long, unsigned char*);
 extern _attribute_data_retention_ flash_handler_t flash_read_page;
